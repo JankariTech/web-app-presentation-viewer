@@ -1,0 +1,8 @@
+node_modules
+dist
+
+# Editor directories and files
+.vscode
+.idea
+
+/.pnpm-store/
