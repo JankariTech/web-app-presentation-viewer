@@ -2,7 +2,7 @@
   <div id="presentation-viewer-main" class="presentation-viewer oc-flex">
     <div class="reveal">
       <div class="slides">
-        <section :data-markdown="props.url" :data-separator="dataSeparator"
+        <section :data-markdown="url" :data-separator="dataSeparator"
                  :data-separator-vertical="dataSeparatorVertical"></section>
       </div>
     </div>
@@ -15,12 +15,11 @@ import Reveal from 'reveal.js'
 import RevealMarkdown from 'reveal.js/plugin/markdown/markdown.js'
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight.js'
 
-import 'reveal.js/dist/reset.css'
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 
-const props = defineProps({
+defineProps({
   url: {
     type: String,
     required: true
