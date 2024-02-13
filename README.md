@@ -6,10 +6,10 @@ It is an extension for the Owncloud web that allows users to create slide presen
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/) (v18.17.1)
 - [pnpm](https://pnpm.io/) (v8.15.1)
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://www.docker.com/)(optional)
+- [Docker Compose](https://docs.docker.com/compose/)(optional)
 
-## Project Setup
+## Installation
 ### 1. Install Dependencies
 ```bash
 pnpm install
@@ -21,15 +21,29 @@ pnpm build
 ```
 The extension will be built in the `dist` directory.
 
+### 3. Serve the extension
+1. serve the content of the `dist` folder using any HTTP web-server
+2. edit `web.config.json` and set `<your-ocis-domain>` & `<url-where-the-dist-folder-is-served>` to the correct values
+3. start oCIS with the env. variable `WEB_UI_CONFIG_FILE` set to the full path of `web.config.json`
+
+## Development
+
+### 1. Install Dependencies
+```bash
+pnpm install
+```
+
+### 2. Build the extension
+
 For development, build with watch
 ```bash
 pnpm build:w
 ```
-The extension will be served at [http://localhost:8082/js/web-app-presentation-viewer.js](http://localhost:8082/js/web-app-presentation-viewer.js)
+The extension will be served at [http://localhost:8082/web-app-presentation-viewer.js](http://localhost:8082/web-app-presentation-viewer.js)
 
-### 3. Start the extension and the web services
+### 3. Start oCIS and the extension
 ```bash
 docker compose up
 ```
 
-The web can be accessed at [https://host.docker.internal:9200](https://host.docker.internal:9200)
+The webUI of oCIS can be accessed at [https://host.docker.internal:9200](https://host.docker.internal:9200)
