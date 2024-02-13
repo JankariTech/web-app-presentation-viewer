@@ -1,0 +1,22 @@
+services:
+  ocis:
+    image: ${OCIS_IMAGE:-owncloud/ocis:latest}
+    container_name: web_ocis
+    entrypoint: /bin/sh
+    command: ['-c', 'ocis init || true && ocis server']
+    ports:
+      - 9200:9200
+    environment:
+      # OCIS
+      OCIS_URL: https://host.docker.internal:9200
+      OCIS_INSECURE: '${OCIS_INSECURE:-true}'
+      OCIS_LOG_LEVEL: '${OCIS_LOG_LEVEL:-error}'
+
+      # WEB
+      WEB_UI_CONFIG_FILE: /web/config.json
+
+      # IDM
+      IDM_CREATE_DEMO_USERS: '${DEMO_USERS:-true}'
+      IDM_ADMIN_PASSWORD: '${ADMIN_PASSWORD:-admin}'
+    volumes:
+      - ./dev/docker/web.config.json:/web/config.json:ro
