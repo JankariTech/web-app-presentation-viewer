@@ -45,6 +45,10 @@
       "config": {
         "mimeTypes": ["image/tiff", "image/bmp", "image/x-ms-bmp"]
       }
+    },
+    {
+      "id": "presentation-viewer",
+      "path": "http://localhost:8082/js/web-app-presentation-viewer.js"
     }
   ]
 }
