@@ -10,9 +10,16 @@
     "build:w": "pnpm vite build --watch --mode development"
   },
   "devDependencies": {
+    "@ownclouders/extension-sdk": "0.0.5-alpha.2",
+    "@ownclouders/prettier-config": "0.0.1",
+    "@ownclouders/tsconfig": "0.0.5-alpha.1",
     "typescript": "~5.3.3",
     "vite": "^5.0.12",
     "vue": "^3.4.16"
+  },
+  "peerDependencies": {
+    "@ownclouders/web-client": "0.0.1",
+    "@ownclouders/web-pkg": "0.0.5-alpha.9"
   },
   "pnpm": {
     "peerDependencyRules": {
