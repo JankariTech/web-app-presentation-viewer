@@ -9,6 +9,10 @@
     "build": "pnpm vite build",
     "build:w": "pnpm vite build --watch --mode development"
   },
+  "dependencies": {
+    "@types/reveal.js": "^4.4.8",
+    "reveal.js": "^5.0.4"
+  },
   "devDependencies": {
     "@ownclouders/extension-sdk": "0.0.5-alpha.2",
     "@ownclouders/prettier-config": "0.0.1",

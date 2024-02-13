@@ -1,7 +1,7 @@
 # Markdown Presentation Viewer for Owncloud Web
 
 A markdown presentation viewer for the [Owncloud web](https://owncloud.com/features/web-app/) using the [reveal.js](https://revealjs.com/) library.
-It is an extension for the Owncloud web app that allows users to view markdown files as presentations.
+It is an extension for the Owncloud web that allows users to create slide presentations directly from markdown files.
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/) (v18.17.1)
