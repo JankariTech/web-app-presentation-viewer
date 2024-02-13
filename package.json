@@ -1,0 +1,25 @@
+{
+  "name": "web-app-presentation-viewer",
+  "version": "0.0.1",
+  "description": "Markdown Presentation Viewer for ownCloud Web",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm vite build",
+    "build:w": "pnpm vite build --watch --mode development"
+  },
+  "devDependencies": {
+    "typescript": "~5.3.3",
+    "vite": "^5.0.12",
+    "vue": "^3.4.16"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "design-system"
+      ]
+    }
+  },
+  "packageManager": "pnpm@8.15.1"
+}
