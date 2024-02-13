@@ -19,19 +19,14 @@ import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 
+const dataSeparator = '\r?\n---\r?\n'
+const dataSeparatorVertical = '\r?\n--\r?\n'
+
 defineProps({
   url: {
     type: String,
     required: true
   },
-  dataSeparator: {
-    type: String,
-    default: '\r?\n---\r?\n'
-  },
-  dataSeparatorVertical: {
-    type: String,
-    default: '\r?\n--\r?\n'
-  }
 })
 
 onMounted(() => {
