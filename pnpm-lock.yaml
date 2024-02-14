@@ -11,6 +11,12 @@ dependencies:
   '@ownclouders/web-pkg':
     specifier: 0.0.5-alpha.9
     version: 0.0.5-alpha.9(@casl/ability@6.5.0)(@casl/vue@2.2.1)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.1)(@uppy/core@3.8.0)(@uppy/drop-target@2.0.2)(@uppy/tus@3.5.0)(@uppy/utils@5.7.0)(@uppy/xhr-upload@3.6.0)(@vueuse/core@10.7.2)(axios@0.27.2)(clean-publish@4.2.0)(filesize@9.0.11)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@2.5.2)(mark.js@8.11.1)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.6.0)(uuid@9.0.1)(vue-concurrency@4.0.1)(vue-router@4.2.0)(vue3-gettext@2.5.0-alpha.1)(vuex@4.1.0)
+  '@types/reveal.js':
+    specifier: ^4.4.8
+    version: 4.4.8
+  reveal.js:
+    specifier: ^5.0.4
+    version: 5.0.4
 
 devDependencies:
   '@ownclouders/extension-sdk':
@@ -567,6 +573,10 @@ packages:
     resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
     dev: false
 
+  /@types/reveal.js@4.4.8:
+    resolution: {integrity: sha512-ADWVEgRLNVRE+J5yGjFDogsAaeVz+FKRVgvpLk1tgNewocXQd6wuKSknfamCVgZyUY9/IgOlkNKh9a2iIaconA==}
+    dev: false
+
   /@types/web-bluetooth@0.0.20:
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
     dev: false
@@ -832,10 +842,11 @@ packages:
     resolution: {integrity: sha512-Xp/IK6vMwujxWZXra7djdYzPdPnEQKa7Mudu2wZgDQ3TJry1I0TgtjEgwZHpoBcMp68j4fb0/FZ1SJyMEgJrXQ==}
     dev: false
 
-  /call-bind@1.0.6:
-    resolution: {integrity: sha512-Mj50FLHtlsoVfRfnHaZvyrooHcrlceNZdL/QBvJJVd9Ta55qCQK0gs4ss2oZDeV9zFCs6ewzYgVE5yfVmfFpVg==}
+  /call-bind@1.0.7:
+    resolution: {integrity: sha512-GHTSNSYICQ7scH7sZ+M2rFopRoLh8t2bLSW6BbgrtLsahOIB5iyAVJf9GjWK3cYTDaMj4XdBpM1cA6pIS0Kv2w==}
     engines: {node: '>= 0.4'}
     dependencies:
+      es-define-property: 1.0.0
       es-errors: 1.3.0
       function-bind: 1.1.2
       get-intrinsic: 1.2.4
@@ -1641,6 +1652,11 @@ packages:
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: false
 
+  /reveal.js@5.0.4:
+    resolution: {integrity: sha512-480pVhre9SXWuE4QbDwG0nPrip3TkifflqaKQWF8Ynf4iYIUBfgu5leeMso0srubQsZQ+G2OzktAfAkrvBY0Ww==}
+    engines: {node: '>=18.0.0'}
+    dev: false
+
   /rollup-plugin-inject@3.0.2:
     resolution: {integrity: sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==}
     deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-inject.
@@ -1744,7 +1760,7 @@ packages:
     resolution: {integrity: sha512-QcgiIWV4WV7qWExbN5llt6frQB/lBven9pqliLXfGPB+K9ZYXxDozp0wLkHS24kWCm+6YXH/f0HhnObZnZOBnQ==}
     engines: {node: '>= 0.4'}
     dependencies:
-      call-bind: 1.0.6
+      call-bind: 1.0.7
       es-errors: 1.3.0
       get-intrinsic: 1.2.4
       object-inspect: 1.13.1
