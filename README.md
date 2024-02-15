@@ -24,7 +24,7 @@ The extension will be built in the `dist` directory.
 ### 3. Serve the extension
 1. serve the content of the `dist` folder using any HTTP web-server
 2. configure web
-   1. if you have already a dedicated `web.config.json` file, add a `external_apps` section (or edit the existing one). It has to have an item with `"id": "presentation-viewer"` and a `path` pointing to `web-app-presentation-viewer.js` e.g.:
+   1. If you already have a dedicated `web.config.json` file, add an `external_apps` section (or edit the existing one). It has to have an item with `"id": "presentation-viewer"` and a `path` pointing to `web-app-presentation-viewer.js` e.g.:
       ```
       ...
       "external_apps": [
