@@ -1,9 +1,9 @@
 {
-  "server": "https://host.docker.internal:9200",
-  "theme": "https://host.docker.internal:9200/themes/owncloud/theme.json",
+  "server": "https://<your-ocis-domain>",
+  "theme": "https://<your-ocis-domain>/themes/owncloud/theme.json",
   "openIdConnect": {
-    "metadata_url": "https://host.docker.internal:9200/.well-known/openid-configuration",
-    "authority": "https://host.docker.internal:9200",
+    "metadata_url": "https://<your-ocis-domain>/.well-known/openid-configuration",
+    "authority": "https://<your-ocis-domain>",
     "client_id": "web",
     "response_type": "code",
     "scope": "openid profile email"
@@ -48,7 +48,7 @@
     },
     {
       "id": "presentation-viewer",
-      "path": "http://localhost:8082/web-app-presentation-viewer.js"
+      "path": "https://<url-where-the-dist-folder-is-served>/web-app-presentation-viewer.js"
     }
   ]
 }
