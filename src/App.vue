@@ -30,15 +30,17 @@ defineProps({
 })
 
 onMounted(() => {
-  Reveal.initialize({
+  const reveal = new Reveal({
+    plugins: [RevealMarkdown, RevealHighlight]
+  });
+
+  reveal.initialize({
     controls: true,
     progress: true,
     history: true,
     center: true,
     controlsLayout: 'edges',
-
-    plugins: [RevealMarkdown, RevealHighlight]
-  });
+  })
 })
 </script>
 
