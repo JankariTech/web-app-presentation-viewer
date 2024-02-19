@@ -9,7 +9,7 @@ It allows users to:
 ## Demonstration
 - [Demonstation page](https://ocis.in-nepal.de/files/link/public/bdSEsErbfGKoOIt?fileId=bdSEsErbfGKoOIt&files-public-link-view-mode=resource-table)
 - Click on `Open in Text Editor` to view the markdown content.
-- Click on `Open in Presentation Viewer` to view the rendered presentation. ([Press F5 if you only see an empty screen](https://github.com/JankariTech/web-app-presentation-viewer/issues/13))
+- Click on `Open in Presentation Viewer` to view the rendered presentation.
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/en/) (v18.17.1)
