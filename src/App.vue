@@ -25,7 +25,7 @@ import 'reveal.js/dist/theme/white.css'
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const themeStore = useThemeStore()
-let isDarkMode = ref(themeStore.currentTheme.isDark)
+const isDarkMode = ref(themeStore.currentTheme.isDark)
 let reveal: Reveal.Api
 
 defineProps({
