@@ -9,7 +9,8 @@
     "build": "pnpm vite build",
     "build:w": "pnpm vite build --watch --mode development",
     "lint": "eslint './*.{js,cjs,mjs,ts}' '{src,tests}/**/*.{js,cjs,mjs,ts,vue}' --color",
-    "lint:fix": "pnpm lint --fix"
+    "lint:fix": "pnpm lint --fix",
+    "test:e2e": "cucumber-js --require cucumber.conf.js --require tests/e2e/stepDefinitions/**/*.js --format @cucumber/pretty-formatter"
   },
   "dependencies": {
     "@types/reveal.js": "^4.4.8",
@@ -17,6 +18,8 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.23.10",
+    "@cucumber/cucumber": "^10.3.1",
+    "@cucumber/pretty-formatter": "^1.0.0",
     "@ownclouders/extension-sdk": "0.0.5-alpha.2",
     "@ownclouders/prettier-config": "0.0.1",
     "@types/node": "^20.11.30",
@@ -26,6 +29,8 @@
     "eslint-plugin-prettier-vue": "^5.0.0",
     "eslint-plugin-unused-imports": "^3.1.0",
     "eslint-plugin-vue": "^9.22.0",
+    "@playwright/test": "^1.41.2",
+    "playwright": "^1.41.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vue": "^3.4.16"
