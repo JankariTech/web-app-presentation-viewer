@@ -1,14 +1,13 @@
 import { defineConfig } from '@ownclouders/extension-sdk'
+import { id } from './public/manifest.json'
 
 export default defineConfig({
-  name: 'web-app-presentation-viewer',
-  server: {
-    port: 8082
-  },
+  base: '/vendor/apps/com.github.jankaritech.web.mdpresentation/',
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: `[name].js`
+        dir: `dist/${id}`,
+        entryFileNames: `extension.js`
       }
     }
   }

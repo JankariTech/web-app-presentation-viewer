@@ -14,9 +14,11 @@ services:
 
       # WEB
       WEB_UI_CONFIG_FILE: /web/config.json
+      WEB_APPS_PATH: /web/apps
 
       # IDM
       IDM_CREATE_DEMO_USERS: '${DEMO_USERS:-true}'
       IDM_ADMIN_PASSWORD: '${ADMIN_PASSWORD:-admin}'
     volumes:
       - ./dev/docker/web.config.json:/web/config.json:ro
+      - ./dist:/web/apps:ro
