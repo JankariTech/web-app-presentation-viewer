@@ -2,7 +2,7 @@
   <div id="presentation-viewer-main" class="presentation-viewer oc-flex" :class="{'dark-mode': isDarkMode}">
     <div class="reveal">
       <div class="slides">
-        <section :data-markdown="url" :data-separator="dataSeparator"
+        <section :data-markdown="mdFileUrl" :data-separator="dataSeparator"
                  :data-separator-vertical="dataSeparatorVertical"></section>
       </div>
     </div>
@@ -10,8 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, unref, watch} from 'vue'
-import {useThemeStore, useAppDefaults} from '@ownclouders/web-pkg'
+import {onBeforeMount, onMounted, ref, unref, watch} from 'vue'
+import {useThemeStore, useAppDefaults, useAppFileHandling, useClientService} from '@ownclouders/web-pkg'
 import Reveal from 'reveal.js'
 import RevealMarkdown from 'reveal.js/plugin/markdown/markdown.js'
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight.js'
@@ -20,22 +20,18 @@ import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 
-const {currentFileContext} = useAppDefaults({
+const {getUrlForResource, revokeUrl} = useAppFileHandling({clientService: useClientService})
+const {currentFileContext, activeFiles} = useAppDefaults({
   applicationId: "presentation-viewer" // TODO: import app id
 })
+const themeStore = useThemeStore()
+
+const isDarkMode = ref(themeStore.currentTheme.isDark)
+const mdFileUrl = ref()
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
-const themeStore = useThemeStore()
-const isDarkMode = ref(themeStore.currentTheme.isDark)
 let reveal: Reveal.Api
-
-defineProps({
-  url: {
-    type: String,
-    required: true
-  },
-})
 
 watch(() => themeStore.currentTheme.isDark,
     (isDark) => {
@@ -43,7 +39,9 @@ watch(() => themeStore.currentTheme.isDark,
     },
 )
 
-onMounted(() => {
+onMounted(async () => {
+  mdFileUrl.value = await getMdFileUrl()
+
   reveal = new Reveal({
     plugins: [RevealMarkdown, RevealHighlight]
   });
@@ -59,6 +57,15 @@ onMounted(() => {
     }
   })
 })
+
+async function getMdFileUrl(){
+  console.log(unref(activeFiles))
+  for (const file of unref(activeFiles)){
+    if (file.path === unref(currentFileContext).item){
+      return getUrlForResource(unref(currentFileContext).space, file)
+    }
+  }
+}
 
 function getImgBaseUrl(){
   const davUrl = unref(currentFileContext).space.root.webDavUrl

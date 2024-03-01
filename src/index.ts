@@ -25,12 +25,7 @@ export default defineWebApplication({
             {
                 name: appId,
                 path: '/:driveAliasAndItem(.*)?',
-                component: AppWrapperRoute(App, {
-                    applicationId: appId,
-                    urlForResourceOptions: {
-                        disposition: 'inline'
-                    }
-                }),
+                component: App,
                 meta: {
                     authContext: 'hybrid',
                     title: 'Presentation Viewer',
