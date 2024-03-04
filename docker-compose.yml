@@ -14,7 +14,7 @@ services:
 
       # WEB
       WEB_UI_CONFIG_FILE: /web/config.json
-      WEB_APPS_PATH: /web/apps
+      WEB_ASSET_APPS_PATH: /web/apps
 
       # IDM
       IDM_CREATE_DEMO_USERS: '${DEMO_USERS:-true}'
