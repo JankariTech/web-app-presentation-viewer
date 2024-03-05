@@ -55,7 +55,6 @@ body:
         - **pnpm**: 8.15.1
         - **ownCloud Web**: ownCloud Web UI 8.0.0
         - **oCIS**: Infinite Scale 5.0.0
-      render: markdown
     validations:
       required: false
   - type: dropdown

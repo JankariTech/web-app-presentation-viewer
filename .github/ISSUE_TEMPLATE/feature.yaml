@@ -1,0 +1,26 @@
+name: 💡 Feature Request
+description: Suggest an idea for improving the presentation viewer
+title: "[Feature]: <title>"
+labels: [ "enhancement" ]
+projects: [ "JankariTech/48" ]
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      placeholder: A clear and concise description of what the feature is.
+  - type: textarea
+    attributes:
+      label: User Stories
+      value: |
+        As a ...
+        I want to ...
+        So that ...
+  - type: textarea
+    attributes:
+      label: Acceptance Criteria
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: false
