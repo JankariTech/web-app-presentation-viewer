@@ -17,50 +17,44 @@ body:
   - type: textarea
     attributes:
       label: Describe the bug
-      description: A clear and concise description of what the bug is.\
+      placeholder: A clear and concise description of what the bug is.
   - type: textarea
     attributes:
       label: Steps To Reproduce
-      description: Steps to reproduce the behavior.
       placeholder: |
+        Steps to reproduce the behavior.
         1.
         2.
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Expected Behavior
-      description: A concise description of what you expected to happen.
+      placeholder: A concise description of what you expected to happen.
     validations:
       required: false
   - type: textarea
     attributes:
       label: Actual Behavior
-      description: A concise description of what you're experiencing.
+      placeholder: A concise description of what you're experiencing.
     validations:
       required: false
   - type: textarea
     attributes:
       label: Examples, Code Samples, or Screenshots
-      description: |
-        Examples, Code Samples, or Screenshots. Anything that will give us more context about the issue you are encountering!
-        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+      placeholder: |
+        Anything that will give us more context about the issue you are encountering!
     validations:
       required: false
   - type: textarea
     attributes:
       label: Environment
-      description: |
-        examples:
-          - **OS**: Ubuntu 22.04
-          - **Node**: 18.17.1
-          - **pnpm**: 8.15.1
-          - **ownCloud Web**: ownCloud Web UI 8.0.0
-          - **oCIS**: Infinite Scale 5.0.0
       value: |
-        - OS:
-        - Node:
-        - pnpm:
-        - ownCloud Web:
-        - oCIS:
+        - **OS**: Ubuntu 22.04
+        - **Node**: 18.17.1
+        - **pnpm**: 8.15.1
+        - **ownCloud Web**: ownCloud Web UI 8.0.0
+        - **oCIS**: Infinite Scale 5.0.0
       render: markdown
     validations:
       required: false
