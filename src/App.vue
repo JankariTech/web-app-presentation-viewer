@@ -22,8 +22,8 @@ import { onMounted, ref, watch } from 'vue'
 import { useThemeStore } from '@ownclouders/web-pkg'
 
 import Reveal from 'reveal.js'
-import RevealMarkdown from 'reveal.js/plugin/markdown/markdown.js'
-import RevealHighlight from 'reveal.js/plugin/highlight/highlight.js'
+import RevealMarkdown from 'reveal.js/plugin/markdown/markdown'
+import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
 
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
