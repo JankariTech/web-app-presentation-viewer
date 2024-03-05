@@ -1,8 +1,8 @@
 name: 🐞 Bug Report
 description: File a bug report
-title: "[Bug]: <title>"
-labels: [ "bug" ]
-projects: [ "JankariTech/48" ]
+title: '[Bug]: <title>'
+labels: ['bug']
+projects: ['JankariTech/48']
 body:
   - type: markdown
     attributes:
