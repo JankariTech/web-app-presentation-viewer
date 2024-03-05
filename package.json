@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "build": "pnpm vite build",
-    "build:w": "pnpm vite build --watch --mode development"
+    "build:w": "pnpm vite build --watch --mode development",
+    "lint": "eslint vite.config.ts '{src,tests}/**/*.{js,ts,vue}' --color"
   },
   "dependencies": {
     "@types/reveal.js": "^4.4.8",
@@ -16,8 +17,13 @@
   "devDependencies": {
     "@ownclouders/extension-sdk": "0.0.5-alpha.2",
     "@ownclouders/prettier-config": "0.0.1",
-    "@ownclouders/tsconfig": "0.0.5-alpha.1",
-    "typescript": "~5.3.3",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier-vue": "^5.0.0",
+    "eslint-plugin-unused-imports": "^3.1.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "vue": "^3.4.16"
   },
