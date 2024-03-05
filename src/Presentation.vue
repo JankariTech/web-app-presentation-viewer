@@ -5,7 +5,7 @@
     :class="{ 'dark-mode': isDarkMode }"
   >
     <div class="reveal">
-      <div class="slides">
+      <div class="slides" ref="slidesEl">
         <section
           :data-markdown="mdFileUrl"
           :data-separator="dataSeparator"
@@ -17,106 +17,110 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref, unref, watch } from "vue";
+import { onMounted, ref, unref, watch, nextTick } from 'vue'
 import {
   useThemeStore,
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-} from "@ownclouders/web-pkg";
-import Reveal from "reveal.js";
-import RevealMarkdown from "reveal.js/plugin/markdown/plugin";
-import RevealHighlight from "reveal.js/plugin/highlight/highlight";
+} from '@ownclouders/web-pkg'
+import Reveal from 'reveal.js'
+import RevealMarkdown from 'reveal.js/plugin/markdown/plugin'
+import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
 
-import "reveal.js/dist/reveal.css";
-import "reveal.js/plugin/highlight/monokai.css";
-import "reveal.js/dist/theme/white.css";
+import 'reveal.js/dist/reveal.css'
+import 'reveal.js/plugin/highlight/monokai.css'
+import 'reveal.js/dist/theme/white.css'
 
 const { getUrlForResource, revokeUrl } = useAppFileHandling({
   clientService: useClientService,
-});
+})
 const { currentFileContext, activeFiles } = useAppDefaults({
-  applicationId: "presentation-viewer", // TODO: import app id
-});
-const themeStore = useThemeStore();
+  applicationId: 'presentation-viewer', // TODO: import app id
+})
+const themeStore = useThemeStore()
 
-const isDarkMode = ref(themeStore.currentTheme.isDark);
-const mdFileUrl = ref("");
+const isDarkMode = ref(themeStore.currentTheme.isDark)
+const mdFileUrl = ref('')
+const slidesEl = ref<HTMLElement | undefined>()
 
-const dataSeparator = "\r?\n---\r?\n";
-const dataSeparatorVertical = "\r?\n--\r?\n";
-let reveal: Reveal.Api;
+const dataSeparator = '\r?\n---\r?\n'
+const dataSeparatorVertical = '\r?\n--\r?\n'
+let reveal: Reveal.Api
 
-const images = {};
+const images = {}
 
 watch(
   () => themeStore.currentTheme.isDark,
   (isDark) => {
-    isDarkMode.value = isDark;
+    isDarkMode.value = isDark
   }
-);
+)
 
 onMounted(async () => {
-  await imagesUrl();
-  await setMdFileUrl();
+  await imagesUrl()
+  await setMdFileUrl()
 
   reveal = new Reveal({
     plugins: [RevealMarkdown, RevealHighlight],
-  });
+  })
   reveal.initialize({
     controls: true,
     progress: true,
     history: true,
     center: true,
-    controlsLayout: "edges",
-    // markdown: {
-    //   baseUrl: getImgBaseUrl(),
-    // },
-  });
+    controlsLayout: 'edges',
+  })
 
-  const imgEls = reveal.getSlidesElement().getElementsByTagName("img");
-  console.log(images);
-  console.log(imgEls);
-});
+  reveal.on('ready', () => {
+    const imgElements = unref(slidesEl).getElementsByTagName('img')
+    updateImageUrls(imgElements)
+  })
+})
+
+function updateImageUrls(imgElements: HTMLCollectionOf<HTMLImageElement>) {
+  for (const el of imgElements) {
+    const src = el.src.split('/').pop()
+    el.src = images[src]
+  }
+}
 
 async function setMdFileUrl() {
-  const url = await getMdFileUrl();
-  mdFileUrl.value = url;
+  const url = await getMdFileUrl()
+  mdFileUrl.value = url
 }
 
 async function getMdFileUrl() {
   for (const file of unref(activeFiles)) {
     if (file.path === unref(currentFileContext).item) {
-      return getUrlForResource(unref(currentFileContext).space, file);
+      return getUrlForResource(unref(currentFileContext).space, file)
     }
   }
 }
 
 async function imagesUrl() {
   for (const file of unref(activeFiles)) {
-    if (file.extension === "png") {
-      const url = await getUrlForResource(
-        unref(currentFileContext).space,
-        file
-      );
-      images[file.name] = await getBlobUrl(url);
+    // TODO: use image mimetypes
+    if (file.extension === 'png') {
+      const url = await getUrlForResource(unref(currentFileContext).space, file)
+      images[file.name] = await getBlobUrl(url)
     }
   }
 }
 async function getBlobUrl(url) {
-  const res = await fetch(url);
-  const data = await res.blob();
-  const blob = new Blob([data], { type: data.type });
-  return URL.createObjectURL(blob);
+  const res = await fetch(url)
+  const data = await res.blob()
+  const blob = new Blob([data], { type: data.type })
+  return URL.createObjectURL(blob)
 }
 
 function getImgBaseUrl() {
-  const davUrl = unref(currentFileContext).space.root.webDavUrl;
-  let thisFolder = unref(currentFileContext).item.split("/");
-  thisFolder.pop(); // remove filename
-  thisFolder = thisFolder.join("/") + "/";
+  const davUrl = unref(currentFileContext).space.root.webDavUrl
+  let thisFolder = unref(currentFileContext).item.split('/')
+  thisFolder.pop() // remove filename
+  thisFolder = thisFolder.join('/') + '/'
 
-  return `${davUrl}${thisFolder}`;
+  return `${davUrl}${thisFolder}`
 }
 
 // {
