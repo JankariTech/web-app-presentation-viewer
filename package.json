@@ -8,13 +8,15 @@
   "scripts": {
     "build": "pnpm vite build",
     "build:w": "pnpm vite build --watch --mode development",
-    "lint": "eslint './*.{js,ts}' '{src,tests}/**/*.{js,ts,vue}' --color"
+    "lint": "eslint './*.{js,ts}' '{src,tests}/**/*.{js,ts,vue}' --color",
+    "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
     "@types/reveal.js": "^4.4.8",
     "reveal.js": "^5.0.4"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.23.10",
     "@ownclouders/extension-sdk": "0.0.5-alpha.2",
     "@ownclouders/prettier-config": "0.0.1",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
