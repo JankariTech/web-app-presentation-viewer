@@ -8,7 +8,7 @@
   "scripts": {
     "build": "pnpm vite build",
     "build:w": "pnpm vite build --watch --mode development",
-    "lint": "eslint './*.{js,ts}' '{src,tests}/**/*.{js,ts,vue}' --color",
+    "lint": "eslint './*.{js,cjs,mjs,ts}' '{src,tests}/**/*.{js,cjs,mjs,ts,vue}' --color",
     "lint:fix": "pnpm lint --fix"
   },
   "dependencies": {
