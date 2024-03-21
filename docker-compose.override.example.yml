@@ -1,0 +1,12 @@
+services:
+  ocis:
+    image: owncloud/ocis:latest
+    environment:
+      WEB_UI_CONFIG_FILE: null
+      WEB_ASSET_APPS_PATH: /web/apps
+    volumes:
+      - ./dist:/web/apps:ro
+
+  extension:
+    profiles:
+      - skip

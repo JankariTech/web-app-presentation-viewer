@@ -6,3 +6,4 @@ dist
 .idea
 
 /.pnpm-store/
+docker-compose.override.yml

@@ -1,13 +1,17 @@
 import { defineConfig } from '@ownclouders/extension-sdk'
 import { id } from './public/manifest.json'
 
+// TODO: make APPS_LOADING default when supporting ocis is released
+const base =
+  process.env.APPS_LOADING === 'true' ? '/assets/apps' : 'https://host.docker.internal:3000'
+
 export default defineConfig({
-  base: '/vendor/apps/com.github.jankaritech.web.mdpresentation/',
+  base: `${base}/${id}/`,
   build: {
     rollupOptions: {
       output: {
         dir: `dist/${id}`,
-        entryFileNames: `extension.js`
+        entryFileNames: 'extension.js'
       }
     }
   }
