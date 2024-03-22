@@ -84,7 +84,7 @@ Run the following command to serve the oCIS and the extension servers:
 docker compose up
 ```
 
-Extension URL: [host.docker.internal:3000](https://host.docker.internal:300)
+Extension URL: [host.docker.internal:3000](https://host.docker.internal:3000)
 
 oCIS URL: [host.docker.internal:9200](https://host.docker.internal:9200)
 
