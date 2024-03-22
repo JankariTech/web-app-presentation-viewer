@@ -90,7 +90,7 @@ oCIS URL: [host.docker.internal:9200](https://host.docker.internal:9200)
 
 ### 2. oCIS Apps Loading (oCIS >= 5.1)
 
-Starting from oCIS 5.1.0 (not released yet), external apps can be loaded into the oCIS without config file and separate app server. We just use `WEB_ASSET_APPS_PATH`, an oCIS environemnet variable, while running oCIS server to set the directory where all the external apps are located.
+Starting from oCIS 5.1.0 (not released yet), external apps can be loaded into the oCIS without config file and separate app server. We just use `WEB_ASSET_APPS_PATH`, an oCIS environment variable, while running oCIS server to set the directory where all the external apps are located.
 
 Follow these steps:
 
