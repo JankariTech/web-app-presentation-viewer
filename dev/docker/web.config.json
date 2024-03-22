@@ -48,7 +48,7 @@
     },
     {
       "id": "presentation-viewer",
-      "path": "http://localhost:8082/web-app-presentation-viewer.js"
+      "path": "https://host.docker.internal:3000/com.github.jankaritech.web.mdpresentation/extension.js"
     }
   ]
 }

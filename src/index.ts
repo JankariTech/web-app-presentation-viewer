@@ -1,10 +1,9 @@
 import { AppWrapperRoute, defineWebApplication } from '@ownclouders/web-pkg'
 import App from './App.vue'
+import { id as appId } from '../public/manifest.json'
 
 export default defineWebApplication({
   setup() {
-    const appId = 'presentation-viewer'
-
     const appInfo = {
       name: 'Presentation Viewer',
       id: appId,

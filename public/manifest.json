@@ -1,0 +1,5 @@
+{
+  "id": "com.github.jankaritech.web.mdpresentation",
+  "entrypoint": "extension.js",
+  "config": {}
+}

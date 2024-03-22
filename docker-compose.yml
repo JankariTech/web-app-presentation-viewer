@@ -1,22 +1,69 @@
 services:
   ocis:
-    image: ${OCIS_IMAGE:-owncloud/ocis:latest}
-    container_name: web_ocis
+    image: ${OCIS_IMAGE:-owncloud/ocis:5.0.0}
     entrypoint: /bin/sh
     command: ['-c', 'ocis init || true && ocis server']
-    ports:
-      - 9200:9200
     environment:
       # OCIS
       OCIS_URL: https://host.docker.internal:9200
-      OCIS_INSECURE: '${OCIS_INSECURE:-true}'
-      OCIS_LOG_LEVEL: '${OCIS_LOG_LEVEL:-error}'
-
+      OCIS_INSECURE: true
+      OCIS_LOG_LEVEL: error
       # WEB
       WEB_UI_CONFIG_FILE: /web/config.json
-
       # IDM
-      IDM_CREATE_DEMO_USERS: '${DEMO_USERS:-true}'
-      IDM_ADMIN_PASSWORD: '${ADMIN_PASSWORD:-admin}'
+      IDM_CREATE_DEMO_USERS: ${DEMO_USERS:-true}
+      IDM_ADMIN_PASSWORD: admin
+      # PROXY
+      PROXY_ENABLE_BASIC_AUTH: true
+      PROXY_TLS: false
     volumes:
       - ./dev/docker/web.config.json:/web/config.json:ro
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    labels:
+      traefik.enable: true
+      traefik.http.routers.ocis.tls: true
+      traefik.http.routers.ocis.rule: PathPrefix(`/`)
+      traefik.http.routers.ocis.entrypoints: ocis
+      traefik.http.services.ocis.loadbalancer.server.port: 9200
+    depends_on:
+      - traefik
+
+  extension:
+    image: nginx:1.25.3
+    volumes:
+      - ./dev/docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./dist:/usr/share/nginx/html:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.extension.tls: true
+      traefik.http.routers.extension.rule: PathPrefix(`/`)
+      traefik.http.routers.extension.entrypoints: extension
+      traefik.http.services.extension.loadbalancer.server.port: 80
+    depends_on:
+      - traefik
+
+  traefik:
+    image: traefik:2.11.0
+    restart: unless-stopped
+    command:
+      [
+        '--log.level=ERROR',
+        '--api.insecure=true',
+        '--api.dashboard=true',
+        '--pilot.dashboard=false',
+        '--providers.docker=true',
+        '--entrypoints.ocis.address=:9200',
+        '--entrypoints.extension.address=:3000',
+        '--providers.docker.exposedbydefault=false',
+        '--entrypoints.websecure.http.tls.options=default'
+      ]
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.rule: HostRegexp(`{any:.+}`)
+    ports:
+      - 8080:8080 # traefik dashboard
+      - 9200:9200 # ocis
+      - 3000:3000 # extension
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
