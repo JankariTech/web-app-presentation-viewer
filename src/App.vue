@@ -23,7 +23,8 @@ import {
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-  useAppsStore
+  useAppsStore,
+  useConfigStore
 } from '@ownclouders/web-pkg'
 import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
@@ -45,11 +46,13 @@ const { getUrlForResource, revokeUrl } = useAppFileHandling({
   clientService: useClientService
 })
 const appsStore = useAppsStore()
+const { serverUrl } = useConfigStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement | undefined>()
 const mediaUrls = ref([])
 
+const mediaBasePath = `${serverUrl}local/`
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 
@@ -82,16 +85,20 @@ onMounted(async () => {
     progress: true,
     history: true,
     center: true,
-    controlsLayout: 'edges'
+    controlsLayout: 'edges',
+    markdown: {
+      baseUrl: mediaBasePath
+    }
   })
 
   reveal.on('ready', async () => {
     const imgElements = unref(slideContainer).getElementsByTagName('img')
-    await updateImageUrls(imgElements)
+    const localImgElements = filterLocalImgElements(imgElements)
+    await updateImageUrls(localImgElements)
   })
 })
 onBeforeUnmount(() => {
-  Object.values(unref(mediaUrls)).forEach((url) => {
+  unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
 })
@@ -111,8 +118,19 @@ const mediaFiles = computed<Resource[]>(() => {
 })
 
 // METHODS
-async function updateImageUrls(imgElements: HTMLCollectionOf<HTMLImageElement>) {
+function filterLocalImgElements(
+  imgElements: HTMLCollectionOf<HTMLImageElement>
+): HTMLImageElement[] {
+  const localImgElements: HTMLImageElement[] = []
   for (const el of imgElements) {
+    if (el.src.startsWith(mediaBasePath)) {
+      localImgElements.push(el)
+    }
+  }
+  return localImgElements
+}
+async function updateImageUrls(localImgElements: HTMLImageElement[]) {
+  for (const el of localImgElements) {
     const src = el.src.split('/').pop()
     const blobUrl = await parseImageUrl(src)
     el.src = blobUrl
@@ -123,6 +141,8 @@ async function parseImageUrl(name: string) {
   for (const file of unref(mediaFiles)) {
     if (file.name === name) {
       const url = await getUrlForResource(unref(currentFileContext).space, file)
+      // reload the active files
+      await loadFolderForFileContext(unref(currentFileContext))
       return getBlobUrl(url)
     }
   }
