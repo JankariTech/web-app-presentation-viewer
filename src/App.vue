@@ -48,7 +48,7 @@ const appsStore = useAppsStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement | undefined>()
-const imageUrls = ref()
+const mediaUrls = ref([])
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
@@ -72,7 +72,6 @@ watch(
 // LIFECYCLE HOOKS
 onMounted(async () => {
   await loadFolderForFileContext(unref(currentFileContext))
-  await parseImagesUrl()
 
   reveal = new Reveal({
     plugins: [RevealMarkdown, RevealHighlight]
@@ -86,13 +85,13 @@ onMounted(async () => {
     controlsLayout: 'edges'
   })
 
-  reveal.on('ready', () => {
+  reveal.on('ready', async () => {
     const imgElements = unref(slideContainer).getElementsByTagName('img')
-    updateImageUrls(imgElements)
+    await updateImageUrls(imgElements)
   })
 })
 onBeforeUnmount(() => {
-  Object.values(unref(imageUrls)).forEach((url) => {
+  Object.values(unref(mediaUrls)).forEach((url) => {
     revokeUrl(url)
   })
 })
@@ -112,23 +111,21 @@ const mediaFiles = computed<Resource[]>(() => {
 })
 
 // METHODS
-function updateImageUrls(imgElements: HTMLCollectionOf<HTMLImageElement>) {
-  const imgUrls = unref(imageUrls)
+async function updateImageUrls(imgElements: HTMLCollectionOf<HTMLImageElement>) {
   for (const el of imgElements) {
     const src = el.src.split('/').pop()
-    el.src = imgUrls[src]
+    const blobUrl = await parseImageUrl(src)
+    el.src = blobUrl
+    mediaUrls.value.push(blobUrl)
   }
 }
-async function parseImagesUrl() {
-  const images = {}
+async function parseImageUrl(name: string) {
   for (const file of unref(mediaFiles)) {
-    // TODO: use image mimetypes
-    if (file.extension === 'png') {
+    if (file.name === name) {
       const url = await getUrlForResource(unref(currentFileContext).space, file)
-      images[file.name] = await getBlobUrl(url)
+      return getBlobUrl(url)
     }
   }
-  imageUrls.value = images
 }
 async function getBlobUrl(url: string) {
   const data = await fetch(url).then(async (res) => await res.blob())
