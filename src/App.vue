@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, unref, watch } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, unref, watch } from 'vue'
 import {
   useThemeStore,
   useAppDefaults,
@@ -69,6 +69,7 @@ watch(
   }
 )
 
+// LIFECYCLE HOOKS
 onMounted(async () => {
   await loadFolderForFileContext(unref(currentFileContext))
   await parseImagesUrl()
@@ -88,6 +89,11 @@ onMounted(async () => {
   reveal.on('ready', () => {
     const imgElements = unref(slideContainer).getElementsByTagName('img')
     updateImageUrls(imgElements)
+  })
+})
+onBeforeUnmount(() => {
+  Object.values(unref(imageUrls)).forEach((url) => {
+    revokeUrl(url)
   })
 })
 
