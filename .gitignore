@@ -7,3 +7,4 @@ dist
 
 /.pnpm-store/
 docker-compose.override.yml
+.env
