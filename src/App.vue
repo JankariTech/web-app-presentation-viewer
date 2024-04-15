@@ -5,7 +5,7 @@
     :class="{ 'dark-mode': isDarkMode }"
   >
     <div class="reveal">
-      <div ref="slideContainer" class="slides">
+      <div ref="slideContainer" id="slideContainer" class="slides">
         <section
           :data-markdown="url"
           :data-separator="dataSeparator"
@@ -166,6 +166,33 @@ async function getBlobUrl(url: string) {
     h5,
     h6 {
       color: var(--oc-color-text-default) !important;
+    }
+  }
+}
+
+#slideContainer {
+  section {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    > * {
+      margin-top: 0;
+    }
+
+    p:has(img) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+
+      img {
+        width: auto;
+        height: auto;
+      }
     }
   }
 }
