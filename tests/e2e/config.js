@@ -1,7 +1,6 @@
 const config = {
   // environment
   baseOcisUrl: process.env.OCIS_URL || 'https://host.docker.internal:9200',
-  assets: './tests/e2e/filesForUpload',
   adminUser: process.env.ADMIN_USERNAME || 'admin',
   adminPassword: process.env.ADMIN_PASSWORD || 'admin',
   // playwright

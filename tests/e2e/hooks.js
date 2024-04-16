@@ -1,6 +1,6 @@
 const { Before, BeforeAll, AfterAll, After, setDefaultTimeout } = require('@cucumber/cucumber')
-const config = require('./config')
 const { chromium } = require('@playwright/test')
+const config = require('./config')
 const { cleanupResources } = require('./utils/fileHelper')
 
 // default timeout (in milliseconds)
