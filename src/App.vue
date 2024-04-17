@@ -142,6 +142,7 @@ async function parseImageUrl(name: string) {
     if (file.name === name) {
       const url = await getUrlForResource(unref(currentFileContext).space, file)
       // reload the active files
+      // TODO: implement caching
       await loadFolderForFileContext(unref(currentFileContext))
       return getBlobUrl(url)
     }
