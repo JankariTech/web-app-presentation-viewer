@@ -5,7 +5,7 @@
     :class="{ 'dark-mode': isDarkMode }"
   >
     <div class="reveal">
-      <div ref="slideContainer" id="slideContainer" class="slides">
+      <div id="slideContainer" ref="slideContainer" class="slides">
         <section
           :data-markdown="url"
           :data-separator="dataSeparator"
@@ -49,8 +49,8 @@ const appsStore = useAppsStore()
 const { serverUrl } = useConfigStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
-const slideContainer = ref<HTMLElement | undefined>()
-const mediaUrls = ref([])
+const slideContainer = ref<HTMLElement>()
+const mediaUrls = ref<string[]>([])
 
 const mediaBasePath = `${serverUrl}local/`
 const dataSeparator = '\r?\n---\r?\n'
@@ -92,7 +92,10 @@ onMounted(async () => {
   })
 
   reveal.on('ready', async () => {
-    const imgElements = unref(slideContainer).getElementsByTagName('img')
+    if (unref(slideContainer) === undefined) {
+      return
+    }
+    const imgElements = (unref(slideContainer) as HTMLElement).getElementsByTagName('img')
     const localImgElements = filterLocalImgElements(imgElements)
     await updateImageUrls(localImgElements)
   })
@@ -113,7 +116,10 @@ const mediaFiles = computed<Resource[]>(() => {
   }
 
   return unref(activeFiles).filter((file: Resource) => {
-    return unref(mediaMimeTypes).includes(file.mimeType?.toLowerCase())
+    if (!file.mimeType) {
+      return false
+    }
+    return unref(mediaMimeTypes).includes(file.mimeType.toLowerCase())
   })
 })
 
@@ -131,10 +137,12 @@ function filterLocalImgElements(
 }
 async function updateImageUrls(localImgElements: HTMLImageElement[]) {
   for (const el of localImgElements) {
-    const src = el.src.split('/').pop()
+    const src = el.src.split('/').pop() as string
     const blobUrl = await parseImageUrl(src)
-    el.src = blobUrl
-    mediaUrls.value.push(blobUrl)
+    if (blobUrl) {
+      el.src = blobUrl
+      mediaUrls.value.push(blobUrl)
+    }
   }
 }
 async function parseImageUrl(name: string) {
