@@ -43,7 +43,7 @@ const { loadFolderForFileContext, currentFileContext, activeFiles } = useAppDefa
   applicationId: appId
 })
 const { getUrlForResource, revokeUrl } = useAppFileHandling({
-  clientService: useClientService
+  clientService: useClientService()
 })
 const appsStore = useAppsStore()
 const { serverUrl } = useConfigStore()
