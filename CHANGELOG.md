@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [1.0.0]: https://github.com/JankariTech/web-app-presentation-viewer/releases/tag/v1.0.0
 
+**Supported oCIS-web versions:**
+
+- web: `8.0.x`
+- ocis: `5.0.x`
+
 ### Added
 
 - Initial major release

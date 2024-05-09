@@ -55,7 +55,7 @@ jobs:
             -e PROXY_ENABLE_BASIC_AUTH=true \
             -v ${{ github.workspace }}/tests/e2e/ci/web.config.json:/web/config.json:ro \
             --entrypoint sh \
-            owncloud/ocis:5.0.0 \
+            owncloud/ocis:5.0 \
             -c 'ocis init || true && ocis server'
 
       - name: host-ip

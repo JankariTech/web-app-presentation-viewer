@@ -15,7 +15,7 @@ It allows users to:
 
 ## Prerequisites
 
-- [oCIS](https://github.com/owncloud/ocis) (>= 5.0.0)
+- [oCIS](https://github.com/owncloud/ocis) (>= 5.0.x)
 - [Node.js](https://nodejs.org/en/) (v18.17.1)
 - [pnpm](https://pnpm.io/) (v8.15.1)
 - [Docker](https://www.docker.com/)(optional)
