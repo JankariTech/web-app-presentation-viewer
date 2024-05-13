@@ -1,19 +1,10 @@
-const fs = require('fs')
-const path = require('path')
 const { getWebDavUrl, makeApiRequest, getAuthHeaders } = require('./apiHelper')
-const config = require('../config')
 
-const userDetails = []
+let userDetails = []
 
-const readLocalFileContent = (fileName) => {
-  const filePath = path.join(config.assets, fileName)
-  return fs.readFileSync(filePath, 'utf8')
-}
-
-const uploadFile = async (fileName, user) => {
+const uploadFileWithContent = async (fileName, user, data) => {
   const url = getWebDavUrl(user, fileName)
-  const content = readLocalFileContent(fileName)
-  const response = await makeApiRequest('PUT', url, getAuthHeaders(user), content)
+  const response = await makeApiRequest('PUT', url, getAuthHeaders(user), data)
   userDetails.push({ user, fileName })
   return response
 }
@@ -27,6 +18,7 @@ const cleanupResources = async () => {
   for (const userDetail of userDetails) {
     await deleteResource(userDetail.user, userDetail.fileName)
   }
+  userDetails = []
 }
 
-module.exports = { uploadFile, cleanupResources }
+module.exports = { uploadFileWithContent, cleanupResources }
