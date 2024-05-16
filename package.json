@@ -1,6 +1,6 @@
 {
   "name": "web-app-presentation-viewer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Markdown Presentation Viewer for ownCloud Web",
   "license": "Apache-2.0",
   "private": true,
@@ -14,30 +14,30 @@
   },
   "dependencies": {
     "@types/reveal.js": "^4.4.8",
-    "reveal.js": "^5.0.4"
+    "reveal.js": "^5.1.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.23.10",
-    "@cucumber/cucumber": "^10.3.1",
-    "@cucumber/pretty-formatter": "^1.0.0",
+    "@babel/eslint-parser": "^7.24.5",
+    "@cucumber/cucumber": "^10.6.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
     "@ownclouders/extension-sdk": "0.0.5-alpha.2",
     "@ownclouders/prettier-config": "0.0.1",
-    "@types/node": "^20.11.30",
-    "@playwright/test": "^1.42.1",
-    "@typescript-eslint/eslint-plugin": "^7.1.1",
-    "axios": "^1.6.7",
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.10",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "axios": "^1.6.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier-vue": "^5.0.0",
-    "eslint-plugin-unused-imports": "^3.1.0",
-    "eslint-plugin-vue": "^9.22.0",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vue": "^3.4.16"
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint-plugin-vue": "^9.25.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11",
+    "vue": "^3.4.27"
   },
   "peerDependencies": {
-    "@ownclouders/web-client": "0.0.1",
-    "@ownclouders/web-pkg": "0.0.5-alpha.9"
+    "@ownclouders/web-client": "0.0.3",
+    "@ownclouders/web-pkg": "0.0.6"
   },
   "pnpm": {
     "peerDependencyRules": {
