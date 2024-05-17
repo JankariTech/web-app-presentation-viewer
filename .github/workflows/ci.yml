@@ -28,21 +28,6 @@ jobs:
       - name: build
         run: pnpm build
 
-      - name: generate-ssl-certs
-        run: |
-          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-            -keyout ${{ github.workspace }}/tests/e2e/ci/nginx/nginx-ssl.key \
-            -out ${{ github.workspace }}/tests/e2e/ci/nginx/nginx-ssl.crt \
-            -subj "/CN=localhost"
-
-      - name: extension-server
-        run: |
-          docker run --rm -d \
-            -p 8443:443 \
-            -v ${{ github.workspace }}/tests/e2e/ci/nginx:/etc/nginx/conf.d \
-            -v ${{ github.workspace }}/dist:/usr/share/nginx/html \
-            nginx:1.25.3
-
       - name: ocis-server
         run: |
           docker run --rm -d \
@@ -50,12 +35,14 @@ jobs:
             -e OCIS_URL=$OCIS_URL \
             -e OCIS_INSECURE=true \
             -e OCIS_LOG_LEVEL=error \
-            -e WEB_UI_CONFIG_FILE=/web/config.json \
             -e IDM_ADMIN_PASSWORD=admin \
             -e PROXY_ENABLE_BASIC_AUTH=true \
-            -v ${{ github.workspace }}/tests/e2e/ci/web.config.json:/web/config.json:ro \
+            -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/ocis/csp.yml \
+            -e WEB_ASSET_APPS_PATH=/web/apps \
+            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/ocis/csp.yml:ro \
+            -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
-            owncloud/ocis:5.0 \
+            owncloud/ocis:latest \
             -c 'ocis init || true && ocis server'
 
       - name: host-ip
@@ -67,7 +54,7 @@ jobs:
           docker run --rm \
             --add-host dockerhost:${{ steps.host_ip.outputs.host_ip }} \
             owncloudci/wait-for \
-            -it dockerhost:8443,dockerhost:9200 -t 10
+            -it dockerhost:9200 -t 300
 
       - name: install-chromium
         run: npx playwright install chromium
