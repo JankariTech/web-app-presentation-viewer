@@ -11,8 +11,7 @@ module.exports = {
       js: '@babel/eslint-parser',
       ts: '@typescript-eslint/parser'
     },
-    requireConfigFile: false,
-    sourceType: 'module'
+    requireConfigFile: false
   },
   rules: {
     /**
