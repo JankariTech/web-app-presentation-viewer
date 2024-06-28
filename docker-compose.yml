@@ -1,6 +1,6 @@
 services:
   ocis:
-    image: owncloud/ocis:${OCIS_IMAGE_TAG:-latest}
+    image: owncloud/ocis-rolling:${OCIS_IMAGE_TAG:-latest}
     entrypoint: /bin/sh
     command: ['-c', 'ocis init || true && ocis server']
     ports:
