@@ -42,7 +42,7 @@ jobs:
             -v ${{ github.workspace }}/dev/config/csp.yml:/etc/ocis/csp.yml:ro \
             -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
-            owncloud/ocis:latest \
+            owncloud/ocis-rolling:latest \
             -c 'ocis init || true && ocis server'
 
       - name: host-ip
