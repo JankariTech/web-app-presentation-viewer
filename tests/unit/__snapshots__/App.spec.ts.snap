@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App component > mount component 1`] = `
+"<div id="presentation-viewer-main" class="presentation-viewer oc-flex">
+  <div class="reveal">
+    <div id="slideContainer" class="slides">
+      <section data-markdown="https://localhost:9200/sample.md" data-separator="
+?
+---
+?
+" data-separator-vertical="
+?
+--
+?
+"></section>
+    </div>
+  </div>
+</div>"
+`;
+
+exports[`App component > test 1`] = `
+"<div id="presentation-viewer-main" class="presentation-viewer oc-flex">
+  <div class="reveal">
+    <div id="slideContainer" class="slides">
+      <section data-markdown="https://localhost:9200/sample.md" data-separator="
+?
+---
+?
+" data-separator-vertical="
+?
+--
+?
+"></section>
+    </div>
+  </div>
+</div>"
+`;
