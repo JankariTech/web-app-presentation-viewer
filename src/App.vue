@@ -39,12 +39,12 @@ import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
 
 const themeStore = useThemeStore()
+const clientService = useClientService()
+const { webdav } = clientService
 const { loadFolderForFileContext, currentFileContext, activeFiles } = useAppDefaults({
   applicationId: appId
 })
-const { getUrlForResource, revokeUrl } = useAppFileHandling({
-  clientService: useClientService()
-})
+const { getUrlForResource, revokeUrl } = useAppFileHandling({ clientService })
 const appsStore = useAppsStore()
 const { serverUrl } = useConfigStore()
 
@@ -138,8 +138,14 @@ function filterLocalImgElements(
 }
 async function updateImageUrls(localImgElements: HTMLImageElement[]) {
   for (const el of localImgElements) {
-    const src = el.src.split('/').pop() as string
-    const blobUrl = await parseImageUrl(src)
+    // trim 'mediaBasePath'
+    // remove leading '.' and '/'
+    const srcPath = el.src
+      .replace(mediaBasePath, '')
+      .replace(/$(\.|\/)/, '')
+      .replace(/$(\.|\/)/, '')
+
+    const blobUrl = await parseImageUrl(srcPath)
     if (blobUrl) {
       el.src = blobUrl
       mediaUrls.value.push(blobUrl)
@@ -147,20 +153,53 @@ async function updateImageUrls(localImgElements: HTMLImageElement[]) {
   }
 }
 async function parseImageUrl(name: string) {
-  for (const file of unref(mediaFiles)) {
-    if (file.name === name) {
-      const url = await getUrlForResource(unref(currentFileContext).space, file)
-      // reload the active files
-      // TODO: implement caching
-      await loadFolderForFileContext(unref(currentFileContext))
-      return getBlobUrl(url)
+  let file: Resource
+  if (name.split('/').length > 1) {
+    file = await getSubMediaFile(name)
+  } else {
+    file = getMediaFile(name)
+  }
+  const url = await getUrlForResource(unref(currentFileContext).space, file)
+  // reload the active files
+  // TODO: implement caching
+  await loadFolderForFileContext(unref(currentFileContext))
+  return getBlobUrl(url)
+}
+function getMediaFile(name: string): Resource {
+  return unref(mediaFiles).find((file: Resource) => file.name === name)
+}
+async function getSubMediaFile(path: string): Promise<Resource> {
+  const parents = dirname(path).split('/')
+  const filename = basename(path)
+
+  let currentFiles = unref(activeFiles)
+  for (const parent of parents) {
+    const file = findFile(parent, currentFiles)
+    const { children } = await webdav.listFiles(unref(currentFileContext).space, {
+      path: file.path,
+      fileId: file.fileId
+    })
+
+    currentFiles = children
+
+    if (parent === parents[parents.length - 1]) {
+      return findFile(filename, children)
     }
   }
+}
+function findFile(name: string, filesList: Resource[]): Resource {
+  return filesList.find((file: Resource) => file.name === name)
 }
 async function getBlobUrl(url: string) {
   const data = await fetch(url).then(async (res) => await res.blob())
   const blob = new Blob([data], { type: data.type })
   return URL.createObjectURL(blob)
+}
+function dirname(path: string) {
+  return path.split('/').slice(0, -1).join('/')
+}
+function basename(path: string) {
+  return path.split('/').reverse()[0]
 }
 </script>
 
