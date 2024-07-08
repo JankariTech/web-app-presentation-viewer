@@ -4,7 +4,7 @@
     class="presentation-viewer oc-flex"
     :class="{ 'dark-mode': isDarkMode }"
   >
-    <div class="reveal">
+    <div ref="revealContainer" class="reveal">
       <div id="slideContainer" ref="slideContainer" class="slides">
         <section
           :data-markdown="url"
@@ -50,6 +50,7 @@ const { serverUrl } = useConfigStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
+const revealContainer = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 
 const mediaBasePath = `${serverUrl}local/`
@@ -76,11 +77,11 @@ watch(
 onMounted(async () => {
   await loadFolderForFileContext(unref(currentFileContext))
 
-  reveal = new Reveal({
+  reveal = new Reveal(unref(revealContainer), {
     plugins: [RevealMarkdown, RevealHighlight]
   })
 
-  reveal.initialize({
+  await reveal.initialize({
     controls: true,
     progress: true,
     history: true,
