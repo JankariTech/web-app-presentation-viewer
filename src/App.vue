@@ -140,10 +140,7 @@ async function updateImageUrls(localImgElements: HTMLImageElement[]) {
   for (const el of localImgElements) {
     // trim 'mediaBasePath'
     // remove leading '.' and '/'
-    const srcPath = el.src
-      .replace(mediaBasePath, '')
-      .replace(/$(\.|\/)/, '')
-      .replace(/$(\.|\/)/, '')
+    const srcPath = el.src.replace(mediaBasePath, '').replace(/$\.\//, '').replace(/$\//, '')
 
     const blobUrl = await parseImageUrl(srcPath)
     if (blobUrl) {
