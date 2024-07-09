@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Use ocis images from same directory level (https://github.com/JankariTech/web-app-presentation-viewer/pull/48)
+- Load ocis images from the sub directory level (https://github.com/JankariTech/web-app-presentation-viewer/pull/60)
 
 ### Fixed
 
