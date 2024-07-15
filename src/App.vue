@@ -7,10 +7,12 @@
     <div ref="revealContainer" class="reveal">
       <div id="slideContainer" ref="slideContainer" class="slides">
         <section
-          :data-markdown="url"
+          data-markdown
           :data-separator="dataSeparator"
           :data-separator-vertical="dataSeparatorVertical"
-        ></section>
+        >
+          <textarea ref="mdTextarea" data-template />
+        </section>
       </div>
     </div>
   </div>
@@ -23,8 +25,7 @@ import {
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-  useAppsStore,
-  useConfigStore
+  useAppsStore
 } from '@ownclouders/web-pkg'
 import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
@@ -46,20 +47,19 @@ const { loadFolderForFileContext, currentFileContext, activeFiles } = useAppDefa
 })
 const { getUrlForResource, revokeUrl } = useAppFileHandling({ clientService })
 const appsStore = useAppsStore()
-const { serverUrl } = useConfigStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
 const revealContainer = ref<HTMLElement>()
+const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 
-const mediaBasePath = `${serverUrl}local/`
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 
 let reveal: Reveal.Api
 
-defineProps({
+const { url } = defineProps({
   url: {
     type: String,
     required: true
@@ -77,6 +77,23 @@ watch(
 onMounted(async () => {
   await loadFolderForFileContext(unref(currentFileContext))
 
+  await fetch(unref(url))
+    .then((res) => res.text())
+    .then(async (data) => {
+      const parsedData = []
+      for (let line of data.split('\n')) {
+        const imgRegex = /!\[.*\]\((?!(?:http|blob))(.*)\)/g
+        const matches = data.matchAll(imgRegex)
+        for (const match of matches) {
+          const imgPath = match[1]
+          const imageUrl = await updateImageUrls(imgPath)
+          line = line.replace(`(${imgPath})`, `(${imageUrl})`)
+        }
+        parsedData.push(line)
+      }
+      unref(mdTextarea).textContent = parsedData.join('\n')
+    })
+
   reveal = new Reveal(unref(revealContainer), {
     plugins: [RevealMarkdown, RevealHighlight]
   })
@@ -86,19 +103,7 @@ onMounted(async () => {
     progress: true,
     history: true,
     center: true,
-    controlsLayout: 'edges',
-    markdown: {
-      baseUrl: mediaBasePath
-    }
-  })
-
-  reveal.on('ready', async () => {
-    if (unref(slideContainer) === undefined) {
-      return
-    }
-    const imgElements = (unref(slideContainer) as HTMLElement).getElementsByTagName('img')
-    const localImgElements = filterLocalImgElements(imgElements)
-    await updateImageUrls(localImgElements)
+    controlsLayout: 'edges'
   })
 })
 onBeforeUnmount(() => {
@@ -125,29 +130,17 @@ const mediaFiles = computed<Resource[]>(() => {
 })
 
 // METHODS
-function filterLocalImgElements(
-  imgElements: HTMLCollectionOf<HTMLImageElement>
-): HTMLImageElement[] {
-  const localImgElements: HTMLImageElement[] = []
-  for (const el of imgElements) {
-    if (el.src.startsWith(mediaBasePath)) {
-      localImgElements.push(el)
-    }
-  }
-  return localImgElements
-}
-async function updateImageUrls(localImgElements: HTMLImageElement[]) {
-  for (const el of localImgElements) {
-    // trim 'mediaBasePath'
-    // remove leading '.' and '/'
-    const srcPath = el.src.replace(mediaBasePath, '').replace(/$\.\//, '').replace(/$\//, '')
+async function updateImageUrls(localImagePath: string) {
+  // trim 'mediaBasePath'
+  // remove leading '.' and '/'
+  const srcPath = localImagePath.replace(/^\.\//, '').replace(/^\//, '')
 
-    const blobUrl = await parseImageUrl(srcPath)
-    if (blobUrl) {
-      el.src = blobUrl
-      mediaUrls.value.push(blobUrl)
-    }
+  const blobUrl = await parseImageUrl(srcPath)
+  if (blobUrl) {
+    mediaUrls.value.push(blobUrl)
+    return blobUrl
   }
+  return localImagePath
 }
 async function parseImageUrl(name: string) {
   let file: Resource
