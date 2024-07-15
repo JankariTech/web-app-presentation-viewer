@@ -1,9 +1,10 @@
 <template>
   <div
     id="presentation-viewer-main"
-    class="presentation-viewer oc-flex"
+    class="presentation-viewer"
     :class="{ 'dark-mode': isDarkMode }"
   >
+    <AppLoadingSpinner v-if="!isReadyToShow" />
     <div ref="revealContainer" class="reveal">
       <div id="slideContainer" ref="slideContainer" class="slides">
         <section
@@ -21,6 +22,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onBeforeUnmount, ref, unref, watch } from 'vue'
 import {
+  AppLoadingSpinner,
   useThemeStore,
   useAppDefaults,
   useAppFileHandling,
@@ -53,6 +55,7 @@ const slideContainer = ref<HTMLElement>()
 const revealContainer = ref<HTMLElement>()
 const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
+const isReadyToShow = ref<boolean>(false)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
@@ -105,6 +108,8 @@ onMounted(async () => {
     center: true,
     controlsLayout: 'edges'
   })
+
+  isReadyToShow.value = true
 })
 onBeforeUnmount(() => {
   unref(mediaUrls).forEach((url) => {
