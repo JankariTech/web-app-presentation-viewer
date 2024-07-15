@@ -59,6 +59,7 @@ const isReadyToShow = ref<boolean>(false)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
+const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 
 let reveal: Reveal.Api
 
@@ -80,13 +81,14 @@ watch(
 onMounted(async () => {
   await loadFolderForFileContext(unref(currentFileContext))
 
+  // fetch the markdown file
+  // build the local image urls
   await fetch(unref(url))
     .then((res) => res.text())
     .then(async (data) => {
       const parsedData = []
       for (let line of data.split('\n')) {
-        const imgRegex = /!\[.*\]\((?!(?:http|blob))(.*)\)/g
-        const matches = data.matchAll(imgRegex)
+        const matches = line.matchAll(mdImageRegex)
         for (const match of matches) {
           const imgPath = match[1]
           const imageUrl = await updateImageUrls(imgPath)
