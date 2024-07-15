@@ -138,8 +138,7 @@ const mediaFiles = computed<Resource[]>(() => {
 
 // METHODS
 async function updateImageUrls(localImagePath: string) {
-  // trim 'mediaBasePath'
-  // remove leading '.' and '/'
+  // remove leading './' or '/'
   const srcPath = localImagePath.replace(/^\.\//, '').replace(/^\//, '')
 
   const blobUrl = await parseImageUrl(srcPath)
