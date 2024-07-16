@@ -1,6 +1,7 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import App from '../../src/App.vue'
 
+// mock modules
 vi.mock('@ownclouders/web-pkg', () => ({
   useAppDefaults: vi.fn().mockImplementation(() => ({
     loadFolderForFileContext: vi.fn(),
@@ -14,32 +15,84 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useThemeStore: vi.fn().mockImplementation(() => ({
     currentTheme: { isDark: false }
   })),
-  useClientService: vi.fn(),
+  useClientService: vi.fn().mockImplementation(() => ({
+    webdav: vi.fn()
+  })),
   useAppsStore: vi.fn(),
   useConfigStore: vi.fn().mockImplementation(() => ({
     serverUrl: 'https://localhost:9200'
-  }))
+  })),
+  AppLoadingSpinner: vi.fn()
 }))
-// vi.mock('reveal.js', async (importOriginal) => {
-//   const actual = await importOriginal()
-//   return {
-//     ...actual,
-//     initialize: vi.fn()
-//   }
-// })
+// global mocks
+global.fetch = vi.fn().mockImplementation(() =>
+  Promise.resolve({
+    text: () =>
+      Promise.resolve(`### Slide 1
+Lorem **Bold** *Italic* ~strike through~
+
+> Quote statement
+
+* [ ] check box
+- [ ] check box
+
+---
+
+### Slide 2
+Unordered list:
+
+* item 1
+- item 2
+
+Ordered list:
+
+1. item 1
+2. item 2
+
+---
+
+### External Image
+![cat](https://external:9200/cat.jpg)
+
+---
+
+### Uploaded Image
+![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCCAYAAAB8GMlFAAAAAXNSR0IArs4c6QAAIABJREFUeF==)
+
+---
+
+### ocCIS Image
+![cool](./cool.png)
+
+---
+
+### Code block
+\`\`\`
+code block
+\`\`\`
+`),
+    blob: () =>
+      Promise.resolve(
+        new Blob([JSON.stringify({})], {
+          type: 'image/png'
+        })
+      )
+  })
+)
+URL.createObjectURL = vi
+  .fn()
+  .mockImplementation(() => 'blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96')
 
 describe('App component', () => {
-  it('mount component', async () => {
+  it('render markdown slides', async () => {
     const vm = getWrapper()
     await flushPromises()
-    console.log(vm.html())
-    // expect(vm.html()).toMatchSnapshot()
+    expect(vm.html()).toMatchSnapshot()
   })
 })
 
 function getWrapper() {
-  const blobUrl = URL.createObjectURL(new Blob(['## Slide 1']))
   return shallowMount(App, {
-    propsData: { url: blobUrl }
+    propsData: { url: 'https://localhost:9200/slides.md' }
   })
 }
