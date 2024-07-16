@@ -9,12 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Use ocis images from same directory level (https://github.com/JankariTech/web-app-presentation-viewer/pull/48)
+- Loading spinner until presentation is ready (https://github.com/JankariTech/web-app-presentation-viewer/pull/61)
 - Load ocis images from the sub directory level (https://github.com/JankariTech/web-app-presentation-viewer/pull/60)
+- Use ocis images from same directory level (https://github.com/JankariTech/web-app-presentation-viewer/pull/48)
 
 ### Fixed
 
 ### Changed
+
+- Parse and update local image urls directly in the markdown content (https://github.com/JankariTech/web-app-presentation-viewer/pull/61)
 
 ### Removed
 
