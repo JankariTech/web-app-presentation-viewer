@@ -41,6 +41,9 @@ jobs:
           path: dist/
           retention-days: 1
 
+      - name: unit-test
+        run: pnpm test:unit
+
       - name: ocis-server
         run: |
           docker run --rm -d \
