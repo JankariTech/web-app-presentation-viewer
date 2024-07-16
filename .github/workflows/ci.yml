@@ -42,7 +42,7 @@ jobs:
           retention-days: 1
 
       - name: unit-test
-        run: pnpm test:unit
+        run: pnpm test:unit --coverage
 
       - name: ocis-server
         run: |
