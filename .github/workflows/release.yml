@@ -18,13 +18,17 @@ jobs:
           name: dist
           path: dist/
 
-      - name: create-zip
-        run: echo mdpresentation-${{ github.ref_name }}.zip
-        # mkdir dist/release && (cd dist && zip -r - .) >dist/release/mdpresentation-${{ github.ref_name }}.zip
+      - name: create-artifacts
+        run: |
+          (cd dist && zip -r - .) >dist/mdpresentation-${{ github.ref_name }}.zip
+          mkdir -p dist/release
+          mv dist/mdpresentation-${{ github.ref_name }}.zip dist/release/
+          md5sum dist/release/mdpresentation-${{ github.ref_name }}.zip >dist/release/md5sum.txt
+          sha256sum dist/release/mdpresentation-${{ github.ref_name }}.zip >dist/release/sha256sum.txt
 
-      # - name: publish-artifacts
-      #   uses: fnkr/github-action-ghr@v1
-      #   env:
-      #     GHR_PATH: dist/release/
-      #     GHR_REPLACE: true
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: publish-artifacts
+        uses: fnkr/github-action-ghr@v1
+        env:
+          GHR_PATH: dist/release/
+          GHR_REPLACE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
