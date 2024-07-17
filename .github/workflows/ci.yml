@@ -1,4 +1,4 @@
-name: lint-build-e2e
+name: lint-and-tests
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: pnpm-install
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           run_install: |
             - args: [--frozen-lockfile, --strict-peer-dependencies]
@@ -27,6 +27,14 @@ jobs:
 
       - name: build
         run: pnpm build
+
+      - name: upload-dist
+        uses: actions/upload-artifact@v4
+        # if: github.event_name == 'release'
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
 
       - name: ocis-server
         run: |

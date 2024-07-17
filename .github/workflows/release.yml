@@ -1,0 +1,33 @@
+name: release
+
+on:
+  # release:
+  #   types: [published]
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  publish-artifacts:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    steps:
+      - name: download-dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - run: ls -al
+
+      - name: publish-artifacts
+        uses: fnkr/github-action-ghr@v1
+        env:
+          GHR_PATH: dist/
+          GHR_COMPRESS: zip
+          GHR_REPLACE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
