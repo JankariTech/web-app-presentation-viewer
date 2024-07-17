@@ -1,16 +1,21 @@
 name: lint-and-tests
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
       - main
   pull_request:
+  workflow_call:
 
 env:
   OCIS_URL: https://localhost:9200
 
 jobs:
-  ci:
+  lint-and-tests:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -30,7 +35,7 @@ jobs:
 
       - name: upload-dist
         uses: actions/upload-artifact@v4
-        # if: github.event_name == 'release'
+        if: github.event_name == 'release'
         with:
           name: dist
           path: dist/
