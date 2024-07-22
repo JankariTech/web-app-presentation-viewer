@@ -15,36 +15,20 @@ It allows users to:
 
 ## Supported oCIS and Web Versions
 
-- [oCIS](https://github.com/owncloud/ocis) (>= 5.1.x)
+- [oCIS](https://github.com/owncloud/ocis) (>= 6.x.x)
 - [Web](https://nodejs.org/en/) (>= 9.x.x)
 
 ## App Installation
 
-#### 1. Install Dependencies
+> NOTE: Requires oCIS >= 6.0.0
 
-```bash
-pnpm install
-```
+1. Download the zip file from the [releases page](https://github.com/JankariTech/web-app-presentation-viewer/releases)
 
-#### 2. Build the extension
+   For example: `mdpresentation-x.x.x.zip`
 
-```bash
-pnpm build
-```
+2. Extract the zip file to the `apps` directory of the oCIS server.
 
-The extension will be built in the `dist` directory.
-
-> NOTE: Requires oCIS >= 5.1 (not released yet)
-
-External apps can be loaded into the oCIS without separate app server. We just have to use `WEB_ASSET_APPS_PATH`, an oCIS environment variable, while running oCIS server to set the directory where all the external apps are located.
-
-For example:
-
-```bash
-...
-WEB_ASSET_APPS_PATH=</path/to/dist> \
-ocis server
-```
+   Apps directory is set using the `WEB_ASSET_APPS_PATH` environment variable.
 
 ## Development
 
@@ -70,7 +54,7 @@ pnpm build:w
 
 #### 3. Load the extension
 
-> NOTE: Requires oCIS >= 5.1 (not released yet)
+> NOTE: Requires oCIS >= 6.0.0
 
 Run the oCIS server:
 
