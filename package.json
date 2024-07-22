@@ -10,6 +10,7 @@
     "build:w": "pnpm vite build --watch --mode development",
     "lint": "eslint './*.{js,cjs,mjs,ts}' '{src,tests}/**/*.{js,cjs,mjs,ts,vue}' --color",
     "lint:fix": "pnpm lint --fix",
+    "test:unit": "vitest",
     "test:e2e": "NODE_TLS_REJECT_UNAUTHORIZED=0 cucumber-js"
   },
   "dependencies": {
@@ -25,14 +26,19 @@
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.10",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitest/coverage-v8": "1.5.0",
+    "@vue/test-utils": "^2.4.6",
     "axios": "^1.6.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier-vue": "^5.0.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "eslint-plugin-vue": "^9.25.0",
+    "happy-dom": "^14.12.3",
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
+    "vitest": "^1.6.0",
     "vue": "^3.4.27"
   },
   "peerDependencies": {
