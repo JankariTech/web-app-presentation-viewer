@@ -1,5 +1,5 @@
 {
-  "id": "com.github.jankaritech.web.mdpresentation",
+  "id": "com.github.jankaritech.mdpresentation-viewer",
   "entrypoint": "extension.js",
   "config": {}
 }
