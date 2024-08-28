@@ -29,7 +29,7 @@
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitest/coverage-v8": "1.5.0",
     "@vue/test-utils": "^2.4.6",
-    "axios": "^1.6.8",
+    "axios": "^1.7.4",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier-vue": "^5.0.0",
@@ -42,8 +42,8 @@
     "vue": "^3.4.27"
   },
   "peerDependencies": {
-    "@ownclouders/web-client": "https://gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929",
-    "@ownclouders/web-pkg": "https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929"
+    "@ownclouders/web-client": "https://gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3",
+    "@ownclouders/web-pkg": "https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3"
   },
   "pnpm": {
     "peerDependencyRules": {

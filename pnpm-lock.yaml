@@ -6,11 +6,11 @@ settings:
 
 dependencies:
   '@ownclouders/web-client':
-    specifier: https://gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929
-    version: '@gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.6.8)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)'
+    specifier: https://gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3
+    version: '@gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.7.5)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)'
   '@ownclouders/web-pkg':
-    specifier: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929
-    version: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.6.8)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)'
+    specifier: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3
+    version: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@10.1.0)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.5)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)'
   '@types/reveal.js':
     specifier: ^4.4.8
     version: 4.4.8
@@ -53,8 +53,8 @@ devDependencies:
     specifier: ^2.4.6
     version: 2.4.6
   axios:
-    specifier: ^1.6.8
-    version: 1.6.8
+    specifier: ^1.7.4
+    version: 1.7.5
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -1608,8 +1608,8 @@ packages:
   /asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  /axios@1.6.8:
-    resolution: {integrity: sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==}
+  /axios@1.7.5:
+    resolution: {integrity: sha512-fZu86yCo+svH3uqJ/yTdQ0QHpQu5oL+/QE+QPSv6BZSkDAoky9vytxp7u5qk83OJFS3kEBcesWni9WTZAv3tSw==}
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -4468,15 +4468,15 @@ packages:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: false
 
-  '@gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.6.8)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)':
-    resolution: {tarball: https://gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929}
-    id: '@gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929'
+  '@gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.7.5)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)':
+    resolution: {tarball: https://gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3}
+    id: '@gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3'
     name: '@ownclouders/web-client'
-    version: 0.0.3
+    version: 10.1.0
     peerDependencies:
       '@casl/ability': ^6.3.3
       '@microsoft/fetch-event-source': ^2.0.1
-      axios: 1.6.8
+      axios: 1.7.4
       fast-xml-parser: 4.3.3
       lodash-es: ^4.17.21
       luxon: 3.2.1
@@ -4486,7 +4486,7 @@ packages:
     dependencies:
       '@casl/ability': 6.7.1
       '@microsoft/fetch-event-source': 2.0.1
-      axios: 1.6.8
+      axios: 1.7.5
       fast-xml-parser: 4.3.3
       lodash-es: 4.17.21
       luxon: 3.2.1
@@ -4495,14 +4495,14 @@ packages:
       zod: 3.22.4
     dev: false
 
-  '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.6.8)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)':
-    resolution: {tarball: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929}
-    id: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929'
+  '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@10.1.0)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.5)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)':
+    resolution: {tarball: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3}
+    id: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3'
     name: '@ownclouders/web-pkg'
-    version: 0.0.6
+    version: 10.1.0
     peerDependencies:
       '@casl/ability': ^6.3.3
-      '@casl/vue': ^2.2.1
+      '@casl/vue': ^2.2.2
       '@microsoft/fetch-event-source': ^2.0.1
       '@ownclouders/web-client': workspace:*
       '@sentry/vue': 7.101.0
@@ -4513,7 +4513,7 @@ packages:
       '@uppy/xhr-upload': ^3.0.1
       '@vue/shared': 3.4.23
       '@vueuse/core': ^10.0.0
-      axios: 1.6.8
+      axios: 1.7.4
       deepmerge: ^4.2.2
       design-system: workspace:@ownclouders/design-system@*
       dompurify: ^3.0.6
@@ -4530,7 +4530,7 @@ packages:
       qs: 6.11.2
       semver: 7.5.4
       uuid: 9.0.1
-      vitest: 1.6.0
+      vitest: 2.0.5
       vue-concurrency: 5.0.1
       vue-router: 4.2.5
       vue3-gettext: 2.4.0
@@ -4541,7 +4541,7 @@ packages:
       '@casl/ability': 6.7.1
       '@casl/vue': 2.2.2(@casl/ability@6.7.1)(vue@3.4.27)
       '@microsoft/fetch-event-source': 2.0.1
-      '@ownclouders/web-client': '@gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.6.8)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)'
+      '@ownclouders/web-client': '@gitpkg.vercel.app/owncloud/web/packages/web-client?d913a3e9ef0df5a8a4fb1ae4054771516c133dd3(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.7.5)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)'
       '@sentry/vue': 7.101.0(vue@3.4.27)
       '@uppy/core': 3.3.0
       '@uppy/drop-target': 2.1.0(@uppy/core@3.3.0)
@@ -4550,7 +4550,7 @@ packages:
       '@uppy/xhr-upload': 3.6.6(@uppy/core@3.3.0)
       '@vue/shared': 3.4.23
       '@vueuse/core': 10.9.0(vue@3.4.27)
-      axios: 1.6.8
+      axios: 1.7.5
       deepmerge: 4.3.1
       dompurify: 3.1.2
       filesize: 10.1.1
