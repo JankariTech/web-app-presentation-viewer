@@ -6,7 +6,10 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useAppDefaults: vi.fn().mockImplementation(() => ({
     loadFolderForFileContext: vi.fn(),
     currentFileContext: {},
-    activeFiles: []
+    activeFiles: [
+      { name: 'cool.png', path: '/cool.png', mimeType: 'image/png' },
+      { name: 'sub', path: '/sub' }
+    ]
   })),
   useAppFileHandling: vi.fn().mockImplementation(() => ({
     getUrlForResource: vi.fn(),
@@ -16,9 +19,15 @@ vi.mock('@ownclouders/web-pkg', () => ({
     currentTheme: { isDark: false }
   })),
   useClientService: vi.fn().mockImplementation(() => ({
-    webdav: vi.fn()
+    webdav: {
+      listFiles: () => ({
+        children: [{ name: 'another-cool.jpg', path: '/another-cool.jpg', mimeType: 'image/jpeg' }]
+      })
+    }
   })),
-  useAppsStore: vi.fn(),
+  useAppsStore: () => ({
+    externalAppConfig: () => []
+  }),
   useConfigStore: vi.fn().mockImplementation(() => ({
     serverUrl: 'https://localhost:9200'
   })),
@@ -64,6 +73,9 @@ Ordered list:
 ### ocCIS Image
 ![cool](./cool.png)
 
+![non-existing](./non-existing-image.png)
+
+![sub-folder-image](./sub/another-cool.jpg)
 ---
 
 ### Code block
