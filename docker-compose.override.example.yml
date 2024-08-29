@@ -1,11 +1,13 @@
 services:
   ocis:
-    image: owncloud/ocis:latest
+    image: owncloud/ocis-rolling:6.3.0
     environment:
       WEB_UI_CONFIG_FILE: null
       WEB_ASSET_APPS_PATH: /web/apps
+      PROXY_CSP_CONFIG_FILE_LOCATION: /etc/ocis/csp.yml
     volumes:
       - ./dist:/web/apps:ro
+      - ./dev/docker/csp.yml:/etc/ocis/csp.yml
 
   extension:
     profiles:
