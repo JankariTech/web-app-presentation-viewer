@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- viewer stuck on loading if ocis images are not available (https://github.com/JankariTech/web-app-presentation-viewer/pull/75)
+
 ### Changed
 
 - Parse and update local image urls directly in the markdown content (https://github.com/JankariTech/web-app-presentation-viewer/pull/61)
