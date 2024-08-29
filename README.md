@@ -1,5 +1,7 @@
 # Markdown Presentation Viewer for ownCloud Web
 
+![cover photo](./images/cover-large.png)
+
 A markdown presentation viewer for [ownCloud web](https://github.com/owncloud/web/) (the webUI of [oCIS](https://github.com/owncloud/ocis/)) using the [reveal.js](https://revealjs.com/) library.
 
 It allows users to:
@@ -10,8 +12,7 @@ It allows users to:
 ## Demonstration
 
 - [Demonstation page](https://ocis.in-nepal.de/files/link/public/bdSEsErbfGKoOIt?fileId=bdSEsErbfGKoOIt&files-public-link-view-mode=resource-table)
-- Click on `Open in Text Editor` to view the markdown content.
-- Click on `Open in Presentation Viewer` to view the rendered presentation.
+- Click on `Open in Presentation Viewer` to view the slides
 
 ## Supported oCIS and Web Versions
 
@@ -24,11 +25,20 @@ It allows users to:
 
 1. Download the zip file from the [releases page](https://github.com/JankariTech/web-app-presentation-viewer/releases)
 
-   For example: `mdpresentation-x.x.x.zip`
+   For example: `mdpresentation-viewer-x.x.x.zip`
 
 2. Extract the zip file to the `apps` directory of the oCIS server.
 
    Apps directory is set using the `WEB_ASSET_APPS_PATH` environment variable.
+
+## Creating Presentation
+
+Please, refer to the [documentation](https://revealjs.com/markdown/) for more information about creating a presentation using markdown.
+
+This app has the following default slide separators:
+
+- Horizontal separator: `---` (`← →`)
+- Vertical separator: `--` (`↓ ↑`)
 
 ## Development
 
