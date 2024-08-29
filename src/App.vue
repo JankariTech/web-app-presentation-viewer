@@ -155,6 +155,9 @@ async function parseImageUrl(name: string) {
   } else {
     file = getMediaFile(name)
   }
+  if (!file) {
+    return
+  }
   const url = await getUrlForResource(unref(currentFileContext).space, file)
   // reload the active files
   // TODO: implement caching
