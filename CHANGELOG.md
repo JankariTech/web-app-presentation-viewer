@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Renamed app-id to `mdpresentation-viewer` (https://github.com/JankariTech/web-app-presentation-viewer/pull/74)
 - Parse and update local image urls directly in the markdown content (https://github.com/JankariTech/web-app-presentation-viewer/pull/61)
 
 ### Removed
