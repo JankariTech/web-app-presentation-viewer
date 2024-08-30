@@ -47,8 +47,8 @@
       }
     },
     {
-      "id": "presentation-viewer",
-      "path": "https://localhost:8443/com.github.jankaritech.web.mdpresentation/extension.js"
+      "id": "mdpresentation-viewer",
+      "path": "https://localhost:8443/com.github.jankaritech.mdpresentation-viewer/extension.js"
     }
   ]
 }
