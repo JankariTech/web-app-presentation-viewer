@@ -47,8 +47,8 @@
       }
     },
     {
-      "id": "presentation-viewer",
-      "path": "https://<url-where-the-dist-folder-is-served>/com.github.jankaritech.web.mdpresentation/extension.js"
+      "id": "mdpresentation-viewer",
+      "path": "https://<url-where-the-dist-folder-is-served>/com.github.jankaritech.mdpresentation-viewer/extension.js"
     }
   ]
 }
