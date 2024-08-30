@@ -20,11 +20,11 @@ jobs:
 
       - name: create-artifacts
         run: |
-          (cd dist && zip -r - .) >mdpresentation-${{ github.ref_name }}.zip
+          (cd dist && zip -r - .) >mdpresentation-viewer-${{ github.ref_name }}.zip
           mkdir -p dist/release
-          mv mdpresentation-${{ github.ref_name }}.zip dist/release/
-          md5sum dist/release/mdpresentation-${{ github.ref_name }}.zip >dist/release/md5sum.txt
-          sha256sum dist/release/mdpresentation-${{ github.ref_name }}.zip >dist/release/sha256sum.txt
+          mv mdpresentation-viewer-${{ github.ref_name }}.zip dist/release/
+          md5sum dist/release/mdpresentation-viewer-${{ github.ref_name }}.zip >dist/release/md5sum.txt
+          sha256sum dist/release/mdpresentation-viewer-${{ github.ref_name }}.zip >dist/release/sha256sum.txt
 
       - name: publish-artifacts
         uses: fnkr/github-action-ghr@v1
