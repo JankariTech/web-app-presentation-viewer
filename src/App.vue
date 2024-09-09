@@ -243,5 +243,10 @@ function basename(path: string) {
       }
     }
   }
+
+  li pre {
+    margin: 0;
+    width: 100%;
+  }
 }
 </style>
