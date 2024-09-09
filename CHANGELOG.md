@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+### Fixed
+
+- Code blocks in lists are not using existing space (https://github.com/JankariTech/web-app-presentation-viewer/pull/80)
+
+### Changed
+
+### Removed
+
 ## [2.0.0] - 2024-08-30
 
 ### Added
@@ -15,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- viewer stuck on loading if ocis images are not available (https://github.com/JankariTech/web-app-presentation-viewer/pull/75)
+- Viewer stuck on loading if ocis images are not available (https://github.com/JankariTech/web-app-presentation-viewer/pull/75)
 
 ### Changed
 
