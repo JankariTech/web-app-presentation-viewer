@@ -37,6 +37,7 @@ import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
+import './css/variables.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
@@ -241,6 +242,13 @@ function basename(path: string) {
         width: auto;
         height: auto;
       }
+    }
+
+    code {
+      color: var(--single-code-color);
+      background-color: var(--single-code-bg-color);
+      padding: 0px 4px;
+      border-radius: 0.5rem;
     }
   }
 
