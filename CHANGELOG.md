@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Single backtick is not recognizable as code block (https://github.com/JankariTech/web-app-presentation-viewer/pull/82)
 - Code blocks in lists are not using existing space (https://github.com/JankariTech/web-app-presentation-viewer/pull/80)
 
 ### Changed
