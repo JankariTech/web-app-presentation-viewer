@@ -37,6 +37,7 @@ import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
+import './css/variables.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
@@ -215,6 +216,18 @@ function basename(path: string) {
     h6 {
       color: var(--oc-color-text-default) !important;
     }
+
+    code {
+      background-color: var(--code-bg-color-dark) !important;
+    }
+
+    pre {
+      background-color: var(--pre-bg-color-dark) !important;
+
+      code {
+        background-color: inherit !important;
+      }
+    }
   }
 }
 
@@ -242,11 +255,31 @@ function basename(path: string) {
         height: auto;
       }
     }
+
+    code {
+      color: var(--code-color);
+      background-color: var(--code-bg-color);
+      padding: 0px 4px;
+      border-radius: 0.5rem;
+      font-size: 0.8em;
+      text-shadow: none;
+    }
   }
 
   li pre {
     margin: 0;
     width: 100%;
+  }
+
+  pre {
+    background-color: var(--pre-bg-color);
+
+    code {
+      padding: 4px;
+      color: inherit;
+      font-size: inherit;
+      background-color: inherit;
+    }
   }
 }
 </style>

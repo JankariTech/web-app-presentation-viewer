@@ -1,0 +1,8 @@
+/* color */
+:root {
+  --code-color: #c1798b;
+  --code-bg-color: #f9f2f4;
+  --code-bg-color-dark: #35262a;
+  --pre-bg-color: #f4f7f8;
+  --pre-bg-color-dark: #232428;
+}
