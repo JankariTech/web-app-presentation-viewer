@@ -10,7 +10,7 @@ dependencies:
     version: '@gitpkg.vercel.app/owncloud/web/packages/web-client?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@microsoft/fetch-event-source@2.0.1)(axios@1.7.4)(fast-xml-parser@4.3.3)(lodash-es@4.17.21)(luxon@3.2.1)(webdav@5.6.0)(xml-js@1.6.11)(zod@3.22.4)'
   '@ownclouders/web-pkg':
     specifier: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929
-    version: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.4)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)'
+    version: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.4)(deepmerge@4.3.1)(dompurify@3.1.6)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)'
   '@types/reveal.js':
     specifier: ^4.4.8
     version: 4.4.8
@@ -1959,8 +1959,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /dompurify@3.1.2:
-    resolution: {integrity: sha512-hLGGBI1tw5N8qTELr3blKjAML/LY4ANxksbS612UiJyDfyf/2D092Pvm+S7pmeTGJRqvlJkFzBoHBQKgQlOQVg==}
+  /dompurify@3.1.6:
+    resolution: {integrity: sha512-cTOAhc36AalkjtBpfG6O8JimdTMWNXjiePT2xQH/ppBGi/4uIpmj8eKyIkMJErXWARyINV/sB38yf8JCLF5pbQ==}
     dev: false
 
   /eastasianwidth@0.2.0:
@@ -4495,7 +4495,7 @@ packages:
       zod: 3.22.4
     dev: false
 
-  '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.4)(deepmerge@4.3.1)(dompurify@3.1.2)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)':
+  '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929(@casl/ability@6.7.1)(@casl/vue@2.2.2)(@microsoft/fetch-event-source@2.0.1)(@ownclouders/web-client@0.0.3)(@sentry/vue@7.101.0)(@uppy/core@3.3.0)(@uppy/drop-target@2.1.0)(@uppy/tus@3.5.4)(@uppy/utils@5.9.0)(@uppy/xhr-upload@3.6.6)(@vue/shared@3.4.23)(@vueuse/core@10.9.0)(axios@1.7.4)(deepmerge@4.3.1)(dompurify@3.1.6)(filesize@10.1.1)(fuse.js@6.6.2)(js-generate-password@0.1.9)(lodash-es@4.17.21)(luxon@3.2.1)(mark.js@8.11.1)(oidc-client-ts@2.4.0)(p-queue@6.6.2)(password-sheriff@1.1.1)(pinia@2.1.7)(qs@6.11.2)(semver@7.5.4)(uuid@9.0.1)(vitest@1.6.0)(vue-concurrency@5.0.1)(vue-router@4.2.5)(vue3-gettext@2.4.0)':
     resolution: {tarball: https://gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929}
     id: '@gitpkg.vercel.app/owncloud/web/packages/web-pkg?1d95aec2326958dd28643697618c8bb1cea44929'
     name: '@ownclouders/web-pkg'
@@ -4552,7 +4552,7 @@ packages:
       '@vueuse/core': 10.9.0(vue@3.4.27)
       axios: 1.7.4
       deepmerge: 4.3.1
-      dompurify: 3.1.2
+      dompurify: 3.1.6
       filesize: 10.1.1
       fuse.js: 6.6.2
       js-generate-password: 0.1.9
