@@ -11,7 +11,7 @@ It allows users to:
 
 ## Demonstration
 
-- [Demonstation page](https://ocis.in-nepal.de/files/link/public/bdSEsErbfGKoOIt?fileId=bdSEsErbfGKoOIt&files-public-link-view-mode=resource-table)
+- [Demonstation page](https://ocis.in-nepal.de/com.github.jankaritech.mdpresentation-viewer/public/phDIUqntYOMSfcE/presentation.md)
 - Click on `Open in Presentation Viewer` to view the slides
 
 ## Supported oCIS and Web Versions
