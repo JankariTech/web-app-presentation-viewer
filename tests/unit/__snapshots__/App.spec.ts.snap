@@ -46,6 +46,7 @@ exports[`App component > render markdown slides 1`] = `
         <p><img src="blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96" alt="cool"></p>
         <p><img src="./non-existing-image.png" alt="non-existing"></p>
         <p><img src="blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96" alt="sub-folder-image"></p>
+        <p><img src="./non-existing/another-cool.jpg" alt="sub-folder-image"></p>
       </section>
       <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" hidden="" aria-hidden="true" class="future">
         <h3 id="code-block">Code block</h3>
