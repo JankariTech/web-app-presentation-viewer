@@ -175,6 +175,11 @@ async function getSubMediaFile(path: string): Promise<Resource> {
   let currentFiles = unref(activeFiles)
   for (const parent of parents) {
     const file = findFile(parent, currentFiles)
+    // return if the parent folder is not found
+    if (!file) {
+      return
+    }
+
     const { children } = await webdav.listFiles(unref(currentFileContext).space, {
       path: file.path,
       fileId: file.fileId

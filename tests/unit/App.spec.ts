@@ -76,6 +76,8 @@ Ordered list:
 ![non-existing](./non-existing-image.png)
 
 ![sub-folder-image](./sub/another-cool.jpg)
+
+![sub-folder-image](./non-existing/another-cool.jpg)
 ---
 
 ### Code block
