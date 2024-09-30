@@ -7,6 +7,7 @@ vi.mock('@ownclouders/web-pkg', () => ({
     loadFolderForFileContext: vi.fn(),
     currentFileContext: {},
     activeFiles: [
+      { name: 'cool.svg', path: '/cool.svg', mimeType: 'image/svg+xml' },
       { name: 'cool.png', path: '/cool.png', mimeType: 'image/png' },
       { name: 'sub', path: '/sub' }
     ]
@@ -71,6 +72,8 @@ Ordered list:
 ---
 
 ### ocCIS Image
+![cool](./cool.svg)
+
 ![cool](./cool.png)
 
 ![non-existing](./non-existing-image.png)
