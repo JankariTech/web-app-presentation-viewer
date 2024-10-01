@@ -11,6 +11,7 @@ export const getMediaMimeTypes = (extensionMimeTypes: string[] = []) => {
     'image/png',
     'video/mp4',
     'video/webm',
+    'image/svg+xml',
     ...extensionMimeTypes
   ]
 }
