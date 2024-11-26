@@ -73,3 +73,11 @@ docker compose up
 ```
 
 oCIS URL: [localhost:9200](https://localhost:9200)
+
+
+### Adding Md-Viewer to the oCIS Deployment Example
+
+1. Navigate to the `deployments/examples/ocis_full/web_extensions` folder of your installation and copy [`mdviewer.yml`] into the [`web_extensions`](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full/web_extensions) subfolder.
+
+2. Add `MDVIEWER=:web_extensions/mdviewer.yml` to the `## oCIS Web Extensions ##` section of the `.env` file of your installation (file is located in `deployments/examples/ocis_full`).\ Add that variable in the `COMPOSE_FILE` variable at the last line.
+ 3. Run `docker compose up` to run the extension with oCIS

@@ -1,0 +1,16 @@
+
+---
+services:
+  ocis:
+    depends_on:
+      md-viewer:
+        condition: service_completed_successfully
+
+  md-viewer:
+    image: jankaritechnepal/md-viewer:latest
+    user: root
+    volumes:
+      - ocis-apps:/apps
+    entrypoint:
+      - /bin/sh
+    command: ["-c", "cp -R /app/* /apps"]
