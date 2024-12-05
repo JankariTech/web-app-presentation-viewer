@@ -1,4 +1,3 @@
-
 ---
 services:
   ocis:
@@ -7,8 +6,7 @@ services:
         condition: service_completed_successfully
 
   mdpresentation-viewer:
-    image: jankaritech/mdpresentation-viewer:2.0.0
-    user: root
+    image: jankaritech/mdpresentation-viewer
     volumes:
       - ocis-apps:/apps
     entrypoint:

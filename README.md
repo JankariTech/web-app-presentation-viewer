@@ -33,12 +33,19 @@ It allows users to:
 
 ### App Installation With [oCIS Deployment](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full)
 
-1. Copy [`deployments/mdpresentation-viewer.yaml`](./deployments/mdpresentation-viewer.yaml) into the [web_extensions](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full/web_extension)
+1. Copy [`deployments/mdpresentation-viewer.yml`](./deployments/mdpresentation-viewer.yml) into the [web_extensions](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full/web_extensions)
 subfolder of oCIS full deployment example.
-2. Add `MDVIEWER=:web_extensions/mdpresentation-viewer.yml` to the `## oCIS Web Extensions ##` section of the `.env` file of your installation (file is located in `deployments/examples/ocis_full`).\ Add that variable in the `COMPOSE_FILE` variable at the last line.
+2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml` to the `## oCIS Web Extensions ##` section of the `.env` file of your installation (file is located in `deployments/examples/ocis_full`) and append it to the `COMPOSE_FILE` variable.
+    ```env
+    ## oCIS Web Extensions ##
+    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml
+    
+    COMPOSE_FILE=docker-compose.yml${...}${MDPRESENTATION_VIEWER:-}
+    ```
 3. Run `docker compose up` to run oCIS with the extensions
-oCIS URL: [ocis.owncloud.test](https://ocis.owncloud.test)
-See the [docs](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full).
+
+  oCIS URL: [ocis.owncloud.test](https://ocis.owncloud.test)
+  See the [docs](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full).
 
 ## Creating Presentation
 
