@@ -31,6 +31,23 @@ It allows users to:
 
    Apps directory is set using the `WEB_ASSET_APPS_PATH` environment variable.
 
+### App Installation With [oCIS Deployment](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full)
+
+1. Copy [`deployments/mdpresentation-viewer.yml`](./deployments/mdpresentation-viewer.yml) into the [web_extensions](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full/web_extensions)
+subfolder of oCIS full deployment example.
+2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml` to the `## oCIS Web Extensions ##` section of the `.env` file of your installation (file is located in `deployments/examples/ocis_full`) and append it to the `COMPOSE_FILE` variable.
+    ```env
+    ## oCIS Web Extensions ##
+    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml
+    
+    COMPOSE_FILE=docker-compose.yml${...}${MDPRESENTATION_VIEWER:-}
+    ```
+3. Run `docker compose up` to run oCIS with the extensions
+
+  oCIS URL: [ocis.owncloud.test](https://ocis.owncloud.test)
+
+  See the [docs](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full).
+
 ## Creating Presentation
 
 Please, refer to the [documentation](https://revealjs.com/markdown/) for more information about creating a presentation using markdown.

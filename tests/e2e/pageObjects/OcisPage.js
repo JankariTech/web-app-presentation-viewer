@@ -7,7 +7,7 @@ class Ocis {
     this.loginFormSelector = '.oc-login-form'
     this.usernameInputFieldSelector = '#oc-login-username'
     this.passwordInputFieldSelector = '#oc-login-password'
-    this.loginBtnSelector = '.jss8 .oc-button-primary'
+    this.loginBtnSelector = 'button[type="submit"]'
     this.filesContainerSelector = '#files-view'
     this.contextMenuBtnSelector = '.resource-table-btn-action-dropdown'
     this.openInPresentationViewerBtnSelector = '.oc-files-actions-presentation-viewer-trigger'
