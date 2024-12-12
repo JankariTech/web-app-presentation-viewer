@@ -45,6 +45,7 @@ subfolder of oCIS full deployment example.
 3. Run `docker compose up` to run oCIS with the extensions
 
   oCIS URL: [ocis.owncloud.test](https://ocis.owncloud.test)
+
   See the [docs](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full).
 
 ## Creating Presentation
