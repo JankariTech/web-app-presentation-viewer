@@ -3,7 +3,7 @@
 exports[`App component > render markdown slides 1`] = `
 "<div id="presentation-viewer-main" class="presentation-viewer">
   <spy-stub></spy-stub>
-  <div role="application" data-transition-speed="default" data-background-transition="fade" class="reveal slide center focused has-horizontal-slides">
+  <div class="reveal slide center focused has-horizontal-slides" role="application" data-transition-speed="default" data-background-transition="fade">
     <div id="slideContainer" class="slides no-transition" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
       <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" class="present">
         <h3 id="slide-1">Slide 1</h3>
@@ -18,7 +18,7 @@ exports[`App component > render markdown slides 1`] = `
           <li><input disabled="" type="checkbox"> check box</li>
         </ul>
       </section>
-      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" hidden="" aria-hidden="true" class="future">
+      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" class="future" hidden="" aria-hidden="true">
         <h3 id="slide-2">Slide 2</h3>
         <p>Unordered list:</p>
         <ul>
@@ -33,15 +33,15 @@ exports[`App component > render markdown slides 1`] = `
           <li>item 2</li>
         </ol>
       </section>
-      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" hidden="" aria-hidden="true" class="future">
+      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" class="future" hidden="" aria-hidden="true">
         <h3 id="external-image">External Image</h3>
         <p><img src="https://external:9200/cat.jpg" alt="cat"></p>
       </section>
-      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" hidden="" aria-hidden="true" class="future">
+      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" class="future" hidden="" aria-hidden="true">
         <h3 id="uploaded-image">Uploaded Image</h3>
         <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCCAYAAAB8GMlFAAAAAXNSR0IArs4c6QAAIABJREFUeF==" alt=""></p>
       </section>
-      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" hidden="" aria-hidden="true" class="future">
+      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" class="future" hidden="" aria-hidden="true">
         <h3 id="occis-image">ocCIS Image</h3>
         <p><img src="blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96" alt="cool"></p>
         <p><img src="blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96" alt="cool"></p>
@@ -49,42 +49,42 @@ exports[`App component > render markdown slides 1`] = `
         <p><img src="blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96" alt="sub-folder-image"></p>
         <p><img src="./non-existing/another-cool.jpg" alt="sub-folder-image"></p>
       </section>
-      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" hidden="" aria-hidden="true" class="future">
+      <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: none;" class="future" hidden="" aria-hidden="true">
         <h3 id="code-block">Code block</h3>
-        <pre class="code-wrapper"><code data-highlighted="yes" class="hljs language-clean"><span class="hljs-keyword">code</span> block</code></pre>
+        <pre class="code-wrapper"><code class="hljs language-clean" data-highlighted="yes"><span class="hljs-keyword">code</span> block</code></pre>
       </section>
     </div>
     <div class="backgrounds no-transition">
-      <div style="display: block;" data-loaded="true" class="slide-background present">
+      <div class="slide-background present" style="display: block;" data-loaded="true">
         <div class="slide-background-content"></div>
       </div>
-      <div style="display: block;" data-loaded="true" class="slide-background future">
+      <div class="slide-background future" style="display: block;" data-loaded="true">
         <div class="slide-background-content"></div>
       </div>
-      <div style="display: block;" data-loaded="true" class="slide-background future">
+      <div class="slide-background future" style="display: block;" data-loaded="true">
         <div class="slide-background-content"></div>
       </div>
-      <div style="display: none;" class="slide-background future">
+      <div class="slide-background future" style="display: none;">
         <div class="slide-background-content"></div>
       </div>
-      <div style="display: none;" class="slide-background future">
+      <div class="slide-background future" style="display: none;">
         <div class="slide-background-content"></div>
       </div>
-      <div style="display: none;" class="slide-background future">
+      <div class="slide-background future" style="display: none;">
         <div class="slide-background-content"></div>
       </div>
     </div>
     <div class="slide-number" style="display: none;"></div>
-    <aside class="controls" style="display: block;" data-controls-layout="edges" data-controls-back-arrows="faded"><button aria-label="previous slide" class="navigate-left" disabled="disabled">
+    <aside class="controls" style="display: block;" data-controls-layout="edges" data-controls-back-arrows="faded"><button class="navigate-left" aria-label="previous slide" disabled="disabled">
         <div class="controls-arrow"></div>
       </button>
-      <button aria-label="next slide" class="navigate-right enabled highlight">
+      <button class="navigate-right enabled highlight" aria-label="next slide">
         <div class="controls-arrow"></div>
       </button>
-      <button aria-label="above slide" class="navigate-up" disabled="disabled">
+      <button class="navigate-up" aria-label="above slide" disabled="disabled">
         <div class="controls-arrow"></div>
       </button>
-      <button aria-label="below slide" disabled="disabled" class="navigate-down">
+      <button class="navigate-down" aria-label="below slide" disabled="disabled">
         <div class="controls-arrow"></div>
       </button>
     </aside>
