@@ -72,6 +72,10 @@ jobs:
             owncloudci/wait-for \
             -it dockerhost:9200 -t 300
 
+      - name: debug-curl
+        run: curl -k https://localhost:9200/assets/apps/com.github.jankaritech.mdpresentation-viewer/extension.js
+
+
       - name: install-chromium
         run: npx playwright install chromium
 
