@@ -3,10 +3,8 @@
     "@ownclouders/extension-sdk": "^11.3.1",
     "@ownclouders/prettier-config": "0.0.1"
   },
-  "pnpm": {
-    "peerDependencies": {
-      "@ownclouders/web-client": "^11.3.1",
-      "@ownclouders/web-pkg": "^11.3.1"
-    }
+  "peerDependencies": {
+    "@ownclouders/web-client": "^11.3.1",
+    "@ownclouders/web-pkg": "^11.3.1"
   }
 }
