@@ -72,7 +72,10 @@ jobs:
             owncloudci/wait-for \
             -it dockerhost:9200 -t 300
 
-      - name: debug-curl
+      - name: debug-curl1
+        run: curl -k https://${{ steps.host_ip.outputs.host_ip }}:9200/assets/apps/com.github.jankaritech.mdpresentation-viewer/extension.js
+
+      - name: debug-curl2
         run: curl -k https://localhost:9200/assets/apps/com.github.jankaritech.mdpresentation-viewer/extension.js
 
 
