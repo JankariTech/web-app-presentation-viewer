@@ -21,7 +21,6 @@ It allows users to:
 
 ## App Installation
 
-> NOTE: Requires oCIS >= 6.0.0
 
 1. Download the zip file from the [releases page](https://github.com/JankariTech/web-app-presentation-viewer/releases)
 
