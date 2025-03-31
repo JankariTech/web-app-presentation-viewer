@@ -53,7 +53,7 @@ This app has the following default slide separators:
 ## Development
 
 > [!IMPORTANT] When switching between OpenCloud and oCIS, make sure to clean the browser cache!
-> [!CAUTION] Before commiting changes run `make installOcis`
+> [!CAUTION] Before commiting changes run `make installOcis` and `make clean`
 
 #### Prerequisites
 

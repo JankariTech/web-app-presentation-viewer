@@ -19,7 +19,7 @@ depencenciesReplacement:
 	find . -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.prettierrc"  \) -not \( -path "./node_modules/*" -o -path "./dist/*" \) -print0 | xargs -0 sed -i 's/${SOURCE}/${DEST}/g'
 
 clean:
-	rm package.json
+	rm -f package.json
 
 install:
 	pnpm install

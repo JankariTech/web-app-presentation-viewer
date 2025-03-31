@@ -12,20 +12,28 @@ on:
   workflow_call:
 
 env:
-  OCIS_URL: https://localhost:9200
+  OC_URL: https://localhost:9200
 
 jobs:
   lint-and-tests:
+    strategy:
+      matrix:
+        system:
+          - Ocis
+          - Opencloud
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
 
+      - name: generate-package-json
+        run: make dependencies${{ matrix.system }}
+
       - name: pnpm-install
         uses: pnpm/action-setup@v4
-        with:
-          run_install: |
-            - args: [--frozen-lockfile, --strict-peer-dependencies]
+
+      - name: install
+        run: make install${{ matrix.system }}
 
       - name: lint
         run: pnpm lint
