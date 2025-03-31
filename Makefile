@@ -20,6 +20,8 @@ depencenciesReplacement:
 
 clean:
 	rm -f package.json
+	rm -rf dist
+	rm -f pnpm-lock.yaml
 
 install:
 	pnpm install
