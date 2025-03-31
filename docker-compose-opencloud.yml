@@ -1,5 +1,5 @@
 services:
-  ocis:
+  opencloud:
     image: opencloudeu/opencloud-rolling:${OC_IMAGE_TAG:-latest}
     entrypoint: /bin/sh
     command: ['-c', 'opencloud init || true && opencloud server']
@@ -16,7 +16,7 @@ services:
       IDM_ADMIN_PASSWORD: admin
       # PROXY
       PROXY_ENABLE_BASIC_AUTH: true
-      PROXY_CSP_CONFIG_FILE_LOCATION: /etc/ocis/csp.yml
+      PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yml
     volumes:
       - ./dist:/web/apps:ro
-      - ./dev/config/csp.yml:/etc/ocis/csp.yml
+      - ./dev/config/csp.yml:/etc/opencloud/csp.yml
