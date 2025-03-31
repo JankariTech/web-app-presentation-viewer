@@ -53,10 +53,11 @@ jobs:
         run: pnpm test:unit --coverage
 
       - name: ocis-server
+        if: matrix.system == 'Ocis'
         run: |
           docker run --rm -d \
             -p 9200:9200 \
-            -e OCIS_URL=$OCIS_URL \
+            -e OCIS_URL=$OC_URL \
             -e OCIS_INSECURE=true \
             -e OCIS_LOG_LEVEL=error \
             -e IDM_ADMIN_PASSWORD=admin \
@@ -68,6 +69,24 @@ jobs:
             --entrypoint sh \
             owncloud/ocis-rolling:latest \
             -c 'ocis init || true && ocis server'
+
+      - name: opencloud-server
+        if: matrix.system == 'Opencloud'
+        run: |
+          docker run --rm -d \
+            -p 9200:9200 \
+            -e OC_URL=$OC_URL \
+            -e OC_INSECURE=true \
+            -e OC_LOG_LEVEL=error \
+            -e IDM_ADMIN_PASSWORD=admin \
+            -e PROXY_ENABLE_BASIC_AUTH=true \
+            -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/opencloud/csp.yml \
+            -e WEB_ASSET_APPS_PATH=/web/apps \
+            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/opencloud/csp.yml:ro \
+            -v ${{ github.workspace }}/dist:/web/apps:ro \
+            --entrypoint sh \
+            opencloudeu/opencloud-rolling:latest \
+            -c 'opencloud init || true && opencloud server'
 
       - name: host-ip
         id: host_ip
