@@ -21,7 +21,7 @@ AfterAll(async function () {
 
 // Create a new browser context and page per scenario
 Before(async function () {
-  global.context = await global.browser.newContext({ ignoreHTTPSErrors: true })
+  global.context = await global.browser.newContext({ ignoreHTTPSErrors: true, locale: 'en-US' })
   global.page = await global.context.newPage()
   if (config.debug) {
     global.page.on('console', (msg) => console.log(msg.text()))
