@@ -8,7 +8,8 @@ const config = {
   slowMo: parseInt(process.env.SLOW_MO) || 0,
   timeout: parseInt(process.env.TIMEOUT) || 60,
   minTimeout: parseInt(process.env.MIN_TIMEOUT) || 5,
-  headless: process.env.HEADLESS === 'true'
+  headless: process.env.HEADLESS === 'true',
+  debug: process.env.DEBUG === 'true'
 }
 
 module.exports = config
