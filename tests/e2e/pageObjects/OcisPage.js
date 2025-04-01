@@ -2,7 +2,7 @@ const config = require('../config')
 
 class Ocis {
   constructor() {
-    this.signInPageUrl = config.baseOcisUrl
+    this.signInPageUrl = config.baseUrl
     this.homePageSelector = '.oc-login-bg'
     this.loginFormSelector = '.oc-login-form'
     this.usernameInputFieldSelector = '#oc-login-username'
