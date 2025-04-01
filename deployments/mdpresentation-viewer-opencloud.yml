@@ -1,0 +1,14 @@
+---
+services:
+  opencloud:
+    depends_on:
+      mdpresentation-viewer:
+        condition: service_completed_successfully
+
+  mdpresentation-viewer:
+    image: jankaritech/mdpresentation-viewer-opencloud:2.1.0-rc1
+    volumes:
+      - opencloud-apps:/apps
+    entrypoint:
+      - /bin/sh
+    command: ["-c", "cp -R /app/* /apps"]
