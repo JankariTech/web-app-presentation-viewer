@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         system:
+          - Ocis
           - Opencloud
     runs-on: ubuntu-latest
     steps:
