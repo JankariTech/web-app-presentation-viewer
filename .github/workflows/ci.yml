@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: github.event_name == 'release'
         with:
-          name: dist
+          name: dist-${{ matrix.server }}
           path: dist/
           retention-days: 1
 
