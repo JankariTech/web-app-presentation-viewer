@@ -23,7 +23,7 @@ It allows users to:
 
 1. Download the zip file from the [releases page](https://github.com/JankariTech/web-app-presentation-viewer/releases)
 
-   For example: `mdpresentation-viewer-<architecture>-x.x.x.zip`
+   For example: `mdpresentation-viewer-<server>-x.x.x.zip`
 
 2. Extract the zip file to the `apps` directory of the OpenCloud/oCIS server.
 
