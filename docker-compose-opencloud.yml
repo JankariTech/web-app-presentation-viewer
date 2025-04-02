@@ -1,0 +1,22 @@
+services:
+  opencloud:
+    image: opencloudeu/opencloud-rolling:${OC_IMAGE_TAG:-latest}
+    entrypoint: /bin/sh
+    command: ['-c', 'opencloud init || true && opencloud server']
+    ports:
+      - 9200:9200
+    environment:
+      OC_URL: https://localhost:9200
+      OC_INSECURE: true
+      OC_LOG_LEVEL: error
+      # WEB
+      WEB_ASSET_APPS_PATH: /web/apps
+      # IDM
+      IDM_CREATE_DEMO_USERS: true
+      IDM_ADMIN_PASSWORD: admin
+      # PROXY
+      PROXY_ENABLE_BASIC_AUTH: true
+      PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yml
+    volumes:
+      - ./dist:/web/apps:ro
+      - ./dev/config/csp.yml:/etc/opencloud/csp.yml

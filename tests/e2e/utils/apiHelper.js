@@ -30,7 +30,7 @@ const getAuthHeaders = (user) => {
 }
 
 const getWebDavUrl = (user, fileName) => {
-  return `${config.baseOcisUrl}/dav/files/${user}/${fileName}`
+  return `${config.baseUrl}/dav/files/${user}/${fileName}`
 }
 
 module.exports = {

@@ -2,7 +2,8 @@
 ---
 ## Table of Contents
 1. Introduction
-   - ownCloud Web
+   - OpenCloud
+   - oCIS
    - Presentation Viewer
 2. Usages 
 3. Why this App?
@@ -12,11 +13,17 @@
 ---
 ## Introduction
 --
-### ownCloud Web
-A new view on your file platform
+### OpenCloud
+
+[Self-Hosted File Sharing](https://github.com/opencloud-eu/opencloud/)
+
+Secure, Simple and Reliable
+--
+### ownCloud Infinite Scale (oCIS)
+[ownCloud Infinite Scale (oCIS)](https://github.com/owncloud/ocis) is the new file sync & share platform that will be the foundation of your data management platform.
 --
 ### Presentation Viewer
-Extension for ownCloud Web
+Extension for OpenCloud & oCIS
 ---
 ## Usages
 Allows users to create slide presentations directly from markdown files

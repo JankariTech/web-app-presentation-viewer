@@ -2,7 +2,7 @@
 
 ![cover photo](./images/cover-large.png)
 
-A markdown presentation viewer for [ownCloud web](https://github.com/owncloud/web/) (the webUI of [oCIS](https://github.com/owncloud/ocis/)) using the [reveal.js](https://revealjs.com/) library.
+A markdown presentation viewer for [OpenCloud](https://github.com/opencloud-eu/opencloud/) and [oCIS](https://github.com/owncloud/ocis/) using the [reveal.js](https://revealjs.com/) library.
 
 It allows users to:
 
@@ -11,42 +11,35 @@ It allows users to:
 
 ## Demonstration
 
-- [Demonstation page](https://ocis.in-nepal.de/com.github.jankaritech.mdpresentation-viewer/public/phDIUqntYOMSfcE/presentation.md)
+- [Demonstation page OpenCloud](https://opencloud.in-nepal.de/files/link/public/PHxkrAlpSRaqNNK)
+- [Demonstation page oCIS](https://ocis.in-nepal.de/files/link/public/phDIUqntYOMSfcE)
 - Click on `Open in Presentation Viewer` to view the slides
 
 ## Supported oCIS and Web Versions
 
-- [oCIS](https://github.com/owncloud/ocis) (>= 6.x.x)
-- [Web](https://nodejs.org/en/) (>= 9.x.x)
+- [oCIS](https://github.com/owncloud/ocis) (>= 6.x.x) or [OpenCloud](https://github.com/opencloud-eu/opencloud/) (>= 2.0.0)
 
 ## App Installation
 
-> NOTE: Requires oCIS >= 6.0.0
-
 1. Download the zip file from the [releases page](https://github.com/JankariTech/web-app-presentation-viewer/releases)
 
-   For example: `mdpresentation-viewer-x.x.x.zip`
+   For example: `mdpresentation-viewer-<server>-x.x.x.zip`
 
-2. Extract the zip file to the `apps` directory of the oCIS server.
+2. Extract the zip file to the `apps` directory of the OpenCloud/oCIS server.
 
    Apps directory is set using the `WEB_ASSET_APPS_PATH` environment variable.
 
-### App Installation With [oCIS Deployment](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full)
+### App Installation With [OpenCloud](https://github.com/opencloud-eu/opencloud/tree/main/deployments/examples/opencloud_full) or [oCIS Deployment](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full)
 
-1. Copy [`deployments/mdpresentation-viewer.yml`](./deployments/mdpresentation-viewer.yml) into the [web_extensions](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full/web_extensions)
-subfolder of oCIS full deployment example.
-2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml` to the `## oCIS Web Extensions ##` section of the `.env` file of your installation (file is located in `deployments/examples/ocis_full`) and append it to the `COMPOSE_FILE` variable.
+1. Copy the `yml` file that corresponds with your server (OpenCloud or oCIS) from [`deployments/`](./deployments/) into the `web_extensions`
+subfolder.
+2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-server>.yml` to the `Web Extensions` section of the `.env` file of your installation and append it to the `COMPOSE_FILE` variable.
     ```env
-    ## oCIS Web Extensions ##
-    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer.yml
+    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-server>.yml
     
     COMPOSE_FILE=docker-compose.yml${...}${MDPRESENTATION_VIEWER:-}
     ```
-3. Run `docker compose up` to run oCIS with the extensions
-
-  oCIS URL: [ocis.owncloud.test](https://ocis.owncloud.test)
-
-  See the [docs](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full).
+3. Run `docker compose up` to run the server with the extensions
 
 ## Creating Presentation
 
@@ -59,16 +52,26 @@ This app has the following default slide separators:
 
 ## Development
 
+> [!IMPORTANT] When switching between OpenCloud and oCIS, make sure to clean the browser cache!
+> [!CAUTION] Before commiting changes run `make installOcis` and `make clean`
+
 #### Prerequisites
 
 - [Node.js `v18`](https://nodejs.org/en/)
 - [pnpm `v8`](https://pnpm.io/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [jq](https://jqlang.org/)
 
 #### 1. Install dependencies:
 
+For OpenCloud:
 ```bash
-pnpm install
+make installOpencloud
+```
+
+For oCIS:
+```bash
+make installOcis
 ```
 
 #### 2. Build the extension
@@ -81,12 +84,29 @@ pnpm build:w
 
 #### 3. Load the extension
 
-> NOTE: Requires oCIS >= 6.0.0
+Run the server with the extension:
 
-Run the oCIS server:
-
+For OpenCloud:
 ```bash
-docker compose up
+docker compose -f docker-compose-opencloud.yml up
 ```
 
-oCIS URL: [localhost:9200](https://localhost:9200)
+For oCIS:
+```bash
+docker compose -f docker-compose-ocis.yml up
+```
+
+server URL: [localhost:9200](https://localhost:9200)
+
+## Building Docker Container
+
+For OpenCloud:
+```bash
+docker build --build-arg server=Opencloud -t jankaritech/mdpresentation-viewer-opencloud:<version> .
+```
+
+
+For Ocis:
+```bash
+docker build --build-arg server=Ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
+```

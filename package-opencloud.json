@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "@opencloud-eu/extension-sdk": "^1.0.0",
+    "@opencloud-eu/prettier-config": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@opencloud-eu/web-client": "^1.0.0",
+    "@opencloud-eu/web-pkg": "^1.0.0"
+  }
+}
