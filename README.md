@@ -11,7 +11,8 @@ It allows users to:
 
 ## Demonstration
 
-- [Demonstation page oCIS](https://ocis.in-nepal.de/com.github.jankaritech.mdpresentation-viewer/public/phDIUqntYOMSfcE/presentation.md)
+- [Demonstation page OpenCloud](https://opencloud.in-nepal.de/files/link/public/PHxkrAlpSRaqNNK)
+- [Demonstation page oCIS](https://ocis.in-nepal.de/files/link/public/phDIUqntYOMSfcE)
 - Click on `Open in Presentation Viewer` to view the slides
 
 ## Supported oCIS and Web Versions
