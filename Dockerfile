@@ -1,10 +1,10 @@
 FROM owncloudci/nodejs:20 AS stage
-ARG system=Ocis
+ARG server=Ocis
 
 WORKDIR /extension
 
 COPY . .
-RUN make install$system
+RUN make install$server
 RUN pnpm build
 
 FROM alpine:3.20

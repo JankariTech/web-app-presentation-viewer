@@ -13,7 +13,7 @@ dependenciesOpencloud: clean
 	$(MAKE) depencenciesReplacement SOURCE=ownclouders DEST=opencloud-eu
 
 package:
-	jq -s '.[0] * .[1]' package-general.json $(PACKAGE_JSON) > package.json
+	jq -s '.[0] * .[1]' package-common.json $(PACKAGE_JSON) > package.json
 
 depencenciesReplacement:
 	find . -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.prettierrc"  \) -not \( -path "./node_modules/*" -o -path "./dist/*" \) -print0 | xargs -0 sed -i 's/${SOURCE}/${DEST}/g'

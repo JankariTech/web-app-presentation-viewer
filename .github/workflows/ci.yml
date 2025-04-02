@@ -18,7 +18,7 @@ jobs:
   lint-and-tests:
     strategy:
       matrix:
-        system:
+        server:
           - Ocis
           - Opencloud
     runs-on: ubuntu-latest
@@ -27,13 +27,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: generate-package-json
-        run: make dependencies${{ matrix.system }}
+        run: make dependencies${{ matrix.server }}
 
       - name: pnpm-install
         uses: pnpm/action-setup@v4
 
       - name: install
-        run: make install${{ matrix.system }}
+        run: make install${{ matrix.server }}
 
       - name: lint
         run: pnpm lint
@@ -53,7 +53,7 @@ jobs:
         run: pnpm test:unit --coverage
 
       - name: ocis-server
-        if: matrix.system == 'Ocis'
+        if: matrix.server == 'Ocis'
         run: |
           docker run --rm -d \
             -p 9200:9200 \
@@ -71,7 +71,7 @@ jobs:
             -c 'ocis init || true && ocis server'
 
       - name: opencloud-server
-        if: matrix.system == 'Opencloud'
+        if: matrix.server == 'Opencloud'
         run: |
           docker run --rm -d \
             -p 9200:9200 \

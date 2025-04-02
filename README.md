@@ -30,15 +30,15 @@ It allows users to:
 
 ### App Installation With [OpenCloud](https://github.com/opencloud-eu/opencloud/tree/main/deployments/examples/opencloud_full) or [oCIS Deployment](https://github.com/owncloud/ocis/tree/master/deployments/examples/ocis_full)
 
-1. Copy the `yml` file for your system from [`deployments/`](./deployments/) into the `web_extensions`
+1. Copy the `yml` file that corresponds with your server (OpenCloud or oCIS) from [`deployments/`](./deployments/) into the `web_extensions`
 subfolder.
-2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-system>.yml` to the `Web Extensions` section of the `.env` file of your installation and append it to the `COMPOSE_FILE` variable.
+2. Add `MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-server>.yml` to the `Web Extensions` section of the `.env` file of your installation and append it to the `COMPOSE_FILE` variable.
     ```env
-    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-system>.yml
+    MDPRESENTATION_VIEWER=:web_extensions/mdpresentation-viewer-<your-server>.yml
     
     COMPOSE_FILE=docker-compose.yml${...}${MDPRESENTATION_VIEWER:-}
     ```
-3. Run `docker compose up` to run the system with the extensions
+3. Run `docker compose up` to run the server with the extensions
 
 ## Creating Presentation
 
@@ -101,11 +101,11 @@ server URL: [localhost:9200](https://localhost:9200)
 
 For OpenCloud:
 ```bash
-docker build --build-arg system=Opencloud -t jankaritech/mdpresentation-viewer-opencloud:<version> .
+docker build --build-arg server=Opencloud -t jankaritech/mdpresentation-viewer-opencloud:<version> .
 ```
 
 
 For Ocis:
 ```bash
-docker build --build-arg system=Ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
+docker build --build-arg server=Ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
 ```
