@@ -6,7 +6,7 @@ services:
         condition: service_completed_successfully
 
   mdpresentation-viewer:
-    image: jankaritech/mdpresentation-viewer:2.0.0
+    image: jankaritech/mdpresentation-viewer:2.1.0
     volumes:
       - ocis-apps:/apps
     entrypoint:
