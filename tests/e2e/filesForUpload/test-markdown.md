@@ -52,3 +52,14 @@ We are using Triple Dash "---" as a slide separator
  # Title for slide 3
  Content of slide 3
  ```
+---
+### Flowcharts with Mermaid
+
+```mermaid
+flowchart LR
+  A[Boss tells <br>you to create <br>a presentation] --> B{Use Powerpoint or a MD file?};
+  B -- Powerpoint --> C(Frustration 😫);
+C --> D[Rethink 🤔];
+D --> B;
+B -- MD file 🧑‍💻 ----> E[Job done 👍];
+```

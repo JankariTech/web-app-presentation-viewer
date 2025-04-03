@@ -33,6 +33,7 @@ import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
 import RevealMarkdown from 'reveal.js/plugin/markdown/markdown'
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
+import RevealMermaid from 'reveal.js-mermaid-plugin/plugin/mermaid/mermaid'
 
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
@@ -101,7 +102,7 @@ onMounted(async () => {
     })
 
   reveal = new Reveal(unref(revealContainer), {
-    plugins: [RevealMarkdown, RevealHighlight]
+    plugins: [RevealMarkdown, RevealHighlight, RevealMermaid]
   })
 
   await reveal.initialize({
