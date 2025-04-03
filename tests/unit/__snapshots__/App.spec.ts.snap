@@ -7,10 +7,13 @@ exports[`App component > render markdown slides 1`] = `
     <div id="slideContainer" class="slides no-transition" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
       <section data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;" class="present">
         <h3 id="slide-1">Slide 1</h3>
-        <p>Lorem <strong>Bold</strong> <em>Italic</em> <del>strike through</del></p>
-        <blockquote>
-          <p>Quote statement</p>
-        </blockquote>
+        <p>Lorem <strong>Bold</strong> <em>Italic</em> <del>strike through</del>
+        <div class="alert">
+          <blockquote>
+            <p>Quote statement</p>
+          </blockquote>
+        </div>
+        </p>
         <ul>
           <li><input disabled="" type="checkbox"> check box</li>
         </ul>
