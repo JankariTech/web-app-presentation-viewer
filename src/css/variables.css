@@ -1,3 +1,4 @@
+@import '../../node_modules/revealjs-awesomd/dist/css/alerts.css';
 /* color */
 :root {
   --code-color: #c1798b;
