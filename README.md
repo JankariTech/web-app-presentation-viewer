@@ -1,4 +1,4 @@
-# Markdown Presentation Viewer for ownCloud Web
+# Markdown Presentation Viewer for OpenCloud & ownCloud (oCIS)
 
 ![cover photo](./images/cover-large.png)
 
