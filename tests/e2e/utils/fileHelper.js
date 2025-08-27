@@ -27,6 +27,7 @@ const cleanupResources = async () => {
   for (const userDetail of userDetails) {
     await deleteResource(userDetail.user, userDetail.fileName)
   }
+  userDetails.length = 0
 }
 
 module.exports = { uploadFile, cleanupResources }
