@@ -98,6 +98,17 @@ docker compose -f docker-compose-ocis.yml up
 
 server URL: [localhost:9200](https://localhost:9200)
 
+### Running e2e tests:
+For oCIS:
+```bash
+pnpm run test:e2e <path_to_feature_file>
+```
+
+For OpenCloud:
+```bash
+TARGET_APP=opencloud pnpm run test:e2e <path_to_feature_file>
+```
+
 ## Building Docker Container
 
 For OpenCloud:

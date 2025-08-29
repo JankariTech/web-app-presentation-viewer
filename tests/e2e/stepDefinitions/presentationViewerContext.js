@@ -1,9 +1,13 @@
 const { Given, When, Then } = require('@cucumber/cucumber')
 const { expect } = require('@playwright/test')
+
+const config = require('../config')
+
 const { getUserCredentials } = require('../utils/userHelper')
 const { uploadFile } = require('../utils/fileHelper')
 const PresentationViewer = require('../pageObjects/PresentationViewerPage')
 const Ocis = require('../pageObjects/OcisPage')
+const Opencloud = require('../pageObjects/OpencloudPage')
 
 const presentationViewer = new PresentationViewer()
 const ocis = new Ocis()
@@ -25,7 +29,12 @@ Given('user {string} has logged in', async function (user) {
 When(
   'user {string} previews a markdown file {string} in presentation viewer',
   async function (user, fileName) {
-    await ocis.openMDFileInPresentationViewer()
+    if (config.targetApp === 'opencloud') {
+      const opencloud = new Opencloud()
+      await opencloud.openMDFileInPresentationViewer()
+    } else {
+      await ocis.openMDFileInPresentationViewer()
+    }
   }
 )
 
