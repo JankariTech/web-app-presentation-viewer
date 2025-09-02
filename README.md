@@ -106,7 +106,7 @@ pnpm run test:e2e <path_to_feature_file>
 
 For OpenCloud:
 ```bash
-TARGET_APP=opencloud pnpm run test:e2e <path_to_feature_file>
+TARGET_SERVER=opencloud pnpm run test:e2e <path_to_feature_file>
 ```
 
 ## Building Docker Container

@@ -22,11 +22,6 @@ class Ocis {
     await page.fill(this.passwordInputFieldSelector, password)
     await page.click(this.loginBtnSelector)
   }
-
-  async openMDFileInPresentationViewer() {
-    await page.click(this.contextMenuBtnSelector)
-    await page.click(this.openInPresentationViewerBtnSelector)
-  }
 }
 
 module.exports = Ocis

@@ -10,7 +10,7 @@ const config = {
   minTimeout: parseInt(process.env.MIN_TIMEOUT) || 5,
   headless: process.env.HEADLESS === 'true',
   debug: process.env.DEBUG === 'true',
-  targetApp: process.env.TARGET_APP || 'ocis'
+  targetServer: process.env.TARGET_SERVER.toLowerCase() || 'ocis'
 }
 
 module.exports = config

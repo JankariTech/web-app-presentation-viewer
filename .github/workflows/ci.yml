@@ -102,16 +102,8 @@ jobs:
       - name: install-chromium
         run: npx playwright install chromium
 
-      - name: e2e (Opencloud)
-        if: matrix.server == 'Opencloud'
+      - name: e2e-${{ matrix.server }}
         run: pnpm test:e2e tests/e2e/features/**/*.feature
         env:
           HEADLESS: true
-          TARGET_APP: opencloud
-
-      - name: e2e (Ocis)
-        if: matrix.server == 'Ocis'
-        run: pnpm test:e2e tests/e2e/features/**/*.feature
-        env:
-          HEADLESS: true
-          TARGET_APP: ocis
+          TARGET_SERVER: ${{ matrix.server }}
