@@ -1,12 +1,15 @@
 const { Given, When, Then } = require('@cucumber/cucumber')
 const { expect } = require('@playwright/test')
+
 const { getUserCredentials } = require('../utils/userHelper')
 const { uploadFile } = require('../utils/fileHelper')
 const PresentationViewer = require('../pageObjects/PresentationViewerPage')
 const Ocis = require('../pageObjects/OcisPage')
+const Files = require('../pageObjects/FilesPage')
 
 const presentationViewer = new PresentationViewer()
 const ocis = new Ocis()
+const files = new Files()
 
 Given(
   'user {string} has uploaded the markdown file {string} using API',
@@ -25,7 +28,7 @@ Given('user {string} has logged in', async function (user) {
 When(
   'user {string} previews a markdown file {string} in presentation viewer',
   async function (user, fileName) {
-    await ocis.openMDFileInPresentationViewer()
+    await files.openMDFileInPresentationViewer()
   }
 )
 

@@ -102,7 +102,8 @@ jobs:
       - name: install-chromium
         run: npx playwright install chromium
 
-      - name: e2e
+      - name: e2e-${{ matrix.server }}
         run: pnpm test:e2e tests/e2e/features/**/*.feature
         env:
           HEADLESS: true
+          TARGET_SERVER: ${{ matrix.server }}
