@@ -39,3 +39,9 @@ Then(
     await expect(page.locator(presentationViewer.slidesContainerSelector)).toBeVisible()
   }
 )
+
+Then('the content of the current slide should be {string}', async function (content) {
+  await expect(page.locator(presentationViewer.currentSlideSelector)).toBeVisible()
+  const currentSlideContent = await presentationViewer.getCurrentSlideContent()
+  await expect(currentSlideContent).toBe(content)
+})
