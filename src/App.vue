@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, unref, watch } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, unref, watch, nextTick } from 'vue'
 import {
   AppLoadingSpinner,
   useThemeStore,
@@ -64,6 +64,9 @@ const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 
 let reveal: Reveal.Api
+const awesoMd = RevealAwesoMD()
+const baseUrl = `${window.location.origin}/assets/apps/${appId}`
+awesoMd.setBaseUrl(baseUrl)
 
 const { url } = defineProps({
   url: {
@@ -102,7 +105,7 @@ onMounted(async () => {
     })
 
   reveal = new Reveal(unref(revealContainer), {
-    plugins: [RevealAwesoMD, RevealHighlight, RevealMermaid]
+    plugins: [awesoMd, RevealHighlight, RevealMermaid]
   })
 
   await reveal.initialize({
@@ -111,6 +114,29 @@ onMounted(async () => {
     history: true,
     center: true,
     controlsLayout: 'edges'
+  })
+
+  if (reveal.isReady()) {
+    applyTemplateIfNeeded()
+    addCustomSlideNumber()
+    updateImageStructure()
+    fitContent()
+    adjustFontSize()
+    updateLogoUrl()
+  } else {
+    reveal.addEventListener('ready', function () {
+      applyTemplateIfNeeded()
+      addCustomSlideNumber()
+      updateImageStructure()
+      fitContent()
+      adjustFontSize()
+      updateLogoUrl()
+    })
+  }
+
+  reveal.addEventListener('slidechanged', function () {
+    fitContent()
+    adjustFontSize()
   })
 
   isReadyToShow.value = true
@@ -206,6 +232,172 @@ function dirname(path: string) {
 }
 function basename(path: string) {
   return path.split('/').reverse()[0]
+}
+
+// TEMPLATE RELATED
+function addCustomSlideNumber() {
+  const allSlides = reveal.getSlides()
+  for (const [slideNumber, slide] of Array.from(allSlides).entries()) {
+    const customSlideNumber = slide.querySelector('.custom-slide-number')
+    if (!customSlideNumber) {
+      continue
+    }
+    customSlideNumber.textContent = `${slideNumber + 1}`
+  }
+}
+function updateImageStructure() {
+  const pTags = document.querySelectorAll('p > img')
+  pTags.forEach((img) => {
+    const pTag = img.parentNode
+    const divContainer = document.createElement('div')
+    divContainer.classList.add('image-container')
+    const divWrapper = document.createElement('div')
+    divWrapper.classList.add('image-wrapper')
+    divWrapper.appendChild(img)
+    divContainer.appendChild(divWrapper)
+    pTag.parentNode?.replaceChild(divContainer, pTag)
+  })
+}
+function adjustFontSize() {
+  const currentSlide = reveal.getCurrentSlide()
+
+  function getTotalHeightOfChildren(container) {
+    let totalHeight = 0
+    for (const child of container.children) {
+      if (currentSlide.classList.contains('title-content-image')) {
+        if (child.className !== 'image-container') {
+          totalHeight += getHeightWithMargin(child)
+        }
+      } else {
+        totalHeight += getHeightWithMargin(child)
+      }
+    }
+    return totalHeight
+  }
+
+  function getHeightWithMargin(element) {
+    const style = getComputedStyle(element)
+    const marginTop = parseFloat(style.marginTop)
+    const marginBottom = parseFloat(style.marginBottom)
+    const paddingTop = parseFloat(style.paddingTop)
+    const paddingBottom = parseFloat(style.paddingBottom)
+    return element.offsetHeight + marginTop + marginBottom + paddingTop + paddingBottom
+  }
+
+  const contentWrapper = currentSlide.querySelector('.content-wrapper') as HTMLElement
+  const content = currentSlide.querySelector('.content') as HTMLElement
+
+  if (!contentWrapper || !content) return
+
+  const contentWrapperHeight = contentWrapper.offsetHeight
+  let totalHeight = getTotalHeightOfChildren(content)
+
+  // set minimum font size from where the image starts to get reduced as well
+  // this is to prevent the font size to get too small and becomes hard to read
+  const fontSizeToStartReducingImage = 12
+  let fontSize = parseFloat(getComputedStyle(content).fontSize)
+
+  while (totalHeight > contentWrapperHeight) {
+    const scaleFactor = contentWrapperHeight / totalHeight
+    fontSize = Math.floor(scaleFactor * fontSize)
+
+    const wrapperElements = Array.from(content.children) as HTMLElement[]
+    wrapperElements.forEach((wrapperElement) => {
+      wrapperElement.style.fontSize = `${fontSize}px`
+      const style = getComputedStyle(wrapperElement)
+      const marginTop = Math.floor(parseFloat(style.marginTop) * scaleFactor)
+      const marginBottom = Math.floor(parseFloat(style.marginBottom) * scaleFactor)
+      wrapperElement.style.marginTop = `${marginTop}px`
+      wrapperElement.style.marginBottom = `${marginBottom}px`
+    })
+
+    // reduce image size if font size gets smaller than minimum font size
+    const images = content.querySelectorAll(
+      '.image-container .image-wrapper img'
+    ) as NodeListOf<HTMLImageElement>
+    if (fontSize <= fontSizeToStartReducingImage && images.length > 0) {
+      images.forEach((image) => {
+        const currentWidth = image.offsetWidth
+        const currentHeight = image.offsetHeight
+        image.style.width = `${Math.floor(currentWidth * scaleFactor)}px`
+        image.style.height = `${Math.floor(currentHeight * scaleFactor)}px`
+      })
+    }
+    totalHeight = getTotalHeightOfChildren(content)
+  }
+
+  if (currentSlide.classList.contains('about-us')) {
+    const content = currentSlide.querySelector('.content') as HTMLElement
+    const infoSection = currentSlide.querySelector('.info-section') as HTMLElement
+    const contentWidth = content.offsetWidth
+    let infoSectionWidth = infoSection.scrollWidth
+    while (infoSectionWidth > contentWidth) {
+      const scaleFactor = contentWidth / infoSectionWidth
+      fontSize = Math.floor(scaleFactor * fontSize)
+
+      const infoBoxes = infoSection.querySelectorAll('.info-box') as NodeListOf<HTMLElement>
+      infoBoxes.forEach((box) => {
+        box.style.fontSize = `${fontSize}px`
+        const style = getComputedStyle(box)
+        const padding = parseFloat(style.padding) * scaleFactor
+        box.style.padding = `${Math.max(2, Math.floor(padding))}px`
+        box.style.margin = `${Math.max(2, Math.floor(parseFloat(style.margin) * scaleFactor))}px`
+      })
+      infoSectionWidth = infoSection.scrollWidth
+    }
+  }
+}
+function fitContent() {
+  const images = document.querySelectorAll('img')
+  let imagesLoaded = 0
+
+  images.forEach((img) => {
+    if (img.complete) {
+      imagesLoaded++
+    } else {
+      img.addEventListener('load', () => {
+        imagesLoaded++
+        if (imagesLoaded === images.length) {
+          adjustFontSize()
+        }
+      })
+    }
+  })
+
+  if (images.length === 0) {
+    adjustFontSize()
+  }
+}
+function getFrontMatterFromMarkdown() {
+  const options = {}
+  const rawMarkdown = unref(mdTextarea).value
+  return awesoMd.parseFrontMatter(rawMarkdown, options)[1]
+}
+function setFontColor() {
+  const frontMatter = getFrontMatterFromMarkdown()
+  const color = frontMatter.metadata.color
+  document.querySelectorAll('.title p, h1').forEach((el) => {
+    el.style.color = color
+  })
+}
+function applyTemplateIfNeeded() {
+  const frontMatter = getFrontMatterFromMarkdown()
+  if (frontMatter.metadata?.slide) {
+    // dynamically import CSS file only when needed
+    import('./css/templates.css')
+    setFontColor()
+  }
+}
+async function updateLogoUrl() {
+  const frontMatter = getFrontMatterFromMarkdown()
+  if (frontMatter.metadata?.logo) {
+    const newLogoUrl = await updateImageUrls(frontMatter.metadata.logo)
+    await nextTick()
+    const imgs = document.querySelectorAll('.logo img')
+    imgs.forEach((img) => {
+      img.src = newLogoUrl
+    })
+  }
 }
 </script>
 
