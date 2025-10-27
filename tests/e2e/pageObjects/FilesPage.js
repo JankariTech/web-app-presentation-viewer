@@ -3,7 +3,7 @@ const config = require('../config')
 
 class Files {
   constructor() {
-    this.contextMenuBtnSelector = '.resource-table-btn-action-dropdown'
+    this.contextMenuBtnSelector = '[class*=-btn-action-dropdown]'
     this.openInPresentationViewerBtnSelector = '.oc-files-actions-presentation-viewer-trigger'
     this.openWithBtnSelector = 'button[id^="oc-files-context-actions-open-with-toggle"]'
   }
