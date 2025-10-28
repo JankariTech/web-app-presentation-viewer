@@ -145,6 +145,8 @@ footer {
     width: 100%;
 }
 
+
+
 .title-content-image .content-container .content-wrapper .content > ul,
 .title-content-image .content-container .content-wrapper .content > ol,
 .title-content-image .content-container .content-wrapper .content > p,
@@ -159,6 +161,13 @@ footer {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+.title-content-image .content-container .content-wrapper .content .image-container img {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    max-height: 80vh;
 }
 
 .about-us-text {

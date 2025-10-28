@@ -84,11 +84,18 @@ Following the front matter, create slides as described in [Creating Presentation
 
 Besides default metadata, you can also provide inline metadata for each slide. This will be useful when you want to
 override the default metadata for a specific slide and this will be applied to that slide only. The inline metadata can
-be defined by adding metadata directly after the slide title as below:
+be defined by adding metadata directly on the slide title as below:
 
 ```markdown
 # Title of the slide ::metadata_key_1:metadata_value_1 ::metadata_key_2:metadata_value_2
 ```
+
+Example:
+```markdown
+# Title of slide ::slide:title-content-image ::logo:logo.png
+```
+
+For this slide, the `slide` template will be set to `title-content-image`, and the `logo` will be set to `logo.png`.
 
 ### Slide Templates
 

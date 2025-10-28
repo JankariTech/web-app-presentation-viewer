@@ -246,7 +246,9 @@ function addCustomSlideNumber() {
   }
 }
 function updateImageStructure() {
-  const pTags = document.querySelectorAll('p > img')
+  const slideContainer = document.getElementById('slideContainer')
+  if (!slideContainer) return
+  const pTags = slideContainer.querySelectorAll('section p > img')
   pTags.forEach((img) => {
     const pTag = img.parentNode
     const divContainer = document.createElement('div')
