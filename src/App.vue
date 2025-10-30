@@ -246,9 +246,8 @@ function addCustomSlideNumber() {
   }
 }
 function updateImageStructure() {
-  const slideContainer = document.getElementById('slideContainer')
-  if (!slideContainer) return
-  const pTags = slideContainer.querySelectorAll('section p > img')
+  if (!slideContainer.value) return
+  const pTags = slideContainer.value.querySelectorAll('section p > img')
   pTags.forEach((img) => {
     const pTag = img.parentNode
     const divContainer = document.createElement('div')
@@ -350,7 +349,7 @@ function adjustFontSize() {
   }
 }
 function fitContent() {
-  const images = document.querySelectorAll('img')
+  const images = slideContainer.value.querySelectorAll('img')
   let imagesLoaded = 0
 
   images.forEach((img) => {
@@ -378,7 +377,7 @@ function getFrontMatterFromMarkdown() {
 function setFontColor() {
   const frontMatter = getFrontMatterFromMarkdown()
   const color = frontMatter.metadata.color
-  document.querySelectorAll('.title p, h1').forEach((el) => {
+  slideContainer.value.querySelectorAll('.title p, h1').forEach((el) => {
     el.style.color = color
   })
 }
@@ -395,7 +394,7 @@ async function updateLogoUrl() {
   if (frontMatter.metadata?.logo) {
     const newLogoUrl = await updateImageUrls(frontMatter.metadata.logo)
     await nextTick()
-    const imgs = document.querySelectorAll('.logo img')
+    const imgs = slideContainer.value.querySelectorAll('.logo img')
     imgs.forEach((img) => {
       img.src = newLogoUrl
     })
