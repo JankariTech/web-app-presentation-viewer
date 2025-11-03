@@ -380,6 +380,12 @@ function setFontColor() {
   slideContainer.value.querySelectorAll('.title p, h1').forEach((el) => {
     el.style.color = color
   })
+  slideContainer.value.querySelectorAll('.about-us-text').forEach((el) => {
+    el.style.backgroundColor = color
+  })
+  slideContainer.value.querySelectorAll('.info-box h3').forEach((el) => {
+    el.style.color = color
+  })
 }
 function applyTemplateIfNeeded() {
   const frontMatter = getFrontMatterFromMarkdown()

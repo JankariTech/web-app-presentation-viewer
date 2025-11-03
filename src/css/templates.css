@@ -171,7 +171,6 @@ footer {
 }
 
 .about-us-text {
-    background-color: rgba(32, 67, 79, 0.8);
     width: 100%;
     color: #fff;
     text-align: center;
@@ -192,13 +191,12 @@ footer {
 }
 
 .info-box h3 {
-    color: #20434f;
     margin: 10px 0;
 }
 
 .divider {
     width: 1px;
-    background-color: #20434f;
+    background-color: #000000;
     opacity: 0.5;
     align-self: stretch;
 }

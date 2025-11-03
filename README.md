@@ -65,7 +65,13 @@ presenter: <name-of-the-presenter>
 logo: <path-to-logo>
 color: <font-color-for-slide-title>
 footer: <footer-content>
-aboutUs: <content-for-about-us-slide>
+aboutUs:
+    - title: <about-us-title1>
+      text: <text-for-title1>
+    - title: <about-us-title2>
+      text: <text-for-title2>
+    - title: <about-us-title3>
+      text: <text-for-title3>
 ---
 ```
 
@@ -75,10 +81,12 @@ These are the supported metadata required for the presentation template.
 |------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `slide`          | Default slide for presentation. Most used slide template can be given in the default metadata.                                                             |
 | `presenter`      | Name of the presenter.                                                                                                                                     |
-| `logo`           | Logo of the company. Logo appears on the top right corner of the slide                                                                                     |
+| `logo`           | Logo appears on the top right corner of the slide. The logo path should be relative to the markdown file.                                                  |
 | `color`          | Font color of the slide title.                                                                                                                             |
 | `footer`         | Content to be shown in the footer of the slide.                                                                                                            |
 | `aboutUs`        | Column wise content to be shown in the about-us slide. Use this metadata only if about-us slide is used for the presentation. More [here](#slide-about-us) |
+| `aboutUs:title`  | Title for each column in about-us slide.                                                                                                                   |
+| `aboutUs:text`   | Text under each title for column in about-us slide.                                                                                                        |
 
 Following the front matter, create slides as described in [Creating Presentation](#creating-presentation)
 
@@ -107,9 +115,15 @@ default metadata, so you don't need to add the slide metadata in every slide.
 | `cover`               | This slide template can be used for cover slide                 | `::slide:cover`               |
 | `title-content`       | The slide with title and content (content can be image as well) | `::slide:title-content`       |
 | `title-content-image` | The slide with title, and content in left and image in right    | `::slide:title-content-image` |
-| `about-us`            | The slide with company info (e.g., Values, mission, Vision)     | `::slide:about-us`            |
+| `about-us`            | The slide with about-us info (e.g., Values, mission, Vision)    | `::slide:about-us`            |
 
 #### Slide "Cover"
+
+Code:
+
+```markdown
+# TITLE ::slide:cover
+```
 
 Preview:
 
@@ -127,13 +141,15 @@ Preview:
 └────────────────────────────────────────────────────┘
 ```
 
+#### Slide "title-content"
+
 Code:
 
 ```markdown
-# TITLE ::slide:cover
-```
+# TITLE ::slide:title-content
 
-#### Slide "title-content"
+CONTENT
+```
 
 Preview:
 
@@ -151,15 +167,17 @@ Preview:
 └────────────────────────────────────────────────────┘
 ```
 
+Image can also be included in the content of the slide.
+
 Code:
 
 ```markdown
-# TITLE ::slide:title-content
+# TITLE ::slide:title-image
 
 CONTENT
-```
 
-Image can also be included in the content of the slide.
+![This is image description](./image.png)
+```
 
 Preview:
 
@@ -177,17 +195,17 @@ Preview:
 └────────────────────────────────────────────────────┘
 ```
 
+#### Slide "title-content-image"
+
 Code:
 
 ```markdown
-# TITLE ::slide:title-image
+# TITLE ::slide:title-content-image
 
 CONTENT
 
-![This is image description](./image.png)
+![This is image description](image.png)
 ```
-
-#### Slide "title-content-image"
 
 Preview:
 
@@ -205,37 +223,7 @@ Preview:
 └────────────────────────────────────────────────────┘
 ```
 
-Code:
-
-```markdown
-# TITLE ::slide:title-content-image
-
-CONTENT
-
-![This is image description](image.png)
-```
-
 #### Slide "about-us"
-
-Preview:
-
-```text
-┌────────────────────────────────────────────────────┐
-│ TITLE                                         LOGO │
-├────────────────────────────────────────────────────┤
-│                                                    │
-│   ┌────────────────────────────────────────────┐   │
-│   │                CONTENT                     │   │
-│   └────────────────────────────────────────────┘   │
-│   ┌────────┐    │    ┌────────┐   │   ┌────────┐   │
-│   │ TITLE  │    │    │ TITLE  │   │   │ TITLE  │   │
-│   │ TEXT   │    │    │ TEXT   │   │   │ TEXT   │   │
-│   └────────┘    │    └────────┘   │   └────────┘   │
-│                                                    │
-├────────────────────────────────────────────────────┤
-│  FOOTER                                    PAGENR  │
-└────────────────────────────────────────────────────┘
-```
 
 Code:
 
@@ -257,6 +245,26 @@ aboutUs:
   - title: Title 3
     text: Some text under title 3
 ---
+```
+
+Preview:
+
+```text
+┌────────────────────────────────────────────────────┐
+│ TITLE                                         LOGO │
+├────────────────────────────────────────────────────┤
+│                                                    │
+│   ┌────────────────────────────────────────────┐   │
+│   │                CONTENT                     │   │
+│   └────────────────────────────────────────────┘   │
+│   ┌────────┐    │    ┌────────┐   │   ┌────────┐   │
+│   │ TITLE  │    │    │ TITLE  │   │   │ TITLE  │   │
+│   │ TEXT   │    │    │ TEXT   │   │   │ TEXT   │   │
+│   └────────┘    │    └────────┘   │   └────────┘   │
+│                                                    │
+├────────────────────────────────────────────────────┤
+│  FOOTER                                    PAGENR  │
+└────────────────────────────────────────────────────┘
 ```
 
 ## Development
