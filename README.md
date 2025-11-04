@@ -107,15 +107,14 @@ For this slide, the `slide` template will be set to `title-content-image`, and t
 
 ### Slide Templates
 
-The slide template should be provided in the default metadata. Provide slide template that will be mostly used in the
-default metadata, so you don't need to add the slide metadata in every slide.
+The slide template should be provided in the default metadata. The slide type set in the default metadata will be used as the default. The mostly used slide template can be set as default. When you set a slide template in the default metadata, you don’t need to specify the slide type again in the inline metadata for slides that are already defined in the default metadata.
 
-| Slide Template        | Desctiption                                                     | Usage                         |
-|-----------------------|-----------------------------------------------------------------|-------------------------------|
-| `cover`               | This slide template can be used for cover slide                 | `::slide:cover`               |
-| `title-content`       | The slide with title and content (content can be image as well) | `::slide:title-content`       |
-| `title-content-image` | The slide with title, and content in left and image in right    | `::slide:title-content-image` |
-| `about-us`            | The slide with about-us info (e.g., Values, mission, Vision)    | `::slide:about-us`            |
+| Slide Template        | Desctiption                                                                       | Usage                         |
+|-----------------------|-----------------------------------------------------------------------------------|-------------------------------|
+| `cover`               | This slide template can be used for cover slide                                   | `::slide:cover`               |
+| `title-content`       | A slide with a title and some content (the content can also be an image)          | `::slide:title-content`       |
+| `title-content-image` | A slide with a title, and content on the left side and an image on the right side | `::slide:title-content-image` |
+| `about-us`            | The slide with about-us info (e.g., Values, mission, Vision)                      | `::slide:about-us`            |
 
 #### Slide "Cover"
 
@@ -233,7 +232,7 @@ Code:
 CONTENT
 ```
 
-The `title` and `text` can be provided via default metadat in front matter as:
+The `title` and `text` can be provided via default metadata in front matter as:
 
 ```markdown
 ---
