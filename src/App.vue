@@ -62,6 +62,7 @@ const isReadyToShow = ref<boolean>(false)
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
+const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
@@ -350,6 +351,9 @@ function adjustFontSize() {
 }
 function fitContent() {
   const images = slideContainer.value.querySelectorAll('img')
+  if (!images) {
+    return
+  }
   let imagesLoaded = 0
 
   images.forEach((img) => {
@@ -369,13 +373,13 @@ function fitContent() {
     adjustFontSize()
   }
 }
-function getFrontMatterFromMarkdown() {
+function separateFrontmatterAndMarkdown() {
   const options = {}
   const rawMarkdown = unref(mdTextarea).value
-  return awesoMd.parseFrontMatter(rawMarkdown, options)[1]
+  return awesoMd.parseFrontMatter(rawMarkdown, options)
 }
 function setFontColor() {
-  const frontMatter = getFrontMatterFromMarkdown()
+  const frontMatter = separateFrontmatterAndMarkdown()[1]
   const color = frontMatter.metadata.color
   slideContainer.value.querySelectorAll('.title p, h1').forEach((el) => {
     el.style.color = color
@@ -388,15 +392,23 @@ function setFontColor() {
   })
 }
 function applyTemplateIfNeeded() {
-  const frontMatter = getFrontMatterFromMarkdown()
-  if (frontMatter.metadata?.slide) {
+  const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
+  let slideType = frontMatter.metadata?.slide
+
+  if (!slideType) {
+    const match = markdown.match(headingSlideRegex)
+    if (match) {
+      slideType = match[1]
+    }
+  }
+  if (slideType) {
     // dynamically import CSS file only when needed
     import('./css/templates.css')
     setFontColor()
   }
 }
 async function updateLogoUrl() {
-  const frontMatter = getFrontMatterFromMarkdown()
+  const frontMatter = separateFrontmatterAndMarkdown()[1]
   if (frontMatter.metadata?.logo) {
     const newLogoUrl = await updateImageUrls(frontMatter.metadata.logo)
     await nextTick()

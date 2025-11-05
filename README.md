@@ -171,7 +171,7 @@ Image can also be included in the content of the slide.
 Code:
 
 ```markdown
-# TITLE ::slide:title-image
+# TITLE ::slide:title-content
 
 CONTENT
 
