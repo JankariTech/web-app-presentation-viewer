@@ -146,6 +146,9 @@ onBeforeUnmount(() => {
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
+  if (reveal) {
+    reveal.destroy()
+  }
 })
 
 // COMPUTED

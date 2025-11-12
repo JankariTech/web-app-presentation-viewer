@@ -17,7 +17,7 @@
     "@types/reveal.js": "^4.4.8",
     "reveal.js": "^5.1.0",
     "reveal.js-mermaid-plugin": "^11.4.1",
-    "revealjs-awesomd": "github:opf/revealjs-awesoMD"
+    "revealjs-awesomd": "github:opf/revealjs-awesoMD#handle-yaml-error"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.24.5",
