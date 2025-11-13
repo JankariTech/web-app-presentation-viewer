@@ -1,6 +1,7 @@
 <template>
   <div
     id="presentation-viewer-main"
+    ref="presentationViewerRef"
     class="presentation-viewer"
     :class="{ 'dark-mode': isDarkMode }"
   >
@@ -58,6 +59,7 @@ const revealContainer = ref<HTMLElement>()
 const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
+const presentationViewerRef = ref<HTMLElement>()
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
@@ -68,6 +70,7 @@ let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
 const baseUrl = `${window.location.origin}/assets/apps/${appId}`
 awesoMd.setBaseUrl(baseUrl)
+let loadTemplate = false
 
 const { url } = defineProps({
   url: {
@@ -143,6 +146,8 @@ onMounted(async () => {
   isReadyToShow.value = true
 })
 onBeforeUnmount(() => {
+  presentationViewerRef.value.classList.remove('md-template')
+  loadTemplate = false
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
@@ -396,16 +401,11 @@ function setFontColor() {
 }
 function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
-  let slideType = frontMatter.metadata?.slide
+  loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
 
-  if (!slideType) {
-    const match = markdown.match(headingSlideRegex)
-    if (match) {
-      slideType = match[1]
-    }
-  }
-  if (slideType) {
+  if (loadTemplate) {
     // dynamically import CSS file only when needed
+    presentationViewerRef.value.classList.add('md-template')
     import('./css/templates.css')
     setFontColor()
   }
