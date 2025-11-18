@@ -121,7 +121,7 @@ onMounted(async () => {
   })
 
   if (reveal.isReady()) {
-    applyTemplateIfNeeded()
+    await applyTemplateIfNeeded()
     addCustomSlideNumber()
     updateImageStructure()
     fitContent()
@@ -399,16 +399,19 @@ function setFontColor() {
     el.style.color = color
   })
 }
-function applyTemplateIfNeeded() {
+async function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
   loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
 
   if (loadTemplate) {
     // dynamically import CSS file only when needed
     presentationViewerRef.value.classList.add('md-template')
-    import('./css/templates.css')
+    await import('./css/templates.css')
     setFontColor()
+    await new Promise((resolve) => requestAnimationFrame(resolve))
+    await new Promise((resolve) => setTimeout(resolve, 100))
   }
+  return loadTemplate
 }
 async function updateLogoUrl() {
   const frontMatter = separateFrontmatterAndMarkdown()[1]
