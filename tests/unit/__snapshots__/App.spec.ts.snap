@@ -149,7 +149,7 @@ exports[`Template Features > should render about us template 1`] = `
     </div>
     <footer>
       <div class="footer-content"></div>
-      <div class="custom-slide-number"></div>
+      <div class="custom-slide-number">1</div>
     </footer>
 
   </section>
@@ -207,7 +207,7 @@ exports[`Template Features > should render title content image template 1`] = `
     </div>
     <footer>
       <div class="footer-content"></div>
-      <div class="custom-slide-number"></div>
+      <div class="custom-slide-number">1</div>
     </footer>
 
   </section>
@@ -247,7 +247,7 @@ exports[`Template Features > should render title content template 1`] = `
     </div>
     <footer>
       <div class="footer-content"></div>
-      <div class="custom-slide-number"></div>
+      <div class="custom-slide-number">1</div>
     </footer>
 
   </section>

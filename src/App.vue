@@ -40,6 +40,7 @@ import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 import './css/variables.css'
+import './css/templates.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
@@ -121,21 +122,12 @@ onMounted(async () => {
   })
 
   if (reveal.isReady()) {
-    await applyTemplateIfNeeded()
+    applyTemplateIfNeeded()
+    await updateLogoUrl()
     addCustomSlideNumber()
     updateImageStructure()
     fitContent()
     adjustFontSize()
-    updateLogoUrl()
-  } else {
-    reveal.addEventListener('ready', function () {
-      applyTemplateIfNeeded()
-      addCustomSlideNumber()
-      updateImageStructure()
-      fitContent()
-      adjustFontSize()
-      updateLogoUrl()
-    })
   }
 
   reveal.addEventListener('slidechanged', function () {
@@ -399,24 +391,20 @@ function setFontColor() {
     el.style.color = color
   })
 }
-async function applyTemplateIfNeeded() {
+function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
   loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
-
   if (loadTemplate) {
-    // dynamically import CSS file only when needed
     presentationViewerRef.value.classList.add('md-template')
-    await import('./css/templates.css')
     setFontColor()
-    await new Promise((resolve) => requestAnimationFrame(resolve))
-    await new Promise((resolve) => setTimeout(resolve, 100))
   }
   return loadTemplate
 }
 async function updateLogoUrl() {
   const frontMatter = separateFrontmatterAndMarkdown()[1]
-  if (frontMatter.metadata?.logo) {
-    const newLogoUrl = await updateImageUrls(frontMatter.metadata.logo)
+  const logo = frontMatter.metadata?.logo
+  if (logo) {
+    const newLogoUrl = await updateImageUrls(logo)
     await nextTick()
     const imgs = slideContainer.value.querySelectorAll('.logo img')
     imgs.forEach((img) => {
