@@ -281,6 +281,27 @@ slide: non-existent
     expect(vm.html()).toContain('Template for slide "non-existent" not found.')
   })
 
+  it('should return sanitized error message', async () => {
+    global.fetch = vi.fn().mockImplementation(() => {
+      return Promise.resolve({
+        text: () =>
+          Promise.resolve(`---
+slide: title-content
+presenter: John Doe
+logo: https://external:9200/cat.jpg
+---
+# Reveal Js Templates in Web App Presentation Viewer ::slide:<a href="jankari.tech">jankaritech</a>
+`),
+        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
+      })
+    })
+    const vm = getWrapper()
+    await flushPromises()
+    expect(vm.html()).toContain(
+      'Template for slide "<a href="jankari.tech">jankaritech</a>" not found.'
+    )
+  })
+
   it('should return yaml parsing error', async () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     global.fetch = vi.fn().mockImplementation(() => {
