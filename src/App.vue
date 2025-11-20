@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref, unref, watch, nextTick } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref, unref, watch } from 'vue'
 import {
   AppLoadingSpinner,
   useThemeStore,
@@ -66,6 +66,7 @@ const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
+const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
@@ -104,6 +105,12 @@ onMounted(async () => {
           const imageUrl = await updateImageUrls(imgPath)
           line = line.replace(`(${imgPath})`, `(${imageUrl})`)
         }
+        const logoMatches = line.matchAll(logoRegex)
+        for (const logoMatch of logoMatches) {
+          const logoPath = logoMatch[1].trim()
+          const logoUrl = await updateImageUrls(logoPath)
+          line = line.replace(`${logoPath}`, `${logoUrl}`)
+        }
         parsedData.push(line)
       }
       unref(mdTextarea).textContent = parsedData.join('\n')
@@ -123,7 +130,6 @@ onMounted(async () => {
 
   if (reveal.isReady()) {
     applyTemplateIfNeeded()
-    await updateLogoUrl()
     addCustomSlideNumber()
     updateImageStructure()
     fitContent()
@@ -399,18 +405,6 @@ function applyTemplateIfNeeded() {
     setFontColor()
   }
   return loadTemplate
-}
-async function updateLogoUrl() {
-  const frontMatter = separateFrontmatterAndMarkdown()[1]
-  const logo = frontMatter.metadata?.logo
-  if (logo) {
-    const newLogoUrl = await updateImageUrls(logo)
-    await nextTick()
-    const imgs = slideContainer.value.querySelectorAll('.logo img')
-    imgs.forEach((img) => {
-      img.src = newLogoUrl
-    })
-  }
 }
 </script>
 
