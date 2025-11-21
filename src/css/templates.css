@@ -1,0 +1,215 @@
+.md-template .slides {
+    font-size: 28px;
+}
+
+.md-template #slideContainer > section {
+    justify-content: flex-start !important;
+    align-items: flex-start;
+}
+
+.md-template #slideContainer h1,
+.md-template #slideContainer h2,
+.md-template #slideContainer h3,
+.md-template #slideContainer h4,
+.md-template #slideContainer h5,
+.md-template #slideContainer h6,
+.md-template #slideContainer p,
+.md-template #slideContainer img,
+.md-template #slideContainer ul,
+.md-template #slideContainer li,
+.md-template #slideContainer ol,
+.md-template #slideContainer div,
+.md-template #slideContainer footer {
+    margin-left: 0;
+    padding: 0;
+    text-transform: none;
+}
+
+
+.md-template .title {
+    top: 0;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.md-template .title h1 {
+    margin: 0;
+}
+
+.md-template .title p {
+    font-size: 42px;
+}
+
+.md-template .logo {
+    height: 80px;
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+.md-template .logo img {
+    margin: 0;
+}
+
+.md-template footer {
+    width: 100%;
+    height: 10%;
+    font-size: 22px;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.md-template .content-container {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.md-template .content-container ul,
+.md-template .content-container ol {
+    padding-left: 20px !important;
+}
+
+.md-template .slides section:not(.cover) .content-container .content-wrapper {
+    min-height: 0;
+    padding: 10px;
+    width: 100%;
+    height: 95%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.md-template .slides section:not(.cover) .content-container .content-wrapper .content {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.md-template .title-content-image .content-container .content-wrapper .content {
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.md-template .title-content-image .content-container .content-wrapper .content > p:has(img){
+    height: 100%;
+    width: 50%;
+    float: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.md-template .cover .content-container {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.md-template .cover .content-container .logo {
+    height: 40%;
+    padding: 10px;
+}
+
+.md-template .image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.md-template .image-container .image-wrapper {
+    max-width: 100%;
+    max-height: 100px;
+    padding: 5px;
+}
+
+.md-template .image-container .image-wrapper > img {
+    height: auto;
+    width: auto;
+    display: block;
+    margin: 0;
+}
+
+.md-template .title-content-image .content-container .content-wrapper .content {
+    position: relative;
+    width: 100%;
+}
+
+
+
+.md-template .title-content-image .content-container .content-wrapper .content > ul,
+.md-template .title-content-image .content-container .content-wrapper .content > ol,
+.md-template .title-content-image .content-container .content-wrapper .content > p,
+.md-template .title-content-image .content-container .content-wrapper .content > table {
+    width: 50%;
+}
+
+.md-template .title-content-image .content-container .content-wrapper .content .image-container {
+    height: 100%;
+    width: 50%;
+    float: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.md-template .title-content-image .content-container .content-wrapper .content .image-container img {
+    max-width: 100%;
+    height: auto;
+    width: auto;
+    max-height: 80vh;
+}
+
+.md-template .about-us-text {
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.md-template .info-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    text-align: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.md-template .info-box {
+    padding: 10px 20px;
+}
+
+.md-template .info-box h3 {
+    margin: 10px 0;
+}
+
+.md-template .divider {
+    width: 2px;
+    background-color: #000000;
+    opacity: 0.5;
+    align-self: stretch;
+}
+
+.md-template .about-us .content-container .content-wrapper {
+    justify-content: center;
+}
+
+.md-template .info-section .divider:last-child {
+    display: none;
+}

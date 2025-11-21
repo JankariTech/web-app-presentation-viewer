@@ -1,0 +1,40 @@
+<script type="x-tmpl-mustache">
+<div class="content-container">
+<div class="title">
+<h1>
+
+{{{ title }}}
+
+</h1>
+<div class="logo">
+<img src="{{{ metadata.logo }}}" alt="Logo">
+</div>
+</div>
+
+<div class="content-wrapper">
+<div class="content">
+<div class="about-us-text">
+
+{{{ content }}}
+
+</div>
+<div class="info-section">
+
+{{#metadata.aboutUs}}
+<div class="info-box">
+<h3>{{ title }}</h3>
+<p>{{ text }}</p>
+</div>
+<div class="divider"></div>
+{{/metadata.aboutUs}}
+
+</div>
+
+</div>
+</div>
+</div>
+<footer>
+<div class="footer-content">{{{ metadata.footer }}}</div>
+<div class="custom-slide-number"></div>
+</footer>
+</script>

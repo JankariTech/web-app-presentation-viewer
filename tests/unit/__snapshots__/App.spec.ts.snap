@@ -98,3 +98,158 @@ exports[`App component > render markdown slides 1`] = `
   </div>
 </div>"
 `;
+
+exports[`Template Features > should render about us template 1`] = `
+"<div id="slideContainer" class="slides" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
+  <section class="about-us present" data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;">
+    <div class="content-container">
+      <div class="title">
+        <h1>
+
+          <p>About Us</p>
+        </h1>
+        <div class="logo">
+          <img src="https://external:9200/cat.jpg" alt="Logo">
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="about-us-text">
+
+            <p>Some content about us.</p>
+          </div>
+          <div class="info-section">
+
+            <div class="info-box">
+              <h3>WWW</h3>
+              <p>www.example.com</p>
+            </div>
+            <div class="divider"></div>
+            <div class="info-box">
+              <h3>LINKEDIN</h3>
+              <p>www.linkedin.com/company/example</p>
+            </div>
+            <div class="divider"></div>
+            <div class="info-box">
+              <h3>FACEBOOK</h3>
+              <p>www.facebook.com/example</p>
+            </div>
+            <div class="divider"></div>
+            <div class="info-box">
+              <h3>X</h3>
+              <p>www.x.com/example</p>
+            </div>
+            <div class="divider"></div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content"></div>
+      <div class="custom-slide-number">1</div>
+    </footer>
+
+  </section>
+</div>"
+`;
+
+exports[`Template Features > should render cover template 1`] = `
+"<div id="slideContainer" class="slides" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
+  <section class="cover present" data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;">
+    <div class="content-container">
+      <div class="logo">
+        <img src="https://external:9200/cat.jpg" alt="Logo">
+      </div>
+
+      <div class="content">
+        <h1>Reveal Js Templates in Web App Presentation Viewer</h1>
+
+        <p>
+          By: John Doe
+        </p>
+
+      </div>
+    </div>
+
+  </section>
+</div>"
+`;
+
+exports[`Template Features > should render title content image template 1`] = `
+"<div id="slideContainer" class="slides" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
+  <section class="title-content-image present" data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;">
+    <div class="content-container">
+      <div class="title">
+        <h1>
+
+          <p>Title Content Image Slide</p>
+        </h1>
+        <div class="logo">
+          <img src="https://external:9200/cat.jpg" alt="Logo">
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="content">
+
+          <ul>
+            <li>Introduction to mountain ecosystems</li>
+            <li>Basic concepts of quantum encryption</li>
+            <li>Exploring culinary traditions in Southeast Asia</li>
+            <li>Overview of blockchain consensus mechanisms</li>
+          </ul>
+          <p><img src="https://external:9200/cat.jpg" alt="cat"></p>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content"></div>
+      <div class="custom-slide-number">1</div>
+    </footer>
+
+  </section>
+</div>"
+`;
+
+exports[`Template Features > should render title content template 1`] = `
+"<div id="slideContainer" class="slides" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
+  <section class="title-content present" data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;">
+    <div class="content-container">
+      <div class="title">
+        <h1>
+
+          <p>Title Content Slide</p>
+        </h1>
+        <div class="logo">
+          <img src="https://external:9200/cat.jpg" alt="Logo">
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="content">
+
+          <ul>
+            <li>Introduction to mountain ecosystems</li>
+            <li>Basic concepts of quantum encryption</li>
+            <li>Exploring culinary traditions in Southeast Asia</li>
+            <li>Overview of blockchain consensus mechanisms</li>
+            <li>Setting up a personal productivity system</li>
+            <li>Writing clean, maintainable JavaScript code</li>
+            <li>Understanding modern art movements</li>
+            <li>History of aviation and early flight experiments</li>
+            <li>Managing team dynamics in remote work</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content"></div>
+      <div class="custom-slide-number">1</div>
+    </footer>
+
+  </section>
+</div>"
+`;
