@@ -5,20 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0] - 2025-03-02
 
 ### Added
+- support for OpenCloud
 
 ### Fixed
 
-- SVG files cannot be used as images (https://github.com/JankariTech/web-app-presentation-viewer/issues/85)
-- Trying to load an image from an not existing folder, breaks the presentation (https://github.com/JankariTech/web-app-presentation-viewer/issues/86)
-- Single backtick is not recognizable as code block (https://github.com/JankariTech/web-app-presentation-viewer/pull/82)
-- Code blocks in lists are not using existing space (https://github.com/JankariTech/web-app-presentation-viewer/pull/80)
-
-### Changed
-
-### Removed
+- fix: code blocks in lists are not using existing space (https://github.com/JankariTech/web-app-presentation-viewer/pull/80)
+- fix: use separate color and bg color for single code block (https://github.com/JankariTech/web-app-presentation-viewer/pull/82)
+- fix: trying to load an image from not existing folder, breaks the presentation (https://github.com/JankariTech/web-app-presentation-viewer/pull/88)
+- fix: .svg files cannot be used as images (https://github.com/JankariTech/web-app-presentation-viewer/pull/89)
 
 ## [2.0.0] - 2024-08-30
 
