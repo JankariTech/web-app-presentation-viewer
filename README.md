@@ -11,9 +11,9 @@ It allows users to:
 
 ## Demonstration
 
-- [Demonstation page OpenCloud](https://opencloud.in-nepal.de/files/link/public/PHxkrAlpSRaqNNK)
-- [Demonstation page oCIS](https://ocis.in-nepal.de/files/link/public/phDIUqntYOMSfcE)
-- Click on `Open in Presentation Viewer` to view the slides
+- [Demonstation page (OpenCloud)](https://opencloud.in-nepal.de/s/GLlKTyODNlEwmZh)
+- Click on `Open in Presentation Viewer` to view the slides </br>
+  <img height="300" alt="image" src="https://github.com/user-attachments/assets/fc85aa97-963a-4f7c-9696-f2515d760496" />
 
 ## Supported oCIS and Web Versions
 
