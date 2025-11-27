@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.0] - 2025-11-24
 
 ### Added
+- added possibility to show mermaid flow-charts (https://github.com/JankariTech/web-app-presentation-viewer/pull/105)
 - Add templates for presentation viewer (https://github.com/JankariTech/web-app-presentation-viewer/pull/111)
 
 ## [2.1.0] - 2025-03-02
