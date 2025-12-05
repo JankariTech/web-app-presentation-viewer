@@ -411,7 +411,7 @@ function applyTemplateIfNeeded() {
 <style lang="scss">
 .dark-mode {
   .reveal {
-    color: var(--oc-color-text-default) !important;
+    color: var(--oc-color-text-default, var(--color-role-on-surface)) !important;
 
     h1,
     h2,
@@ -419,7 +419,7 @@ function applyTemplateIfNeeded() {
     h4,
     h5,
     h6 {
-      color: var(--oc-color-text-default) !important;
+      color: var(--oc-color-text-default, var(--color-role-on-surface));
     }
 
     code {
