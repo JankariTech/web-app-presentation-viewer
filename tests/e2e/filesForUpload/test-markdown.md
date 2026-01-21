@@ -1,5 +1,9 @@
 # Presentation Viewer
 ---
+
+An extension for OpenCloud & ownCloud Infinite Scale (oCIS) that allows users to create slide presentations directly from markdown files.
+
+---
 ## Table of Contents
 1. Introduction
    - OpenCloud
