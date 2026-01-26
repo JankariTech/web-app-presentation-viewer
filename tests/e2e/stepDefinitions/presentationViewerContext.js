@@ -32,6 +32,20 @@ When(
   }
 )
 
+When(
+  /^user "([^"]*)" navigates to the (previous|next) slide using navigation button$/,
+  async function (user, direction) {
+    await presentationViewer.changeSlideUsingNavigationButton(direction)
+  }
+)
+
+When(
+  /^user "([^"]*)" navigates to the (previous|next) slide using keyboard$/,
+  async function (user, direction) {
+    await presentationViewer.changeSlideUsingKeyboard(direction)
+  }
+)
+
 Then(
   'markdown file {string} should be opened in the presentation viewer',
   async function (fileName) {
