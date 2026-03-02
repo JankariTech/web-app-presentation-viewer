@@ -26,7 +26,7 @@ Given('user {string} has logged in', async function (user) {
 })
 
 When(
-  'user {string} previews a markdown file {string} in presentation viewer',
+  'user {string} previews markdown file {string} in presentation viewer',
   async function (user, fileName) {
     await files.openMDFileInPresentationViewer()
   }
@@ -58,4 +58,22 @@ Then('the content of the current slide should be {string}', async function (cont
   await expect(page.locator(presentationViewer.currentSlideSelector)).toBeVisible()
   const currentSlideContent = await presentationViewer.getCurrentSlideContent()
   await expect(currentSlideContent).toBe(content)
+})
+
+When(
+  'user {string} opens file {string} in text editor using sidebar panel',
+  async function (user, fileName) {
+    await files.openMDFileInTextEditorUsingSidebarPanel(fileName)
+  }
+)
+
+When(
+  'user {string} previews markdown file {string} in presentation viewer using sidebar panel',
+  async function (user, fileName) {
+    await files.openMDFileInPresentationViewerUsingSidebarPanel(fileName)
+  }
+)
+
+Then('file {string} should be opened in the text editor', async function (fileName) {
+  await expect(page.locator(presentationViewer.textEditorContainerSelector)).toBeVisible()
 })
