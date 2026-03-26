@@ -176,7 +176,29 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useConfigStore: vi.fn().mockImplementation(() => ({
     serverUrl: 'https://localhost:9200'
   })),
-  AppLoadingSpinner: vi.fn()
+  AppLoadingSpinner: vi.fn(),
+  useRoute: vi.fn().mockReturnValue({
+    value: {
+      query: {
+        fileId: 'test-file-id'
+      }
+    }
+  }),
+  useGetResourceContext: vi.fn().mockReturnValue({
+    getResourceContext: vi.fn().mockResolvedValue({
+      space: { id: 'test-space-id' },
+      resource: {},
+      path: '/test-path'
+    })
+  }),
+  useAuthStore: vi.fn().mockReturnValue({
+    accessToken: 'mock-access-token',
+    userContextReady: true,
+    user: {
+      onPremisesSamAccountName: 'admin',
+      displayName: 'Admin'
+    }
+  })
 }))
 // global mocks
 const defaultFetchMock = vi.fn().mockImplementation(() =>
