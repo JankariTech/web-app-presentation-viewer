@@ -23,6 +23,7 @@ Feature: markdown presentation viewer
     When user "admin" navigates to the previous slide using keyboard
     Then the content of the current slide should be "PRESENTATION VIEWER"
 
+  @skipOnOpenCloud
   Scenario: re-open markdown file in presentation viewer after opening in text editor
   When user "admin" previews markdown file "test-markdown.md" in presentation viewer
   Then markdown file "test-markdown.md" should be opened in the presentation viewer

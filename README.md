@@ -317,13 +317,15 @@ server URL: [localhost:9200](https://localhost:9200)
 ### Running e2e tests:
 For oCIS:
 ```bash
-pnpm run test:e2e <path_to_feature_file>
+pnpm run test:e2e:ocis <path_to_feature_file>
 ```
 
 For OpenCloud:
 ```bash
-TARGET_SERVER=opencloud pnpm run test:e2e <path_to_feature_file>
+pnpm run test:e2e:opencloud <path_to_feature_file>
 ```
+
+Note: Scenarios tagged with `@skipOnOpenCloud` are excluded when running against OpenCloud.
 
 ## Building Docker Container
 

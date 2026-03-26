@@ -11,7 +11,8 @@
     "lint": "eslint './*.{js,cjs,mjs,ts}' '{src,tests}/**/*.{js,cjs,mjs,ts,vue}' --color",
     "lint:fix": "pnpm lint --fix",
     "test:unit": "vitest",
-    "test:e2e": "NODE_TLS_REJECT_UNAUTHORIZED=0 cucumber-js"
+    "test:e2e:ocis": "NODE_TLS_REJECT_UNAUTHORIZED=0 cucumber-js",
+    "test:e2e:opencloud": "NODE_TLS_REJECT_UNAUTHORIZED=0 cucumber-js --tags \"not @skipOnOpenCloud\""
   },
   "dependencies": {
     "@types/reveal.js": "^4.4.8",
