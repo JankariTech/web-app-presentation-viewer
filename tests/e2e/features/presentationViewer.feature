@@ -12,6 +12,11 @@ Feature: markdown presentation viewer
     When user "admin" previews a markdown file "test-markdown.md" in presentation viewer
     Then markdown file "test-markdown.md" should be opened in the presentation viewer
     And the content of the current slide should be "PRESENTATION VIEWER"
+    # close and re-open presentation viewer
+    When user "admin" closes the presentation viewer
+    And user "admin" previews a markdown file "test-markdown.md" in presentation viewer
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "PRESENTATION VIEWER"
     # change slide with button in UI
     When user "admin" navigates to the next slide using navigation button
     Then the content of the current slide should be "An extension for OpenCloud & ownCloud Infinite Scale (oCIS) that allows users to create slide presentations directly from markdown files."

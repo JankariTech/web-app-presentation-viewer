@@ -59,3 +59,7 @@ Then('the content of the current slide should be {string}', async function (cont
   const currentSlideContent = await presentationViewer.getCurrentSlideContent()
   await expect(currentSlideContent).toBe(content)
 })
+
+When('user {string} closes the presentation viewer', async function (user) {
+  await presentationViewer.closePresentationViewer()
+})

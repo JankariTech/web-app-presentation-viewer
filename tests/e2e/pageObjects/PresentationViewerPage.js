@@ -5,6 +5,7 @@ class PresentationViewer {
     this.currentSlideSelector = '#presentation-viewer-main section.present'
     this.navigateNextSlideSelector = 'button[aria-label="next slide"]'
     this.navigatePreviousSlideSelector = 'button[aria-label="previous slide"]'
+    this.closeFileSelector = '#app-top-bar-close'
   }
 
   async getCurrentSlideContent() {
@@ -25,6 +26,10 @@ class PresentationViewer {
   async changeSlideUsingKeyboard(direction) {
     const key = direction === 'next' ? 'ArrowRight' : 'ArrowLeft'
     await page.locator('body').press(key)
+  }
+
+  async closePresentationViewer() {
+    await page.click(this.closeFileSelector)
   }
 }
 
