@@ -1,6 +1,5 @@
-const Ocis = require('./OcisPage')
 const config = require('../config')
-const { openActionFromSidebarPanel } = require('../utils/presentationViewer')
+const { openActionsMenuFromSidebarPanel } = require('../utils/presentationViewer')
 
 class Files {
   constructor() {
@@ -19,12 +18,12 @@ class Files {
   }
 
   async openMDFileInTextEditorUsingSidebarPanel(fileName) {
-    await openActionFromSidebarPanel()
+    await openActionsMenuFromSidebarPanel()
     await page.click(this.openInTextEditorBtnSelector)
   }
 
   async openMDFileInPresentationViewerUsingSidebarPanel(fileName) {
-    await openActionFromSidebarPanel()
+    await openActionsMenuFromSidebarPanel()
     await page.click(this.openInPresentationViewerBtnSelector)
   }
 }

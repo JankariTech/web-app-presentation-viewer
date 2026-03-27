@@ -19,21 +19,21 @@ jobs:
     strategy:
       matrix:
         server:
-          - Ocis
-          - Opencloud
+          - ocis
+          - opencloud
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
 
       - name: generate-package-json
-        run: make dependencies${{ matrix.server }}
+        run: make dependencies-${{ matrix.server }}
 
       - name: pnpm-install
         uses: pnpm/action-setup@v4
 
       - name: install
-        run: make install${{ matrix.server }}
+        run: make install-${{ matrix.server }}
 
       - name: lint
         run: pnpm lint
@@ -53,7 +53,7 @@ jobs:
         run: pnpm test:unit --coverage
 
       - name: ocis-server
-        if: matrix.server == 'Ocis'
+        if: matrix.server == 'ocis'
         run: |
           docker run --rm -d \
             -p 9200:9200 \
@@ -71,7 +71,7 @@ jobs:
             -c 'ocis init || true && ocis server'
 
       - name: opencloud-server
-        if: matrix.server == 'Opencloud'
+        if: matrix.server == 'opencloud'
         run: |
           docker run --rm -d \
             -p 9200:9200 \
@@ -102,16 +102,7 @@ jobs:
       - name: install-chromium
         run: npx playwright install chromium
 
-      - name: e2e-ocis
-        if: matrix.server == 'Ocis'
-        run: pnpm test:e2e:ocis tests/e2e/features/**/*.feature
+      - name: e2e-${{ matrix.server }}
+        run: pnpm test:e2e:${{ matrix.server }} tests/e2e/features/**/*.feature
         env:
           HEADLESS: true
-          TARGET_SERVER: ocis
-
-      - name: e2e-opencloud
-        if: matrix.server == 'Opencloud'
-        run: pnpm test:e2e:opencloud tests/e2e/features/**/*.feature
-        env:
-          HEADLESS: true
-          TARGET_SERVER: opencloud

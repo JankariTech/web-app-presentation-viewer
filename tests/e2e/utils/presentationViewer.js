@@ -12,9 +12,9 @@ const openSidebarPanel = async () => {
   }
 }
 
-const openActionFromSidebarPanel = async () => {
+const openActionsMenuFromSidebarPanel = async () => {
   await openSidebarPanel()
   await page.click(presentationViewerPage.actionsMenuSelector)
 }
 
-module.exports = { sidebarPanelOpen, openSidebarPanel, openActionFromSidebarPanel }
+module.exports = { sidebarPanelOpen, openSidebarPanel, openActionsMenuFromSidebarPanel }

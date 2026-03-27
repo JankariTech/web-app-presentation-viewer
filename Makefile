@@ -1,21 +1,21 @@
-.PHONY: installOcis installOpencloud dependenciesOcis dependenciesOpencloud install clean package
+.PHONY: install-ocis install-opencloud dependencies-ocis dependencies-opencloud install clean package
 
-installOcis: dependenciesOcis install
+install-ocis: dependencies-ocis install
 
-installOpencloud: dependenciesOpencloud install
+install-opencloud: dependencies-opencloud install
 
-dependenciesOcis: clean
+dependencies-ocis: clean
 	$(MAKE) package PACKAGE_JSON=package-ocis.json
-	$(MAKE) depencenciesReplacement SOURCE=opencloud-eu DEST=ownclouders
+	$(MAKE) dependencies-replacement SOURCE=opencloud-eu DEST=ownclouders
 
-dependenciesOpencloud: clean
+dependencies-opencloud: clean
 	$(MAKE) package PACKAGE_JSON=package-opencloud.json
-	$(MAKE) depencenciesReplacement SOURCE=ownclouders DEST=opencloud-eu
+	$(MAKE) dependencies-replacement SOURCE=ownclouders DEST=opencloud-eu
 
 package:
 	jq -s '.[0] * .[1]' package-common.json $(PACKAGE_JSON) > package.json
 
-depencenciesReplacement:
+dependencies-replacement:
 	find . -type f \( -name "*.ts" -o -name "*.vue" -o -name "*.prettierrc"  \) -not \( -path "./node_modules/*" -o -path "./dist/*" \) -print0 | xargs -0 sed -i 's/${SOURCE}/${DEST}/g'
 
 clean:

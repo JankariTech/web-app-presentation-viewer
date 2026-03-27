@@ -269,7 +269,7 @@ Preview:
 ## Development
 
 > [!IMPORTANT] When switching between OpenCloud and oCIS, make sure to clean the browser cache!
-> [!CAUTION] Before commiting changes run `make installOcis` and `make clean`
+> [!CAUTION] Before commiting changes run `make install-ocis` and `make clean`
 
 #### Prerequisites
 
@@ -282,12 +282,12 @@ Preview:
 
 For OpenCloud:
 ```bash
-make installOpencloud
+make install-opencloud
 ```
 
 For oCIS:
 ```bash
-make installOcis
+make install-ocis
 ```
 
 #### 2. Build the extension
@@ -331,11 +331,11 @@ Note: Scenarios tagged with `@skipOnOpenCloud` are excluded when running against
 
 For OpenCloud:
 ```bash
-docker build --build-arg server=Opencloud -t jankaritech/mdpresentation-viewer-opencloud:<version> .
+docker build --build-arg server=opencloud -t jankaritech/mdpresentation-viewer-opencloud:<version> .
 ```
 
 
-For Ocis:
+For oCIS:
 ```bash
-docker build --build-arg server=Ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
+docker build --build-arg server=ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
 ```

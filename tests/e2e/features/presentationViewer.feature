@@ -25,11 +25,11 @@ Feature: markdown presentation viewer
 
   @skipOnOpenCloud
   Scenario: re-open markdown file in presentation viewer after opening in text editor
-  When user "admin" previews markdown file "test-markdown.md" in presentation viewer
-  Then markdown file "test-markdown.md" should be opened in the presentation viewer
-  And the content of the current slide should be "PRESENTATION VIEWER"
-  When user "admin" opens file "test-markdown.md" in text editor using sidebar panel
-  Then file "test-markdown.md" should be opened in the text editor
-  When user "admin" previews markdown file "test-markdown.md" in presentation viewer using sidebar panel
-  Then markdown file "test-markdown.md" should be opened in the presentation viewer
-  And the content of the current slide should be "PRESENTATION VIEWER"
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "PRESENTATION VIEWER"
+    When user "admin" opens file "test-markdown.md" in text editor using sidebar panel
+    Then file "test-markdown.md" should be opened in the text editor
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer using sidebar panel
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "PRESENTATION VIEWER"
