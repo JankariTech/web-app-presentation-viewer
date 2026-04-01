@@ -125,7 +125,8 @@ onMounted(async () => {
     progress: true,
     history: true,
     center: true,
-    controlsLayout: 'edges'
+    controlsLayout: 'edges',
+    embedded: true
   })
 
   if (reveal.isReady()) {
