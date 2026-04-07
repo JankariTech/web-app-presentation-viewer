@@ -5,6 +5,10 @@ class PresentationViewer {
     this.currentSlideSelector = '#presentation-viewer-main section.present'
     this.navigateNextSlideSelector = 'button[aria-label="next slide"]'
     this.navigatePreviousSlideSelector = 'button[aria-label="previous slide"]'
+    this.textEditorContainerSelector = '#text-editor-container'
+    this.sidebarPanelSelector = '#app-sidebar'
+    this.sidebarToggleBtnSelector = '#files-toggle-sidebar'
+    this.actionsMenuSelector = '#sidebar-panel-actions-select'
   }
 
   async getCurrentSlideContent() {
