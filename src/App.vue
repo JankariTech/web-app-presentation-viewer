@@ -40,7 +40,7 @@ import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 import './css/variables.css'
-import './css/templates.css'
+// import './css/templates.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
@@ -61,18 +61,22 @@ const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
+const customCssLink = ref(null)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
+const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
-const baseUrl = `${window.location.origin}/assets/apps/${appId}`
+const baseUrl = `${window.location.origin}/assets/apps/${appId}/templates`
 awesoMd.setBaseUrl(baseUrl)
 let loadTemplate = false
+let customTemplate = false
+let cssFilePath = null
 
 const { url } = defineProps({
   url: {
@@ -111,6 +115,15 @@ onMounted(async () => {
           const logoUrl = await updateImageUrls(logoPath)
           line = line.replace(`${logoPath}`, `${logoUrl}`)
         }
+        // use custom template if provided
+        const templatePathMatches = line.matchAll(templatePathRegex)
+        for (const templatePathMatch of templatePathMatches) {
+          const templatePath = templatePathMatch[1].trim()
+          const templatePathUrl = await updateTemplateUrl(templatePath)
+          awesoMd.setBaseUrl(templatePathUrl)
+          cssFilePath = templatePathUrl
+          customTemplate = true
+        }
         parsedData.push(line)
       }
       unref(mdTextarea).textContent = parsedData.join('\n')
@@ -130,7 +143,8 @@ onMounted(async () => {
   })
 
   if (reveal.isReady()) {
-    applyTemplateIfNeeded()
+    loadCustomCss()
+    // applyTemplateIfNeeded()
     addCustomSlideNumber()
     updateImageStructure()
     fitContent()
@@ -146,7 +160,9 @@ onMounted(async () => {
 })
 onBeforeUnmount(() => {
   presentationViewerRef.value.classList.remove('md-template')
+  customCssLink.value.remove()
   loadTemplate = false
+  customTemplate = false
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
@@ -240,6 +256,43 @@ function dirname(path: string) {
 }
 function basename(path: string) {
   return path.split('/').reverse()[0]
+}
+
+// custom templated related
+function getTemplatePath(path: string) {
+  return unref(activeFiles).find((file: Resource) => file.name === path)
+}
+async function updateTemplateUrl(templatePath: string) {
+  console.log('templatePath', templatePath)
+
+  let folder: Resource
+  if (templatePath.split('/').length > 1) {
+    folder = await getSubMediaFile(templatePath)
+  } else {
+    folder = getTemplatePath(templatePath)
+  }
+  if (!folder) {
+    return
+  }
+
+  const url = await getUrlForResource(unref(currentFileContext).space, folder)
+  return url.split('?')[0]
+}
+
+function loadCustomCss() {
+  console.log('is using custom template', customTemplate)
+  if (customTemplate) {
+    const cssFullUrl = cssFilePath + '/custom-templates.css'
+    console.log(cssFullUrl)
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = cssFullUrl
+    link.id = 'reveal-custom-css'
+    // document.head.appendChild(link)
+    const mainRevealContainer = document.getElementById('presentation-viewer-main')
+    mainRevealContainer.appendChild(link)
+    customCssLink.value = link
+  }
 }
 
 // TEMPLATE RELATED
