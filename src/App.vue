@@ -398,12 +398,21 @@ function setFontColor() {
     el.style.color = color
   })
 }
+function setLogo() {
+  const logo = frontMatter.metadata.logo
+  slideContainer.value.querySelectorAll('div.logo img').forEach((el) => {
+    if (!logo) {
+      el.style.display = 'none'
+    }
+  })
+}
 function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
   loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
   if (loadTemplate) {
     presentationViewerRef.value.classList.add('md-template')
     setFontColor()
+    setLogo(frontMatter)
   }
   return loadTemplate
 }
