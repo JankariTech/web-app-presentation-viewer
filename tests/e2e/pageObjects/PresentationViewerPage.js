@@ -9,6 +9,7 @@ class PresentationViewer {
     this.sidebarPanelSelector = '#app-sidebar'
     this.sidebarToggleBtnSelector = '#files-toggle-sidebar'
     this.actionsMenuSelector = '#sidebar-panel-actions-select'
+    this.closePresentationViewerButton = '#app-top-bar-close'
   }
 
   async getCurrentSlideContent() {
@@ -29,6 +30,10 @@ class PresentationViewer {
   async changeSlideUsingKeyboard(direction) {
     const key = direction === 'next' ? 'ArrowRight' : 'ArrowLeft'
     await page.locator('body').press(key)
+  }
+
+  async closePresentationViewer() {
+    await page.click(this.closePresentationViewerButton)
   }
 }
 

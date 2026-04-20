@@ -9,7 +9,12 @@ Feature: markdown presentation viewer
 
 
   Scenario: preview markdown file in presentation viewer
-    When user "admin" previews markdown file "test-markdown.md" in presentation viewer
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "PRESENTATION VIEWER"
+    # close and re-open presentation viewer
+    When user "admin" closes the presentation viewer
+    And user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
     Then markdown file "test-markdown.md" should be opened in the presentation viewer
     And the content of the current slide should be "PRESENTATION VIEWER"
     # change slide with button in UI
@@ -25,7 +30,7 @@ Feature: markdown presentation viewer
 
   @skipOnOpenCloud
   Scenario: re-open markdown file in presentation viewer after opening in text editor
-    When user "admin" previews markdown file "test-markdown.md" in presentation viewer
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
     Then markdown file "test-markdown.md" should be opened in the presentation viewer
     And the content of the current slide should be "PRESENTATION VIEWER"
     When user "admin" opens file "test-markdown.md" in text editor using sidebar panel

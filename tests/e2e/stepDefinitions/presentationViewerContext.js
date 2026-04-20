@@ -26,7 +26,7 @@ Given('user {string} has logged in', async function (user) {
 })
 
 When(
-  'user {string} previews markdown file {string} in presentation viewer',
+  'user {string} previews markdown file {string} in presentation viewer using context menu',
   async function (user, fileName) {
     await files.openMDFileInPresentationViewer()
   }
@@ -76,4 +76,8 @@ When(
 
 Then('file {string} should be opened in the text editor', async function (fileName) {
   await expect(page.locator(presentationViewer.textEditorContainerSelector)).toBeVisible()
+})
+
+When('user {string} closes the presentation viewer', async function (user) {
+  await presentationViewer.closePresentationViewer()
 })
