@@ -11,6 +11,7 @@ class Files {
     this.openInPresentationViewerBtnSelector = '.oc-files-actions-presentation-viewer-trigger'
     this.openWithBtnSelector = 'button[id^="oc-files-context-actions-open-with-toggle"]'
     this.openInTextEditorBtnSelector = '.oc-files-actions-text-editor-trigger'
+    this.resourceNameSelector = '//*[@data-test-resource-name="%s"]'
   }
 
   async openMDFileInPresentationViewer(fileName) {
@@ -29,6 +30,10 @@ class Files {
   async openMDFileInPresentationViewerUsingSidebarPanel(fileName) {
     await openActionsMenuFromSidebarPanel()
     await page.click(this.openInPresentationViewerBtnSelector)
+  }
+
+  async openFolder(user, folder) {
+    await page.click(util.format(this.resourceNameSelector, folder))
   }
 }
 

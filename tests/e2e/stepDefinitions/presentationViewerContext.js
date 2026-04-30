@@ -85,3 +85,7 @@ When('user {string} closes the presentation viewer', async function (user) {
 Given('user {string} creates a folder {string} using API', async function (user, folder) {
   await createFolder(user, folder)
 })
+
+Given('user {string} opens folder {string}', async function (user, folder) {
+  await files.openFolder(user, folder)
+})
