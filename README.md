@@ -289,7 +289,9 @@ templatePath: /
 
 To create the custom template you can take ideas form these [default templates](https://github.com/JankariTech/web-app-presentation-viewer/tree/main/public/templates).
 
-**Note:** For your templates to have the content fitting functionality, make your templates similar to the default templates.
+**Note:**
+- For your templates to have the content fitting functionality, make your templates similar to the default templates.
+- You can use either the default templates or your custom templates, but not both as the same time.
 
 ## Development
 
