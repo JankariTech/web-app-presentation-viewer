@@ -277,9 +277,8 @@ function getTemplatePath(path: string) {
 }
 async function updateTemplateUrl(templatePath: string) {
   if (['.', '/'].includes(templatePath)) {
-    const fileId = route.value.query.fileId as string
-    const space = await getResourceContext(fileId)
-    return window.location.origin + '/dav/spaces/' + space.space.id
+    const path = unref(currentFileContext).path
+    return window.location.origin + `/dav` + path.substring(0, path.lastIndexOf('/'))
   }
   let folder: Resource
   if (templatePath.split('/').length > 1) {
