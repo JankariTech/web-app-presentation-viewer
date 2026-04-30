@@ -266,6 +266,33 @@ Preview:
 └────────────────────────────────────────────────────┘
 ```
 
+## Using Custom Templates
+
+To use the custom templates, upload the custom templates and the CSS files.
+- Ensure that the templates and CSS files are located within the same directory as the Markdown file or in its subdirectories. Templates must not be referenced from outside this location.
+- Keep templates and CSS files in the same location.
+
+Add following two metadata in the frontmatter of your markdown file:
+```markdown
+templatePath: <path-to-templates>
+cssFile: <fileName>.css
+```
+
+If your template and CSS files are in the same location as the Markdown file, set the templatePath to: 
+```markdown
+templatePath: .
+```
+or
+```markdown
+templatePath: /
+```
+
+To create the custom template you can take ideas form these [default templates](https://github.com/JankariTech/web-app-presentation-viewer/tree/main/public/templates).
+
+**Note:**
+- For your templates to have the content fitting functionality, make your templates similar to the default templates.
+- You can use either the default templates or your custom templates, but not both as the same time.
+
 ## Development
 
 > [!IMPORTANT] When switching between OpenCloud and oCIS, make sure to clean the browser cache!

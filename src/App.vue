@@ -28,7 +28,10 @@ import {
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-  useAppsStore
+  useAppsStore,
+  useRoute,
+  useGetResourceContext,
+  useAuthStore
 } from '@ownclouders/web-pkg'
 import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
@@ -53,6 +56,9 @@ const { loadFolderForFileContext, currentFileContext, activeFiles } = useAppDefa
 })
 const { getUrlForResource, revokeUrl } = useAppFileHandling({ clientService })
 const appsStore = useAppsStore()
+const route = useRoute()
+const { getResourceContext } = useGetResourceContext()
+const authStore = useAuthStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
@@ -61,18 +67,22 @@ const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
+const customCssLink = ref(null)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
+const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
-const baseUrl = `${window.location.origin}/assets/apps/${appId}`
+const baseUrl = `${window.location.origin}/assets/apps/${appId}/templates`
 awesoMd.setBaseUrl(baseUrl)
 let loadTemplate = false
+let customTemplate = false
+let templatePathUrl = null
 
 const { url } = defineProps({
   url: {
@@ -111,6 +121,20 @@ onMounted(async () => {
           const logoUrl = await updateImageUrls(logoPath)
           line = line.replace(`${logoPath}`, `${logoUrl}`)
         }
+        // custom template
+        const templatePathMatches = line.matchAll(templatePathRegex)
+        for (const templatePathMatch of templatePathMatches) {
+          const templatePath = templatePathMatch[1].trim()
+          try {
+            templatePathUrl = await updateTemplateUrl(templatePath)
+            awesoMd.setBaseUrl(templatePathUrl)
+            awesoMd.setAuthToken(authStore.accessToken)
+            customTemplate = true
+          } catch (error) {
+            unref(mdTextarea).textContent = `# Error\n\n${error.message}`
+            return
+          }
+        }
         parsedData.push(line)
       }
       unref(mdTextarea).textContent = parsedData.join('\n')
@@ -130,6 +154,7 @@ onMounted(async () => {
   })
 
   if (reveal.isReady()) {
+    await loadCustomCss()
     applyTemplateIfNeeded()
     addCustomSlideNumber()
     updateImageStructure()
@@ -146,7 +171,11 @@ onMounted(async () => {
 })
 onBeforeUnmount(() => {
   presentationViewerRef.value.classList.remove('md-template')
+  if (customCssLink.value) {
+    customCssLink.value.remove()
+  }
   loadTemplate = false
+  customTemplate = false
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
@@ -240,6 +269,54 @@ function dirname(path: string) {
 }
 function basename(path: string) {
   return path.split('/').reverse()[0]
+}
+
+// custom templated related
+function getTemplatePath(path: string) {
+  return unref(activeFiles).find((file: Resource) => file.name === path)
+}
+async function updateTemplateUrl(templatePath: string) {
+  if (['.', '/'].includes(templatePath)) {
+    const path = unref(currentFileContext).path
+    return window.location.origin + '/dav' + path.substring(0, path.lastIndexOf('/'))
+  }
+  let folder: Resource
+  if (templatePath.split('/').length > 1) {
+    folder = await getSubMediaFile(templatePath)
+  } else {
+    folder = getTemplatePath(templatePath)
+  }
+  if (!folder) {
+    throw new Error(
+      `Template path "${templatePath}" not found. Please check the path provided in the markdown file.`
+    )
+  }
+  return window.location.origin + '/dav' + folder.webDavPath
+}
+
+async function loadCustomCss() {
+  const frontMatter = separateFrontmatterAndMarkdown()[1]
+  if (!customTemplate || !frontMatter.metadata?.cssFile) return
+
+  const cssFullUrl = `${templatePathUrl}/${frontMatter.metadata?.cssFile}`
+
+  const response = await fetch(cssFullUrl, {
+    headers: {
+      Authorization: `Bearer ${authStore.accessToken}`
+    }
+  })
+
+  if (!response.ok) {
+    console.error(`Failed to load CSS: ${response.status}`)
+    return
+  }
+
+  const cssText = await response.text()
+  const style = document.createElement('style')
+  style.id = 'reveal-custom-css'
+  style.textContent = cssText
+  document.head.appendChild(style)
+  customCssLink.value = style
 }
 
 // TEMPLATE RELATED
@@ -400,7 +477,10 @@ function setFontColor() {
 }
 function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
-  loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
+  const hasSlideMetadata = frontMatter.metadata?.slide
+  const hasHeadingSlide = markdown.match(headingSlideRegex)
+  const hasTemplatePath = frontMatter.metadata?.templatePath
+  loadTemplate = !!(hasSlideMetadata || hasHeadingSlide) && !hasTemplatePath
   if (loadTemplate) {
     presentationViewerRef.value.classList.add('md-template')
     setFontColor()
