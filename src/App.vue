@@ -83,6 +83,8 @@ awesoMd.setBaseUrl(baseUrl)
 let loadTemplate = false
 let customTemplate = false
 let templatePathUrl = null
+let templateCache: Record<string, string> = {}
+let pollingInterval: ReturnType<typeof setInterval> | null = null
 
 const { url } = defineProps({
   url: {
@@ -168,11 +170,19 @@ onMounted(async () => {
   })
 
   isReadyToShow.value = true
+
+  if (customTemplate) {
+    startTemplatePolling()
+  }
 })
 onBeforeUnmount(() => {
   presentationViewerRef.value.classList.remove('md-template')
   if (customCssLink.value) {
     customCssLink.value.remove()
+  }
+  if (pollingInterval) {
+    clearInterval(pollingInterval)
+    pollingInterval = null
   }
   loadTemplate = false
   customTemplate = false
@@ -317,6 +327,70 @@ async function loadCustomCss() {
   style.textContent = cssText
   document.head.appendChild(style)
   customCssLink.value = style
+}
+
+const startTemplatePolling = () => {
+  pollingInterval = setInterval(async () => {
+    await checkTemplateChanges()
+  }, 3000)
+}
+
+const reloadPresentation = async () => {
+  if (!customTemplate) return
+
+  // re-fetch markdown and re-process
+  await fetch(unref(url))
+    .then((res) => res.text())
+    .then(async (data) => {
+      unref(mdTextarea).textContent = data
+    })
+
+  // destroy and re-initialize reveal
+  reveal.destroy()
+  reveal = new Reveal(unref(revealContainer), {
+    plugins: [awesoMd, RevealHighlight, RevealMermaid]
+  })
+  await reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    controlsLayout: 'edges',
+    embedded: true
+  })
+}
+
+const checkTemplateChanges = async () => {
+  if (!customTemplate || !templatePathUrl) return
+
+  const templateFiles = [
+    ...new Set(
+      unref(mdTextarea)
+        .textContent.match(/slide:\s*(\S+)/g)
+        ?.map((m) => m.replace('slide:', '').trim()) || []
+    )
+  ]
+
+  let hasChanges = false
+
+  for (const template of templateFiles) {
+    const templatePath = `${templatePathUrl}/${template}-template.html`
+    const response = await fetch(templatePath, {
+      headers: { Authorization: `Bearer ${authStore.accessToken}` },
+      credentials: 'omit',
+      cache: 'no-cache'
+    })
+    const content = await response.text()
+
+    if (templateCache[template] && templateCache[template] !== content) {
+      hasChanges = true
+    }
+    templateCache[template] = content
+  }
+
+  if (hasChanges) {
+    await reloadPresentation()
+  }
 }
 
 // TEMPLATE RELATED
