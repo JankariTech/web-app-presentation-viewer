@@ -1,18 +1,8 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import App from '../../src/App.vue'
 
-// mock XMLHttpRequest for templates loading
-global.XMLHttpRequest = class XMLHttpRequest {
-  private responseText: string
-  private status: number
-
-  open(method, templatePath) {
-    const templateName = templatePath.split('/').pop()
-
-    switch (templateName) {
-      case 'cover-template.html':
-        this.status = 200
-        this.responseText = `<script type="x-tmpl-mustache">
+const templateHtmlMap: Record<string, string> = {
+  'cover-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
 <div class="logo">
 <img src="{{{ metadata.logo }}}" alt="Logo">
@@ -28,11 +18,9 @@ By: {{{ metadata.presenter }}}
 </div>
 </div>
 </script>
-`
-        break
-      case 'title-content-template.html':
-        this.status = 200
-        this.responseText = `<script type="x-tmpl-mustache">
+`,
+
+  'title-content-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
 <div class="title">
 <h1>
@@ -58,11 +46,9 @@ By: {{{ metadata.presenter }}}
 <div class="custom-slide-number"></div>
 </footer>
 </script>
-`
-        break
-      case 'title-content-image-template.html':
-        this.status = 200
-        this.responseText = `<script type="x-tmpl-mustache">
+`,
+
+  'title-content-image-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
 <div class="title">
 <h1>
@@ -88,11 +74,9 @@ By: {{{ metadata.presenter }}}
 <div class="custom-slide-number"></div>
 </footer>
 </script>
-`
-        break
-      case 'about-us-template.html':
-        this.status = 200
-        this.responseText = `<script type="x-tmpl-mustache">
+`,
+
+  'about-us-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
 <div class="title">
 <h1>
@@ -133,16 +117,42 @@ By: {{{ metadata.presenter }}}
 </footer>
 </script>
 `
-        break
-      default:
-        this.status = 404
-        return '<p>Template for slide "' + templateName + '" not found.</p>'
-    }
-  }
+}
 
-  send() {
-    return
-  }
+const createFetchMock = (markdownContent: string) => {
+  return vi.fn().mockImplementation((url: unknown) => {
+    if (typeof url !== 'string') {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(''),
+        blob: () => Promise.resolve(new Blob([], { type: 'image/png' }))
+      })
+    }
+
+    if (url.includes('-template.html')) {
+      const templateName = url.split('/').pop()
+      const templateHtml = templateHtmlMap[templateName]
+      if (templateHtml) {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(templateHtml),
+          blob: () => Promise.resolve(new Blob([templateHtml], { type: 'text/html' }))
+        })
+      }
+      return Promise.resolve({
+        ok: false,
+        status: 404,
+        text: () => Promise.resolve(''),
+        blob: () => Promise.resolve(new Blob([]))
+      })
+    }
+
+    return Promise.resolve({
+      ok: true,
+      text: () => Promise.resolve(markdownContent),
+      blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
+    })
+  })
 }
 
 // mock modules
@@ -176,35 +186,10 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useConfigStore: vi.fn().mockImplementation(() => ({
     serverUrl: 'https://localhost:9200'
   })),
-  AppLoadingSpinner: vi.fn(),
-  useRoute: vi.fn().mockReturnValue({
-    value: {
-      query: {
-        fileId: 'test-file-id'
-      }
-    }
-  }),
-  useGetResourceContext: vi.fn().mockReturnValue({
-    getResourceContext: vi.fn().mockResolvedValue({
-      space: { id: 'test-space-id' },
-      resource: {},
-      path: '/test-path'
-    })
-  }),
-  useAuthStore: vi.fn().mockReturnValue({
-    accessToken: 'mock-access-token',
-    userContextReady: true,
-    user: {
-      onPremisesSamAccountName: 'admin',
-      displayName: 'Admin'
-    }
-  })
+  AppLoadingSpinner: vi.fn()
 }))
 // global mocks
-const defaultFetchMock = vi.fn().mockImplementation(() =>
-  Promise.resolve({
-    text: () =>
-      Promise.resolve(`### Slide 1
+const defaultFetchMock = createFetchMock(`### Slide 1
 Lorem **Bold** *Italic* ~strike through~
 
 > Quote statement
@@ -253,15 +238,8 @@ Ordered list:
 \`\`\`
 code block
 \`\`\`
-`),
-    blob: () =>
-      Promise.resolve(
-        new Blob([JSON.stringify({})], {
-          type: 'image/png'
-        })
-      )
-  })
-)
+`)
+
 global.fetch = defaultFetchMock
 URL.createObjectURL = vi
   .fn()
@@ -288,56 +266,37 @@ describe('Template Features', async () => {
   })
 
   it('should return template not found error message', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: non-existent
 ---
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     expect(vm.html()).toContain('Template for slide "non-existent" not found.')
   })
 
   it('should return sanitized error message', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 presenter: John Doe
 logo: https://external:9200/cat.jpg
 ---
 # Reveal Js Templates in Web App Presentation Viewer ::slide:<a href="jankari.tech">jankaritech</a>
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     expect(vm.html()).toContain(
-      'Template for slide "<a href="jankari.tech">jankaritech</a>" not found.'
+      'Template for slide "a-href-jankari.tech-jankaritech-/a" not found.'
     )
   })
 
   it('should return yaml parsing error', async () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 logo: [invalid yaml
 ---
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
-
+`)
     const vm = getWrapper()
     await flushPromises()
     expect(errorSpy).toHaveBeenCalled()
@@ -347,19 +306,13 @@ logo: [invalid yaml
   })
 
   it('should render cover template', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 presenter: John Doe
 logo: https://external:9200/cat.jpg
 ---
 # Reveal Js Templates in Web App Presentation Viewer ::slide:cover
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     await vi.waitFor(
@@ -372,10 +325,7 @@ logo: https://external:9200/cat.jpg
   })
 
   it('should render title content template', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 presenter: John Doe
 logo: https://external:9200/cat.jpg
@@ -391,10 +341,7 @@ logo: https://external:9200/cat.jpg
 - Understanding modern art movements
 - History of aviation and early flight experiments
 - Managing team dynamics in remote work
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     await vi.waitFor(
@@ -407,10 +354,7 @@ logo: https://external:9200/cat.jpg
   })
 
   it('should render title content image template', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 presenter: John Doe
 logo: https://external:9200/cat.jpg
@@ -423,10 +367,7 @@ logo: https://external:9200/cat.jpg
 - Overview of blockchain consensus mechanisms
 
 ![cat](https://external:9200/cat.jpg)
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     await vi.waitFor(
@@ -439,10 +380,7 @@ logo: https://external:9200/cat.jpg
   })
 
   it('should render about us template', async () => {
-    global.fetch = vi.fn().mockImplementation(() => {
-      return Promise.resolve({
-        text: () =>
-          Promise.resolve(`---
+    global.fetch = createFetchMock(`---
 slide: title-content
 presenter: John Doe
 logo: https://external:9200/cat.jpg
@@ -459,10 +397,7 @@ aboutUs:
 # About Us ::slide:about-us
 
 Some content about us.
-`),
-        blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
-      })
-    })
+`)
     const vm = getWrapper()
     await flushPromises()
     await vi.waitFor(

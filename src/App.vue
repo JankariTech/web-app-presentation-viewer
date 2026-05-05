@@ -28,10 +28,7 @@ import {
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-  useAppsStore,
-  useRoute,
-  useGetResourceContext,
-  useAuthStore
+  useAppsStore
 } from '@ownclouders/web-pkg'
 import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
@@ -56,9 +53,6 @@ const { loadFolderForFileContext, currentFileContext, activeFiles } = useAppDefa
 })
 const { getUrlForResource, revokeUrl } = useAppFileHandling({ clientService })
 const appsStore = useAppsStore()
-const route = useRoute()
-const { getResourceContext } = useGetResourceContext()
-const authStore = useAuthStore()
 
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
@@ -67,7 +61,7 @@ const mdTextarea = ref<HTMLElement>()
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
-const customCssLink = ref(null)
+const customCssLink = ref<HTMLStyleElement | null>(null)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
@@ -75,6 +69,7 @@ const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
 const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
+const defaultSlideRegex = /(?<=slide:\s?)(\S+)/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
@@ -85,6 +80,7 @@ let customTemplate = false
 let templatePathUrl = null
 let templateCache: Record<string, string> = {}
 let pollingInterval: ReturnType<typeof setInterval> | null = null
+let templatePath = null
 
 const { url } = defineProps({
   url: {
@@ -110,6 +106,13 @@ onMounted(async () => {
     .then((res) => res.text())
     .then(async (data) => {
       const parsedData = []
+      for (const line of data.split('\n')) {
+        const templatePathMatches = line.matchAll(templatePathRegex)
+        for (const templatePathMatch of templatePathMatches) {
+          templatePath = templatePathMatch[1].trim()
+          customTemplate = true
+        }
+      }
       for (let line of data.split('\n')) {
         const matches = line.matchAll(mdImageRegex)
         for (const match of matches) {
@@ -123,24 +126,25 @@ onMounted(async () => {
           const logoUrl = await updateImageUrls(logoPath)
           line = line.replace(`${logoPath}`, `${logoUrl}`)
         }
-        // custom template
-        const templatePathMatches = line.matchAll(templatePathRegex)
-        for (const templatePathMatch of templatePathMatches) {
-          const templatePath = templatePathMatch[1].trim()
-          try {
-            templatePathUrl = await updateTemplateUrl(templatePath)
-            awesoMd.setBaseUrl(templatePathUrl)
-            awesoMd.setAuthToken(authStore.accessToken)
-            customTemplate = true
-          } catch (error) {
-            unref(mdTextarea).textContent = `# Error\n\n${error.message}`
-            return
+        if (customTemplate === true) {
+          const defaultSlideMatches = line.matchAll(defaultSlideRegex)
+          for (const defaultSlideMatch of defaultSlideMatches) {
+            const defaultSlide = defaultSlideMatch[1].trim()
+            try {
+              const defaultSlideUrl = await updateTemplateUrl(templatePath, defaultSlide)
+              line = line.replace(`${defaultSlide}`, `${defaultSlideUrl}`)
+            } catch (error) {
+              unref(mdTextarea).textContent = error
+              return
+            }
           }
         }
         parsedData.push(line)
       }
       unref(mdTextarea).textContent = parsedData.join('\n')
     })
+
+  const cssLoaded = await loadCustomCss(customTemplate)
 
   reveal = new Reveal(unref(revealContainer), {
     plugins: [awesoMd, RevealHighlight, RevealMermaid]
@@ -155,8 +159,12 @@ onMounted(async () => {
     embedded: true
   })
 
+  if (!cssLoaded) {
+    isReadyToShow.value = true
+    return
+  }
+
   if (reveal.isReady()) {
-    await loadCustomCss()
     applyTemplateIfNeeded()
     addCustomSlideNumber()
     updateImageStructure()
@@ -186,6 +194,7 @@ onBeforeUnmount(() => {
   }
   loadTemplate = false
   customTemplate = false
+  templatePath = null
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
@@ -281,52 +290,82 @@ function basename(path: string) {
   return path.split('/').reverse()[0]
 }
 
-// custom templated related
+// custom template related
 function getTemplatePath(path: string) {
   return unref(activeFiles).find((file: Resource) => file.name === path)
 }
-async function updateTemplateUrl(templatePath: string) {
-  if (['.', '/'].includes(templatePath)) {
-    const path = unref(currentFileContext).path
-    return window.location.origin + '/dav' + path.substring(0, path.lastIndexOf('/'))
-  }
-  let folder: Resource
-  if (templatePath.split('/').length > 1) {
-    folder = await getSubMediaFile(templatePath)
+
+function normalizeTemplatePath(path: string): string {
+  return path.replace(/^\.\//, '').replace(/^\/+/, '')
+}
+
+async function getBlobUrlFromPath(srcPath: string): Promise<string | null> {
+  let file: Resource
+  if (srcPath.split('/').length > 1) {
+    file = await getSubMediaFile(srcPath)
   } else {
-    folder = getTemplatePath(templatePath)
+    file = getTemplatePath(srcPath)
   }
-  if (!folder) {
+
+  if (!file) return null
+
+  const url = await getUrlForResource(unref(currentFileContext).space, file)
+  return await getBlobUrl(url)
+}
+
+async function updateTemplateUrl(templatePath: string, defaultSlide: string) {
+  const fullSlidePath = `${templatePath}/${defaultSlide}-template.html`
+  const srcPath = normalizeTemplatePath(fullSlidePath)
+
+  const blobUrl = await getBlobUrlFromPath(srcPath)
+
+  if (!blobUrl) {
     throw new Error(
       `Template path "${templatePath}" not found. Please check the path provided in the markdown file.`
     )
   }
-  return window.location.origin + '/dav' + folder.webDavPath
+
+  mediaUrls.value.push(blobUrl)
+  const fullBlobUrl = `${blobUrl}?template=${defaultSlide}`
+  return encodeURIComponent(fullBlobUrl)
 }
 
-async function loadCustomCss() {
+async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
   const frontMatter = separateFrontmatterAndMarkdown()[1]
-  if (!customTemplate || !frontMatter.metadata?.cssFile) return
 
-  const cssFullUrl = `${templatePathUrl}/${frontMatter.metadata?.cssFile}`
+  if (!customTemplate || !frontMatter.metadata?.cssFile) return true
 
-  const response = await fetch(cssFullUrl, {
-    headers: {
-      Authorization: `Bearer ${authStore.accessToken}`
-    }
-  })
+  const cssFile = frontMatter.metadata.cssFile
+  const cssFullPath = `${templatePath}/${cssFile}`
+  const srcPath = normalizeTemplatePath(cssFullPath)
 
-  if (!response.ok) {
-    console.error(`Failed to load CSS: ${response.status}`)
-    return
+  const blobUrl = await getBlobUrlFromPath(srcPath)
+
+  if (!blobUrl) {
+    unref(mdTextarea).textContent = `# Error\n\nCss file "${cssFile}" not found.`
+    return false
   }
 
-  const cssText = await response.text()
-  const style = document.createElement('style')
-  style.id = 'reveal-custom-css'
-  style.textContent = cssText
-  document.head.appendChild(style)
-  customCssLink.value = style
+  try {
+    const response = await fetch(blobUrl)
+
+    if (!response.ok) {
+      unref(mdTextarea).textContent = `# Error\n\nFailed to fetch CSS file ${cssFile}.`
+      return false
+    }
+
+    const cssText = await response.text()
+    const style = document.createElement('style')
+    style.id = 'reveal-custom-css'
+    style.textContent = cssText
+    document.head.appendChild(style)
+    customCssLink.value = style
+    return true
+  } catch (err) {
+    console.error('CSS fetch failed:', err)
+    unref(mdTextarea).textContent = `# Error\n\nFailed to load CSS file "${cssFile}".`
+    return false
+  }
 }
 
 const startTemplatePolling = () => {
@@ -341,7 +380,7 @@ const reloadPresentation = async () => {
   // re-fetch markdown and re-process
   await fetch(unref(url))
     .then((res) => res.text())
-    .then(async (data) => {
+    .then((data) => {
       unref(mdTextarea).textContent = data
     })
 
@@ -375,11 +414,7 @@ const checkTemplateChanges = async () => {
 
   for (const template of templateFiles) {
     const templatePath = `${templatePathUrl}/${template}-template.html`
-    const response = await fetch(templatePath, {
-      headers: { Authorization: `Bearer ${authStore.accessToken}` },
-      credentials: 'omit',
-      cache: 'no-cache'
-    })
+    const response = await fetch(templatePath)
     const content = await response.text()
 
     if (templateCache[template] && templateCache[template] !== content) {
