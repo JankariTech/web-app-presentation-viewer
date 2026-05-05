@@ -1,6 +1,23 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import App from '../../src/App.vue'
 
+const defaultActiveFiles = [
+  { name: 'cool.svg', path: '/cool.svg', mimeType: 'image/svg+xml' },
+  { name: 'cool.png', path: '/cool.png', mimeType: 'image/png' },
+  { name: 'sub', path: '/sub' }
+]
+
+const defaultWebdavChildren = [
+  { name: 'another-cool.jpg', path: '/another-cool.jpg', mimeType: 'image/jpeg' }
+]
+
+let mockCurrentFileContext = {}
+let mockActiveFiles = defaultActiveFiles
+let mockWebdavChildren = defaultWebdavChildren
+let mockGetUrlForResource = vi.fn()
+let mockRevokeUrl = vi.fn()
+let mockServerUrl = 'https://localhost:9200'
+
 const templateHtmlMap: Record<string, string> = {
   'cover-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
@@ -159,16 +176,12 @@ const createFetchMock = (markdownContent: string) => {
 vi.mock('@ownclouders/web-pkg', () => ({
   useAppDefaults: vi.fn().mockImplementation(() => ({
     loadFolderForFileContext: vi.fn(),
-    currentFileContext: {},
-    activeFiles: [
-      { name: 'cool.svg', path: '/cool.svg', mimeType: 'image/svg+xml' },
-      { name: 'cool.png', path: '/cool.png', mimeType: 'image/png' },
-      { name: 'sub', path: '/sub' }
-    ]
+    currentFileContext: mockCurrentFileContext,
+    activeFiles: mockActiveFiles
   })),
   useAppFileHandling: vi.fn().mockImplementation(() => ({
-    getUrlForResource: vi.fn(),
-    revokeUrl: vi.fn()
+    getUrlForResource: mockGetUrlForResource,
+    revokeUrl: mockRevokeUrl
   })),
   useThemeStore: vi.fn().mockImplementation(() => ({
     currentTheme: { isDark: false }
@@ -176,7 +189,7 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useClientService: vi.fn().mockImplementation(() => ({
     webdav: {
       listFiles: () => ({
-        children: [{ name: 'another-cool.jpg', path: '/another-cool.jpg', mimeType: 'image/jpeg' }]
+        children: mockWebdavChildren
       })
     }
   })),
@@ -184,7 +197,7 @@ vi.mock('@ownclouders/web-pkg', () => ({
     externalAppConfig: () => []
   }),
   useConfigStore: vi.fn().mockImplementation(() => ({
-    serverUrl: 'https://localhost:9200'
+    serverUrl: mockServerUrl
   })),
   AppLoadingSpinner: vi.fn()
 }))
@@ -407,5 +420,123 @@ Some content about us.
       { timeout: 1000 }
     )
     expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+  })
+})
+
+describe('Custom CSS loading', () => {
+  beforeEach(() => {
+    document.getElementById('reveal-custom-css')?.remove()
+    global.fetch = defaultFetchMock
+    mockCurrentFileContext = { space: 'space-id' }
+    mockActiveFiles = [
+      { name: 'templates', path: '/templates', mimeType: undefined },
+      ...defaultActiveFiles
+    ]
+    mockWebdavChildren = [
+      {
+        name: 'title-content-template.html',
+        path: '/templates/title-content-template.html',
+        mimeType: 'text/html'
+      },
+      {
+        name: 'custom.css',
+        path: '/templates/custom.css',
+        mimeType: 'text/css'
+      }
+    ]
+  })
+
+  afterEach(() => {
+    document.getElementById('reveal-custom-css')?.remove()
+    mockCurrentFileContext = {}
+    mockActiveFiles = defaultActiveFiles
+    mockWebdavChildren = defaultWebdavChildren
+    mockGetUrlForResource = vi.fn()
+    mockRevokeUrl = vi.fn()
+    mockServerUrl = 'https://localhost:9200'
+    global.fetch = defaultFetchMock
+  })
+
+  it('loads custom CSS when template is used', async () => {
+    const getUrlForResourceMock = vi.fn().mockImplementation((space, file) => {
+      return `https://auth.local${file.path}`
+    })
+    mockGetUrlForResource = getUrlForResourceMock
+
+    const customCssBlobUrl = 'blob:nodedata:0295bafb-5976-468a-a263-685a8872cb96'
+
+    global.fetch = vi.fn().mockImplementation((url: unknown) => {
+      if (typeof url !== 'string') {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(''),
+          blob: () => Promise.resolve(new Blob([], { type: 'image/png' }))
+        })
+      }
+
+      if (url === 'https://localhost:9200/slides.md') {
+        return Promise.resolve({
+          ok: true,
+          text: () =>
+            Promise.resolve(`---
+templatePath: templates
+cssFile: custom.css
+slide: title-content
+presenter: John Doe
+logo: https://external:9200/cat.jpg
+---
+# Slide title
+`),
+          blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
+        })
+      }
+
+      if (url === 'https://auth.local/templates/title-content-template.html') {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(templateHtmlMap['title-content-template.html']),
+          blob: () =>
+            Promise.resolve(
+              new Blob([templateHtmlMap['title-content-template.html']], { type: 'text/html' })
+            )
+        })
+      }
+
+      if (url === 'https://auth.local/templates/custom.css') {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve('.slides section { color: rgb(255, 0, 0); }'),
+          blob: () =>
+            Promise.resolve(new Blob(['.slides section { color: red; }'], { type: 'text/css' }))
+        })
+      }
+
+      if (url === customCssBlobUrl) {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve('.slides section { color: rgb(255, 0, 0); }'),
+          blob: () => Promise.resolve(new Blob([], { type: 'text/css' }))
+        })
+      }
+
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(''),
+        blob: () => Promise.resolve(new Blob([], { type: 'application/octet-stream' }))
+      })
+    })
+
+    getWrapper()
+    await flushPromises()
+
+    const customStyleTag = document.getElementById('reveal-custom-css')
+    expect(customStyleTag).not.toBeNull()
+    expect(customStyleTag?.textContent).toContain('color: rgb(255, 0, 0);')
+
+    expect(getUrlForResourceMock).toHaveBeenCalledWith(
+      'space-id',
+      expect.objectContaining({ name: 'custom.css', path: '/templates/custom.css' })
+    )
+    expect(global.fetch).toHaveBeenCalledWith(customCssBlobUrl)
   })
 })
