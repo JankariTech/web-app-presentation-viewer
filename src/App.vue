@@ -57,7 +57,7 @@ const appsStore = useAppsStore()
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
 const revealContainer = ref<HTMLElement>()
-const mdTextarea = ref<HTMLElement>()
+const mdTextarea = ref<HTMLTextAreaElement | null>(null)
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
@@ -69,7 +69,7 @@ const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
 const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
-const defaultSlideRegex = /(?<=slide:\s?)(\S+)/g
+const defaultSlideRegex = /(?:^|::)slide:\s?(.+?)(?=\s?::|$)/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
@@ -81,6 +81,29 @@ let templatePathUrl = null
 let templateCache: Record<string, string> = {}
 let pollingInterval: ReturnType<typeof setInterval> | null = null
 let templatePath = null
+
+function setMarkdownContent(content: string) {
+  if (!mdTextarea.value) {
+    return
+  }
+  mdTextarea.value.textContent = content
+}
+
+function getMarkdownContent() {
+  if (!mdTextarea.value) {
+    return ''
+  }
+  return mdTextarea.value.textContent || ''
+}
+
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 const { url } = defineProps({
   url: {
@@ -134,14 +157,14 @@ onMounted(async () => {
               const defaultSlideUrl = await updateTemplateUrl(templatePath, defaultSlide)
               line = line.replace(`${defaultSlide}`, `${defaultSlideUrl}`)
             } catch (error) {
-              unref(mdTextarea).textContent = error
+              setMarkdownContent(escapeHtml(String(error)))
               return
             }
           }
         }
         parsedData.push(line)
       }
-      unref(mdTextarea).textContent = parsedData.join('\n')
+      setMarkdownContent(parsedData.join('\n'))
     })
 
   const cssLoaded = await loadCustomCss(customTemplate)
@@ -321,7 +344,7 @@ async function updateTemplateUrl(templatePath: string, defaultSlide: string) {
 
   if (!blobUrl) {
     throw new Error(
-      `Template path "${templatePath}" not found. Please check the path provided in the markdown file.`
+      `Template path "${templatePath}" for slide "${defaultSlide}-template.html." not found.`
     )
   }
 
@@ -342,7 +365,7 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
   const blobUrl = await getBlobUrlFromPath(srcPath)
 
   if (!blobUrl) {
-    unref(mdTextarea).textContent = `# Error\n\nCss file "${cssFile}" not found.`
+    setMarkdownContent(`# Error\n\nCss file "${cssFile}" not found.`)
     return false
   }
 
@@ -350,7 +373,7 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
     const response = await fetch(blobUrl)
 
     if (!response.ok) {
-      unref(mdTextarea).textContent = `# Error\n\nFailed to fetch CSS file ${cssFile}.`
+      setMarkdownContent(`# Error\n\nFailed to fetch CSS file ${cssFile}.`)
       return false
     }
 
@@ -363,7 +386,7 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
     return true
   } catch (err) {
     console.error('CSS fetch failed:', err)
-    unref(mdTextarea).textContent = `# Error\n\nFailed to load CSS file "${cssFile}".`
+    setMarkdownContent(`# Error\n\nFailed to load CSS file "${cssFile}".`)
     return false
   }
 }
@@ -381,7 +404,7 @@ const reloadPresentation = async () => {
   await fetch(unref(url))
     .then((res) => res.text())
     .then((data) => {
-      unref(mdTextarea).textContent = data
+      setMarkdownContent(data)
     })
 
   // destroy and re-initialize reveal
@@ -400,12 +423,12 @@ const reloadPresentation = async () => {
 }
 
 const checkTemplateChanges = async () => {
-  if (!customTemplate || !templatePathUrl) return
+  if (!customTemplate || !templatePathUrl || !mdTextarea.value) return
 
   const templateFiles = [
     ...new Set(
-      unref(mdTextarea)
-        .textContent.match(/slide:\s*(\S+)/g)
+      getMarkdownContent()
+        .match(defaultSlideRegex)
         ?.map((m) => m.replace('slide:', '').trim()) || []
     )
   ]
@@ -568,7 +591,7 @@ function fitContent() {
 }
 function separateFrontmatterAndMarkdown() {
   const options = {}
-  const rawMarkdown = unref(mdTextarea).value
+  const rawMarkdown = getMarkdownContent()
   return awesoMd.parseFrontMatter(rawMarkdown, options)
 }
 function setFontColor() {
