@@ -299,7 +299,7 @@ logo: https://external:9200/cat.jpg
     const vm = getWrapper()
     await flushPromises()
     expect(vm.html()).toContain(
-      'Template for slide "a-href-jankari.tech-jankaritech-/a" not found.'
+      'Template for slide "<a href="jankari.tech">jankaritech</a>" not found. Status: 404'
     )
   })
 

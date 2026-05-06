@@ -77,33 +77,7 @@ const baseUrl = `${window.location.origin}/assets/apps/${appId}/templates`
 awesoMd.setBaseUrl(baseUrl)
 let loadTemplate = false
 let customTemplate = false
-let templatePathUrl = null
-let templateCache: Record<string, string> = {}
-let pollingInterval: ReturnType<typeof setInterval> | null = null
 let templatePath = null
-
-function setMarkdownContent(content: string) {
-  if (!mdTextarea.value) {
-    return
-  }
-  mdTextarea.value.textContent = content
-}
-
-function getMarkdownContent() {
-  if (!mdTextarea.value) {
-    return ''
-  }
-  return mdTextarea.value.textContent || ''
-}
-
-function escapeHtml(str: string) {
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-}
 
 const { url } = defineProps({
   url: {
@@ -201,19 +175,11 @@ onMounted(async () => {
   })
 
   isReadyToShow.value = true
-
-  if (customTemplate) {
-    startTemplatePolling()
-  }
 })
 onBeforeUnmount(() => {
   presentationViewerRef.value.classList.remove('md-template')
   if (customCssLink.value) {
     customCssLink.value.remove()
-  }
-  if (pollingInterval) {
-    clearInterval(pollingInterval)
-    pollingInterval = null
   }
   loadTemplate = false
   customTemplate = false
@@ -314,6 +280,29 @@ function basename(path: string) {
 }
 
 // custom template related
+function setMarkdownContent(content: string) {
+  if (!mdTextarea.value) {
+    return
+  }
+  mdTextarea.value.textContent = content
+}
+
+function getMarkdownContent() {
+  if (!mdTextarea.value) {
+    return ''
+  }
+  return mdTextarea.value.textContent || ''
+}
+
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 function getTemplatePath(path: string) {
   return unref(activeFiles).find((file: Resource) => file.name === path)
 }
@@ -343,9 +332,7 @@ async function updateTemplateUrl(templatePath: string, defaultSlide: string) {
   const blobUrl = await getBlobUrlFromPath(srcPath)
 
   if (!blobUrl) {
-    throw new Error(
-      `Template path "${templatePath}" for slide "${defaultSlide}-template.html." not found.`
-    )
+    throw new Error(`Template "${fullSlidePath}" not found.`)
   }
 
   mediaUrls.value.push(blobUrl)
@@ -359,13 +346,17 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
   if (!customTemplate || !frontMatter.metadata?.cssFile) return true
 
   const cssFile = frontMatter.metadata.cssFile
+  if (!cssFile.endsWith('.css')) {
+    setMarkdownContent(`# Error:\n\nInvalid CSS file "${escapeHtml(cssFile)}".`)
+    return false
+  }
   const cssFullPath = `${templatePath}/${cssFile}`
   const srcPath = normalizeTemplatePath(cssFullPath)
 
   const blobUrl = await getBlobUrlFromPath(srcPath)
 
   if (!blobUrl) {
-    setMarkdownContent(`# Error\n\nCss file "${cssFile}" not found.`)
+    setMarkdownContent(`# Error\n\nCss file "${escapeHtml(cssFile)}" not found.`)
     return false
   }
 
@@ -373,7 +364,7 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
     const response = await fetch(blobUrl)
 
     if (!response.ok) {
-      setMarkdownContent(`# Error\n\nFailed to fetch CSS file ${cssFile}.`)
+      setMarkdownContent(`# Error\n\nFailed to fetch CSS file ${escapeHtml(cssFile)}.`)
       return false
     }
 
@@ -386,68 +377,8 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
     return true
   } catch (err) {
     console.error('CSS fetch failed:', err)
-    setMarkdownContent(`# Error\n\nFailed to load CSS file "${cssFile}".`)
+    setMarkdownContent(`# Error\n\nFailed to load CSS file "${escapeHtml(cssFile)}".`)
     return false
-  }
-}
-
-const startTemplatePolling = () => {
-  pollingInterval = setInterval(async () => {
-    await checkTemplateChanges()
-  }, 3000)
-}
-
-const reloadPresentation = async () => {
-  if (!customTemplate) return
-
-  // re-fetch markdown and re-process
-  await fetch(unref(url))
-    .then((res) => res.text())
-    .then((data) => {
-      setMarkdownContent(data)
-    })
-
-  // destroy and re-initialize reveal
-  reveal.destroy()
-  reveal = new Reveal(unref(revealContainer), {
-    plugins: [awesoMd, RevealHighlight, RevealMermaid]
-  })
-  await reveal.initialize({
-    controls: true,
-    progress: true,
-    history: true,
-    center: true,
-    controlsLayout: 'edges',
-    embedded: true
-  })
-}
-
-const checkTemplateChanges = async () => {
-  if (!customTemplate || !templatePathUrl || !mdTextarea.value) return
-
-  const templateFiles = [
-    ...new Set(
-      getMarkdownContent()
-        .match(defaultSlideRegex)
-        ?.map((m) => m.replace('slide:', '').trim()) || []
-    )
-  ]
-
-  let hasChanges = false
-
-  for (const template of templateFiles) {
-    const templatePath = `${templatePathUrl}/${template}-template.html`
-    const response = await fetch(templatePath)
-    const content = await response.text()
-
-    if (templateCache[template] && templateCache[template] !== content) {
-      hasChanges = true
-    }
-    templateCache[template] = content
-  }
-
-  if (hasChanges) {
-    await reloadPresentation()
   }
 }
 
