@@ -57,22 +57,27 @@ const appsStore = useAppsStore()
 const isDarkMode = ref(themeStore.currentTheme.isDark)
 const slideContainer = ref<HTMLElement>()
 const revealContainer = ref<HTMLElement>()
-const mdTextarea = ref<HTMLElement>()
+const mdTextarea = ref<HTMLTextAreaElement | null>(null)
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
+const customCssLink = ref<HTMLStyleElement | null>(null)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
 const mdImageRegex = /!\[.*\]\((?!(?:http|data))(.*)\)/g
 const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
+const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
+const defaultSlideRegex = /(?:^|::)slide:\s?(.+?)(?=\s?::|$)/g
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
-const baseUrl = `${window.location.origin}/assets/apps/${appId}`
+const baseUrl = `${window.location.origin}/assets/apps/${appId}/templates`
 awesoMd.setBaseUrl(baseUrl)
 let loadTemplate = false
+let customTemplate = false
+let templatePath = null
 
 const { url } = defineProps({
   url: {
@@ -98,6 +103,13 @@ onMounted(async () => {
     .then((res) => res.text())
     .then(async (data) => {
       const parsedData = []
+      for (const line of data.split('\n')) {
+        const templatePathMatches = line.matchAll(templatePathRegex)
+        for (const templatePathMatch of templatePathMatches) {
+          templatePath = templatePathMatch[1].trim()
+          customTemplate = true
+        }
+      }
       for (let line of data.split('\n')) {
         const matches = line.matchAll(mdImageRegex)
         for (const match of matches) {
@@ -111,10 +123,25 @@ onMounted(async () => {
           const logoUrl = await updateImageUrls(logoPath)
           line = line.replace(`${logoPath}`, `${logoUrl}`)
         }
+        if (customTemplate === true) {
+          const defaultSlideMatches = line.matchAll(defaultSlideRegex)
+          for (const defaultSlideMatch of defaultSlideMatches) {
+            const defaultSlide = defaultSlideMatch[1].trim()
+            try {
+              const defaultSlideUrl = await updateTemplateUrl(templatePath, defaultSlide)
+              line = line.replace(`${defaultSlide}`, `${defaultSlideUrl}`)
+            } catch (error) {
+              setMarkdownContent(escapeHtml(String(error)))
+              return
+            }
+          }
+        }
         parsedData.push(line)
       }
-      unref(mdTextarea).textContent = parsedData.join('\n')
+      setMarkdownContent(parsedData.join('\n'))
     })
+
+  const cssLoaded = await loadCustomCss(customTemplate)
 
   reveal = new Reveal(unref(revealContainer), {
     plugins: [awesoMd, RevealHighlight, RevealMermaid]
@@ -128,6 +155,11 @@ onMounted(async () => {
     controlsLayout: 'edges',
     embedded: true
   })
+
+  if (!cssLoaded) {
+    isReadyToShow.value = true
+    return
+  }
 
   if (reveal.isReady()) {
     applyTemplateIfNeeded()
@@ -146,7 +178,12 @@ onMounted(async () => {
 })
 onBeforeUnmount(() => {
   presentationViewerRef.value.classList.remove('md-template')
+  if (customCssLink.value) {
+    customCssLink.value.remove()
+  }
   loadTemplate = false
+  customTemplate = false
+  templatePath = null
   unref(mediaUrls).forEach((url) => {
     revokeUrl(url)
   })
@@ -240,6 +277,109 @@ function dirname(path: string) {
 }
 function basename(path: string) {
   return path.split('/').reverse()[0]
+}
+
+// custom template related
+function setMarkdownContent(content: string) {
+  if (!mdTextarea.value) {
+    return
+  }
+  mdTextarea.value.textContent = content
+}
+
+function getMarkdownContent() {
+  if (!mdTextarea.value) {
+    return ''
+  }
+  return mdTextarea.value.textContent || ''
+}
+
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function getTemplatePath(path: string) {
+  return unref(activeFiles).find((file: Resource) => file.name === path)
+}
+
+function normalizeTemplatePath(path: string): string {
+  return path.replace(/^\.\//, '').replace(/^\/+/, '')
+}
+
+async function getBlobUrlFromPath(srcPath: string): Promise<string | null> {
+  let file: Resource
+  if (srcPath.split('/').length > 1) {
+    file = await getSubMediaFile(srcPath)
+  } else {
+    file = getTemplatePath(srcPath)
+  }
+
+  if (!file) return null
+
+  const url = await getUrlForResource(unref(currentFileContext).space, file)
+  return await getBlobUrl(url)
+}
+
+async function updateTemplateUrl(templatePath: string, defaultSlide: string) {
+  const fullSlidePath = `${templatePath}/${defaultSlide}-template.html`
+  const srcPath = normalizeTemplatePath(fullSlidePath)
+
+  const blobUrl = await getBlobUrlFromPath(srcPath)
+
+  if (!blobUrl) {
+    throw new Error(`Template "${fullSlidePath}" not found.`)
+  }
+
+  mediaUrls.value.push(blobUrl)
+  const fullBlobUrl = `${blobUrl}?template=${defaultSlide}`
+  return encodeURIComponent(fullBlobUrl)
+}
+
+async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
+  const frontMatter = separateFrontmatterAndMarkdown()[1]
+
+  if (!customTemplate || !frontMatter.metadata?.cssFile) return true
+
+  const cssFile = frontMatter.metadata.cssFile
+  if (!cssFile.endsWith('.css')) {
+    setMarkdownContent(`# Error:\n\nInvalid CSS file "${escapeHtml(cssFile)}".`)
+    return false
+  }
+  const cssFullPath = `${templatePath}/${cssFile}`
+  const srcPath = normalizeTemplatePath(cssFullPath)
+
+  const blobUrl = await getBlobUrlFromPath(srcPath)
+
+  if (!blobUrl) {
+    setMarkdownContent(`# Error\n\nCss file "${escapeHtml(cssFile)}" not found.`)
+    return false
+  }
+
+  try {
+    const response = await fetch(blobUrl)
+
+    if (!response.ok) {
+      setMarkdownContent(`# Error\n\nFailed to fetch CSS file ${escapeHtml(cssFile)}.`)
+      return false
+    }
+
+    const cssText = await response.text()
+    const style = document.createElement('style')
+    style.id = 'reveal-custom-css'
+    style.textContent = cssText
+    document.head.appendChild(style)
+    customCssLink.value = style
+    return true
+  } catch (err) {
+    console.error('CSS fetch failed:', err)
+    setMarkdownContent(`# Error\n\nFailed to load CSS file "${escapeHtml(cssFile)}".`)
+    return false
+  }
 }
 
 // TEMPLATE RELATED
@@ -382,7 +522,7 @@ function fitContent() {
 }
 function separateFrontmatterAndMarkdown() {
   const options = {}
-  const rawMarkdown = unref(mdTextarea).value
+  const rawMarkdown = getMarkdownContent()
   return awesoMd.parseFrontMatter(rawMarkdown, options)
 }
 function setFontColor() {
@@ -400,7 +540,10 @@ function setFontColor() {
 }
 function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
-  loadTemplate = !!(frontMatter.metadata?.slide || markdown.match(headingSlideRegex))
+  const hasSlideMetadata = frontMatter.metadata?.slide
+  const hasHeadingSlide = markdown.match(headingSlideRegex)
+  const hasTemplatePath = frontMatter.metadata?.templatePath
+  loadTemplate = !!(hasSlideMetadata || hasHeadingSlide) && !hasTemplatePath
   if (loadTemplate) {
     presentationViewerRef.value.classList.add('md-template')
     setFontColor()

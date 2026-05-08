@@ -10,3 +10,4 @@ pnpm-lock.yaml
 /.pnpm-store/
 docker-compose.override.yml
 .env
+package.json

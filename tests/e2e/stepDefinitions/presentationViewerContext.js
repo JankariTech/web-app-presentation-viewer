@@ -2,7 +2,7 @@ const { Given, When, Then } = require('@cucumber/cucumber')
 const { expect } = require('@playwright/test')
 
 const { getUserCredentials } = require('../utils/userHelper')
-const { uploadFile } = require('../utils/fileHelper')
+const { uploadFile, createFolder } = require('../utils/fileHelper')
 const PresentationViewer = require('../pageObjects/PresentationViewerPage')
 const Ocis = require('../pageObjects/OcisPage')
 const Files = require('../pageObjects/FilesPage')
@@ -28,7 +28,7 @@ Given('user {string} has logged in', async function (user) {
 When(
   'user {string} previews markdown file {string} in presentation viewer using context menu',
   async function (user, fileName) {
-    await files.openMDFileInPresentationViewer()
+    await files.openMDFileInPresentationViewer(fileName)
   }
 )
 
@@ -80,4 +80,12 @@ Then('file {string} should be opened in the text editor', async function (fileNa
 
 When('user {string} closes the presentation viewer', async function (user) {
   await presentationViewer.closePresentationViewer()
+})
+
+Given('user {string} creates a folder {string} using API', async function (user, folder) {
+  await createFolder(user, folder)
+})
+
+Given('user {string} opens folder {string}', async function (user, folder) {
+  await files.openFolder(user, folder)
 })
