@@ -253,3 +253,41 @@ exports[`Template Features > should render title content template 1`] = `
   </section>
 </div>"
 `;
+
+exports[`Template Features > should render title content template without the logo 1`] = `
+"<div id="slideContainer" class="slides" style="width: 960px; height: 700px; left: 50%; top: 50%; bottom: auto; right: auto; transform: translate(-50%, -50%) scale(0.2);">
+  <section class="title-content present" data-markdown="" data-markdown-parsed="true" style="top: 350px; display: block;">
+    <div class="content-container">
+      <div class="title">
+        <h1>
+
+          <p>Title Content Slide</p>
+        </h1>
+
+      </div>
+
+      <div class="content-wrapper">
+        <div class="content">
+
+          <ul>
+            <li>Introduction to mountain ecosystems</li>
+            <li>Basic concepts of quantum encryption</li>
+            <li>Exploring culinary traditions in Southeast Asia</li>
+            <li>Overview of blockchain consensus mechanisms</li>
+            <li>Setting up a personal productivity system</li>
+            <li>Writing clean, maintainable JavaScript code</li>
+            <li>Understanding modern art movements</li>
+            <li>History of aviation and early flight experiments</li>
+            <li>Managing team dynamics in remote work</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-content"></div>
+      <div class="custom-slide-number">1</div>
+    </footer>
+
+  </section>
+</div>"
+`;

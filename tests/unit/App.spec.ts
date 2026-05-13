@@ -421,6 +421,34 @@ Some content about us.
     )
     expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
   })
+
+  it('should render title content template without the logo', async () => {
+    global.fetch = createFetchMock(`---
+slide: title-content
+presenter: John Doe
+---
+# Title Content Slide
+
+- Introduction to mountain ecosystems
+- Basic concepts of quantum encryption
+- Exploring culinary traditions in Southeast Asia
+- Overview of blockchain consensus mechanisms
+- Setting up a personal productivity system
+- Writing clean, maintainable JavaScript code
+- Understanding modern art movements
+- History of aviation and early flight experiments
+- Managing team dynamics in remote work
+`)
+    const vm = getWrapper()
+    await flushPromises()
+    await vi.waitFor(
+      () => {
+        expect(vm.classes('md-template')).toBe(true)
+      },
+      { timeout: 1000 }
+    )
+    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+  })
 })
 
 describe('Custom CSS loading', () => {

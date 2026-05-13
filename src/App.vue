@@ -539,12 +539,12 @@ function setFontColor() {
   })
 }
 function setLogo(frontMatter) {
-  const logo = frontMatter.metadata.logo
-  slideContainer.value.querySelectorAll('div.logo img').forEach((el) => {
-    if (!logo) {
-      el.style.display = 'none'
+  const logos = slideContainer.value.getElementsByClassName('logo')
+  for (const logo of logos) {
+    if (!frontMatter.metadata?.logo) {
+      logo.remove()
     }
-  })
+  }
 }
 function applyTemplateIfNeeded() {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
