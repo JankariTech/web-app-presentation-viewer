@@ -263,7 +263,6 @@ exports[`Template Features > should render title content template without the lo
 
           <p>Title Content Slide</p>
         </h1>
-
       </div>
 
       <div class="content-wrapper">

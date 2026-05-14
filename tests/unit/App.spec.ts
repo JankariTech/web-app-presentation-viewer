@@ -21,9 +21,11 @@ let mockServerUrl = 'https://localhost:9200'
 const templateHtmlMap: Record<string, string> = {
   'cover-template.html': `<script type="x-tmpl-mustache">
 <div class="content-container">
+{{#metadata.logo}}
 <div class="logo">
 <img src="{{{ metadata.logo }}}" alt="Logo">
 </div>
+{{/metadata.logo}}
 
 <div class="content">
 <h1>{{{ title }}}</h1>
@@ -45,9 +47,11 @@ By: {{{ metadata.presenter }}}
 {{{ title }}}
 
 </h1>
+{{#metadata.logo}}
 <div class="logo">
 <img src="{{{ metadata.logo }}}" alt="Logo">
 </div>
+{{/metadata.logo}}
 </div>
 
 <div class="content-wrapper">
@@ -73,9 +77,11 @@ By: {{{ metadata.presenter }}}
 {{{ title }}}
 
 </h1>
+{{#metadata.logo}}
 <div class="logo">
 <img src="{{{ metadata.logo }}}" alt="Logo">
 </div>
+{{/metadata.logo}}
 </div>
 
 <div class="content-wrapper">
@@ -101,9 +107,11 @@ By: {{{ metadata.presenter }}}
 {{{ title }}}
 
 </h1>
+{{#metadata.logo}}
 <div class="logo">
 <img src="{{{ metadata.logo }}}" alt="Logo">
 </div>
+{{/metadata.logo}}
 </div>
 
 <div class="content-wrapper">
