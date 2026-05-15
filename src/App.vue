@@ -40,7 +40,6 @@ import 'reveal.js/dist/reveal.css'
 import 'reveal.js/plugin/highlight/monokai.css'
 import 'reveal.js/dist/theme/white.css'
 import './css/variables.css'
-import './css/templates.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
 import { id as appId } from '../public/manifest.json'
@@ -61,7 +60,7 @@ const mdTextarea = ref<HTMLTextAreaElement | null>(null)
 const mediaUrls = ref<string[]>([])
 const isReadyToShow = ref<boolean>(false)
 const presentationViewerRef = ref<HTMLElement>()
-const customCssLink = ref<HTMLStyleElement | null>(null)
+const cssLink = ref<HTMLStyleElement | null>(null)
 
 const dataSeparator = '\r?\n---\r?\n'
 const dataSeparatorVertical = '\r?\n--\r?\n'
@@ -75,7 +74,8 @@ let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
 const baseUrl = `${window.location.origin}/assets/apps/${appId}/templates`
 awesoMd.setBaseUrl(baseUrl)
-let loadTemplate = false
+let defaultTemplate = false
+let defaultCssLoaded = false
 let customTemplate = false
 let templatePath = null
 
@@ -141,7 +141,12 @@ onMounted(async () => {
       setMarkdownContent(parsedData.join('\n'))
     })
 
-  const cssLoaded = await loadCustomCss(customTemplate)
+  const customCssLoaded = await loadCustomCss(customTemplate)
+
+  defaultTemplate = applyDefaultTemplate()
+  if (defaultTemplate) {
+    defaultCssLoaded = await loadDefaultCss()
+  }
 
   reveal = new Reveal(unref(revealContainer), {
     plugins: [awesoMd, RevealHighlight, RevealMermaid]
@@ -156,13 +161,18 @@ onMounted(async () => {
     embedded: true
   })
 
-  if (!cssLoaded) {
+  if (!customCssLoaded) {
+    isReadyToShow.value = true
+    return
+  }
+
+  if (defaultTemplate && !defaultCssLoaded) {
     isReadyToShow.value = true
     return
   }
 
   if (reveal.isReady()) {
-    applyTemplateIfNeeded()
+    setFontColor()
     addCustomSlideNumber()
     updateImageStructure()
     fitContent()
@@ -177,11 +187,11 @@ onMounted(async () => {
   isReadyToShow.value = true
 })
 onBeforeUnmount(() => {
-  presentationViewerRef.value.classList.remove('md-template')
-  if (customCssLink.value) {
-    customCssLink.value.remove()
+  if (cssLink.value) {
+    cssLink.value.remove()
   }
-  loadTemplate = false
+  defaultTemplate = false
+  defaultCssLoaded = false
   customTemplate = false
   templatePath = null
   unref(mediaUrls).forEach((url) => {
@@ -373,7 +383,7 @@ async function loadCustomCss(customTemplate: boolean): Promise<boolean> {
     style.id = 'reveal-custom-css'
     style.textContent = cssText
     document.head.appendChild(style)
-    customCssLink.value = style
+    cssLink.value = style
     return true
   } catch (err) {
     console.error('CSS fetch failed:', err)
@@ -527,7 +537,7 @@ function separateFrontmatterAndMarkdown() {
 }
 function setFontColor() {
   const frontMatter = separateFrontmatterAndMarkdown()[1]
-  const color = frontMatter.metadata.color
+  const color = frontMatter.metadata?.color
   slideContainer.value.querySelectorAll('.title p, .content .title h1').forEach((el) => {
     el.style.color = color
   })
@@ -538,17 +548,36 @@ function setFontColor() {
     el.style.color = color
   })
 }
-function applyTemplateIfNeeded() {
+function applyDefaultTemplate(): boolean {
   const [markdown, frontMatter] = separateFrontmatterAndMarkdown()
   const hasSlideMetadata = frontMatter.metadata?.slide
   const hasHeadingSlide = markdown.match(headingSlideRegex)
   const hasTemplatePath = frontMatter.metadata?.templatePath
-  loadTemplate = !!(hasSlideMetadata || hasHeadingSlide) && !hasTemplatePath
-  if (loadTemplate) {
-    presentationViewerRef.value.classList.add('md-template')
-    setFontColor()
+  return !!(hasSlideMetadata || hasHeadingSlide) && !hasTemplatePath
+}
+async function loadDefaultCss(): Promise<boolean> {
+  const cssFullPath = `${baseUrl}/templates.css`
+  const srcPath = normalizeTemplatePath(cssFullPath)
+
+  try {
+    const response = await fetch(srcPath)
+    if (!response.ok) {
+      console.error('Failed to fetch CSS file.')
+      setMarkdownContent('# Error\nFailed to fetch CSS file.')
+      return false
+    }
+    const link = document.createElement('link')
+    link.id = 'reveal-default-css'
+    link.rel = 'stylesheet'
+    link.href = srcPath
+    document.head.appendChild(link)
+    cssLink.value = link
+    return true
+  } catch (err) {
+    console.error(`Error: ${err}`)
+    setMarkdownContent(`# Error\n${err}`)
+    return false
   }
-  return loadTemplate
 }
 </script>
 

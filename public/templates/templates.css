@@ -1,32 +1,32 @@
-.md-template .slides {
+.slides {
     font-size: 28px;
 }
 
-.md-template #slideContainer > section {
+#slideContainer > section {
     justify-content: flex-start !important;
     align-items: flex-start;
 }
 
-.md-template #slideContainer h1,
-.md-template #slideContainer h2,
-.md-template #slideContainer h3,
-.md-template #slideContainer h4,
-.md-template #slideContainer h5,
-.md-template #slideContainer h6,
-.md-template #slideContainer p,
-.md-template #slideContainer img,
-.md-template #slideContainer ul,
-.md-template #slideContainer li,
-.md-template #slideContainer ol,
-.md-template #slideContainer div,
-.md-template #slideContainer footer {
+#slideContainer h1,
+#slideContainer h2,
+#slideContainer h3,
+#slideContainer h4,
+#slideContainer h5,
+#slideContainer h6,
+#slideContainer p,
+#slideContainer img,
+#slideContainer ul,
+#slideContainer li,
+#slideContainer ol,
+#slideContainer div,
+#slideContainer footer {
     margin-left: 0;
     padding: 0;
     text-transform: none;
 }
 
 
-.md-template .title {
+.title {
     top: 0;
     text-align: left;
     width: 100%;
@@ -36,30 +36,30 @@
     align-items: center;
 }
 
-.md-template .content .title h1 {
+.content .title h1 {
   text-align: center;
 }
 
-.md-template .title h1 {
+.title h1 {
     margin: 0;
 }
 
-.md-template .title p {
+.title p {
     font-size: 42px;
 }
 
-.md-template .logo {
+.logo {
     height: 80px;
     float: right;
     display: flex;
     align-items: center;
 }
 
-.md-template .logo img {
+.logo img {
     margin: 0;
 }
 
-.md-template footer {
+footer {
     width: 100%;
     height: 10%;
     font-size: 22px;
@@ -71,7 +71,7 @@
     align-items: center;
 }
 
-.md-template .content-container {
+.content-container {
     width: 100%;
     height: 90%;
     display: flex;
@@ -79,12 +79,12 @@
     align-items: flex-start;
 }
 
-.md-template .content-container ul,
-.md-template .content-container ol {
+.content-container ul,
+.content-container ol {
     padding-left: 20px !important;
 }
 
-.md-template .slides section:not(.cover) .content-container .content-wrapper {
+.slides section:not(.cover) .content-container .content-wrapper {
     min-height: 0;
     padding: 10px;
     width: 100%;
@@ -95,7 +95,7 @@
     align-items: flex-start;
 }
 
-.md-template .slides section:not(.cover) .content-container .content-wrapper .content {
+.slides section:not(.cover) .content-container .content-wrapper .content {
     max-width: 100%;
     max-height: 100%;
     width: 100%;
@@ -104,13 +104,13 @@
     justify-content: center;
 }
 
-.md-template .title-content-image .content-container .content-wrapper .content {
+.title-content-image .content-container .content-wrapper .content {
     position: relative;
     max-width: 100%;
     max-height: 100%;
 }
 
-.md-template .title-content-image .content-container .content-wrapper .content > p:has(img){
+.title-content-image .content-container .content-wrapper .content > p:has(img){
     height: 100%;
     width: 50%;
     float: right;
@@ -119,49 +119,49 @@
     right: 0;
 }
 
-.md-template .cover .content-container {
+.cover .content-container {
     justify-content: flex-start;
     align-items: center;
 }
 
-.md-template .cover .content-container .logo {
+.cover .content-container .logo {
     height: 40%;
     padding: 10px;
 }
 
-.md-template .image-container {
+.image-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.md-template .image-container .image-wrapper {
+.image-container .image-wrapper {
     padding: 5px;
 }
 
-.md-template .image-container .image-wrapper > img {
+.image-container .image-wrapper > img {
     height: auto;
     width: auto;
     display: block;
     margin: 0;
 }
 
-.md-template .title-content-image .content-container .content-wrapper .content {
+.title-content-image .content-container .content-wrapper .content {
     position: relative;
     width: 100%;
 }
 
 
 
-.md-template .title-content-image .content-container .content-wrapper .content > ul,
-.md-template .title-content-image .content-container .content-wrapper .content > ol,
-.md-template .title-content-image .content-container .content-wrapper .content > p,
-.md-template .title-content-image .content-container .content-wrapper .content > table {
+.title-content-image .content-container .content-wrapper .content > ul,
+.title-content-image .content-container .content-wrapper .content > ol,
+.title-content-image .content-container .content-wrapper .content > p,
+.title-content-image .content-container .content-wrapper .content > table {
     width: 50%;
 }
 
-.md-template .title-content-image .content-container .content-wrapper .content .image-container {
+.title-content-image .content-container .content-wrapper .content .image-container {
     height: 100%;
     width: 50%;
     float: right;
@@ -170,21 +170,21 @@
     right: 0;
 }
 
-.md-template .title-content-image .content-container .content-wrapper .content .image-container img {
+.title-content-image .content-container .content-wrapper .content .image-container img {
     max-width: 100%;
     height: auto;
     width: auto;
     max-height: 80vh;
 }
 
-.md-template .about-us-text {
+.about-us-text {
     width: 100%;
     color: #fff;
     text-align: center;
     padding: 20px;
 }
 
-.md-template .info-section {
+.info-section {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
@@ -193,25 +193,25 @@
     margin-top: 30px;
 }
 
-.md-template .info-box {
+.info-box {
     padding: 10px 20px;
 }
 
-.md-template .info-box h3 {
+.info-box h3 {
     margin: 10px 0;
 }
 
-.md-template .divider {
+.divider {
     width: 2px;
     background-color: #000000;
     opacity: 0.5;
     align-self: stretch;
 }
 
-.md-template .about-us .content-container .content-wrapper {
+.about-us .content-container .content-wrapper {
     justify-content: center;
 }
 
-.md-template .info-section .divider:last-child {
+.info-section .divider:last-child {
     display: none;
 }
