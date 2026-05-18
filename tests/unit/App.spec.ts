@@ -28,7 +28,9 @@ const templateHtmlMap: Record<string, string> = {
 {{/metadata.logo}}
 
 <div class="content">
+<div class="title">
 <h1>{{{ title }}}</h1>
+</div>
 
 <p>
 By: {{{ metadata.presenter }}}

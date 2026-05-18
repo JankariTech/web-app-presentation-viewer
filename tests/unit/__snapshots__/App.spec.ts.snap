@@ -165,7 +165,9 @@ exports[`Template Features > should render cover template 1`] = `
       </div>
 
       <div class="content">
-        <h1>Reveal Js Templates in Web App Presentation Viewer</h1>
+        <div class="title">
+          <h1>Reveal Js Templates in Web App Presentation Viewer</h1>
+        </div>
 
         <p>
           By: John Doe
