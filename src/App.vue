@@ -528,7 +528,7 @@ function separateFrontmatterAndMarkdown() {
 function setFontColor() {
   const frontMatter = separateFrontmatterAndMarkdown()[1]
   const color = frontMatter.metadata.color
-  slideContainer.value.querySelectorAll('.title p, h1').forEach((el) => {
+  slideContainer.value.querySelectorAll('.title p, .content .title h1').forEach((el) => {
     el.style.color = color
   })
   slideContainer.value.querySelectorAll('.about-us-text').forEach((el) => {
