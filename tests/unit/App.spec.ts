@@ -156,6 +156,16 @@ const createFetchMock = (markdownContent: string) => {
       })
     }
 
+    // default CSS fetch
+    if (url.includes('templates.css')) {
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve('.reveal .slides { color: black; }'),
+        blob: () => Promise.resolve(new Blob([], { type: 'text/css' }))
+      })
+    }
+
+    // template HTML fetch
     if (url.includes('-template.html')) {
       const templateName = url.split('/').pop()
       const templateHtml = templateHtmlMap[templateName]
@@ -282,9 +292,17 @@ function getWrapper() {
   })
 }
 
+function normalizeSlidesHtml(html: string) {
+  return html
+    .replace(/\b no-transition\b/g, '')
+    .replace(/\bno-transition /g, '')
+    .replace(/\sclass=""/g, '')
+}
+
 // eslint-disable-next-line require-await
 describe('Template Features', async () => {
   beforeEach(() => {
+    document.getElementById('reveal-default-css')?.remove()
     global.fetch = defaultFetchMock
   })
 
@@ -340,11 +358,12 @@ logo: https://external:9200/cat.jpg
     await flushPromises()
     await vi.waitFor(
       () => {
-        expect(vm.classes('md-template')).toBe(true)
+        expect(document.getElementById('reveal-default-css')).not.toBeNull()
       },
       { timeout: 1000 }
     )
-    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
   })
 
   it('should render title content template', async () => {
@@ -369,11 +388,15 @@ logo: https://external:9200/cat.jpg
     await flushPromises()
     await vi.waitFor(
       () => {
-        expect(vm.classes('md-template')).toBe(true)
+        expect(document.getElementById('reveal-default-css')).not.toBeNull()
+        const slideNumber = vm.find('.reveal .slides .custom-slide-number')
+        expect(slideNumber.exists()).toBe(true)
+        expect(slideNumber.text()).toBe('1')
       },
       { timeout: 1000 }
     )
-    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
   })
 
   it('should render title content image template', async () => {
@@ -395,11 +418,15 @@ logo: https://external:9200/cat.jpg
     await flushPromises()
     await vi.waitFor(
       () => {
-        expect(vm.classes('md-template')).toBe(true)
+        expect(document.getElementById('reveal-default-css')).not.toBeNull()
+        const slideNumber = vm.find('.reveal .slides .custom-slide-number')
+        expect(slideNumber.exists()).toBe(true)
+        expect(slideNumber.text()).toBe('1')
       },
       { timeout: 1000 }
     )
-    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
   })
 
   it('should render about us template', async () => {
@@ -425,11 +452,15 @@ Some content about us.
     await flushPromises()
     await vi.waitFor(
       () => {
-        expect(vm.classes('md-template')).toBe(true)
+        expect(document.getElementById('reveal-default-css')).not.toBeNull()
+        const slideNumber = vm.find('.reveal .slides .custom-slide-number')
+        expect(slideNumber.exists()).toBe(true)
+        expect(slideNumber.text()).toBe('1')
       },
       { timeout: 1000 }
     )
-    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
   })
 
   it('should render title content template without the logo', async () => {
@@ -453,11 +484,82 @@ presenter: John Doe
     await flushPromises()
     await vi.waitFor(
       () => {
-        expect(vm.classes('md-template')).toBe(true)
+        expect(document.getElementById('reveal-default-css')).not.toBeNull()
+        const slideNumber = vm.find('.reveal .slides .custom-slide-number')
+        expect(slideNumber.exists()).toBe(true)
+        expect(slideNumber.text()).toBe('1')
       },
       { timeout: 1000 }
     )
-    expect(vm.find('.reveal .slides').html()).toMatchSnapshot()
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
+  })
+
+  it('should show error when default CSS fetch fails', async () => {
+    const fetchMock = vi.fn().mockImplementation((url: unknown) => {
+      if (typeof url !== 'string') {
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(''),
+          blob: () => Promise.resolve(new Blob([], { type: 'image/png' }))
+        })
+      }
+
+      if (url.includes('templates.css')) {
+        return Promise.resolve({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          text: () => Promise.resolve(''),
+          blob: () => Promise.resolve(new Blob([]))
+        })
+      }
+
+      if (url.includes('slides.md')) {
+        return Promise.resolve({
+          ok: true,
+          text: () =>
+            Promise.resolve(`---
+slide: title-content
+presenter: John Doe
+logo: https://external:9200/cat.jpg
+---
+# Test Slide
+`),
+          blob: () => Promise.resolve(new Blob([], { type: 'text/markdown' }))
+        })
+      }
+
+      if (url.includes('-template.html')) {
+        const templateName = url.split('/').pop()?.split('?')[0] || ''
+        const templateHtml = templateHtmlMap[templateName] || ''
+        return Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(templateHtml),
+          blob: () => Promise.resolve(new Blob([templateHtml], { type: 'text/html' }))
+        })
+      }
+
+      return Promise.resolve({
+        ok: true,
+        text: () => Promise.resolve(''),
+        blob: () => Promise.resolve(new Blob([]))
+      })
+    })
+
+    global.fetch = fetchMock
+    const vm = getWrapper()
+    await flushPromises()
+
+    await vi.waitFor(
+      () => {
+        expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining('templates.css'))
+        expect(document.getElementById('reveal-default-css')).toBeNull()
+      },
+      { timeout: 1000 }
+    )
+    const slidesHtml = vm.find('.reveal .slides').html()
+    expect(normalizeSlidesHtml(slidesHtml)).toMatchSnapshot()
   })
 })
 
