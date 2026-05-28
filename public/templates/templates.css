@@ -101,22 +101,16 @@ footer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .title-content-image .content-container .content-wrapper .content {
     position: relative;
+    width: 100%;
+    height: 100%;
     max-width: 100%;
     max-height: 100%;
-}
-
-.title-content-image .content-container .content-wrapper .content > p:has(img){
-    height: 100%;
-    width: 50%;
-    float: right;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    display: block;
 }
 
 .cover .content-container {
@@ -152,7 +146,14 @@ footer {
     width: 100%;
 }
 
-
+.title-content-image .content-container .content-wrapper .content .image-container .image-wrapper {
+    padding: 5px !important;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .title-content-image .content-container .content-wrapper .content > ul,
 .title-content-image .content-container .content-wrapper .content > ol,
@@ -164,17 +165,20 @@ footer {
 .title-content-image .content-container .content-wrapper .content .image-container {
     height: 100%;
     width: 50%;
-    float: right;
     position: absolute;
+    top: 0;
     bottom: 0;
     right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .title-content-image .content-container .content-wrapper .content .image-container img {
     max-width: 100%;
-    height: auto;
-    width: auto;
-    max-height: 80vh;
+    max-height: 100%;
+    height: auto !important;
+    width: auto !important;
 }
 
 .about-us-text {
