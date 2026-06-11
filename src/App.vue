@@ -443,6 +443,7 @@ function adjustFontSize() {
     return element.offsetHeight + marginTop + marginBottom + paddingTop + paddingBottom
   }
 
+  const contentContainer = currentSlide.querySelector('.content-container') as HTMLElement
   const contentWrapper = currentSlide.querySelector('.content-wrapper') as HTMLElement
   const content = currentSlide.querySelector('.content') as HTMLElement
 
@@ -454,54 +455,35 @@ function adjustFontSize() {
   // set minimum font size from where the image starts to get reduced as well
   // this is to prevent the font size to get too small and becomes hard to read
   const fontSizeToStartReducingImage = 12
-  let fontSize = parseFloat(getComputedStyle(content).fontSize)
 
-  while (totalHeight > contentWrapperHeight) {
+  if (totalHeight > contentWrapperHeight) {
     const scaleFactor = contentWrapperHeight / totalHeight
-    fontSize = Math.floor(scaleFactor * fontSize)
 
-    const wrapperElements = Array.from(content.children) as HTMLElement[]
-    wrapperElements.forEach((wrapperElement) => {
-      wrapperElement.style.fontSize = `${fontSize}px`
-      const style = getComputedStyle(wrapperElement)
-      const marginTop = Math.floor(parseFloat(style.marginTop) * scaleFactor)
-      const marginBottom = Math.floor(parseFloat(style.marginBottom) * scaleFactor)
-      wrapperElement.style.marginTop = `${marginTop}px`
-      wrapperElement.style.marginBottom = `${marginBottom}px`
-    })
+    if (contentContainer) {
+      contentContainer.style.fontSize = `${scaleFactor}em`
 
-    // reduce image size if font size gets smaller than minimum font size
-    const images = content.querySelectorAll(
-      '.image-container .image-wrapper img'
-    ) as NodeListOf<HTMLImageElement>
-    if (fontSize <= fontSizeToStartReducingImage && images.length > 0) {
+      const images = content.querySelectorAll(
+        '.image-container .image-wrapper img'
+      ) as NodeListOf<HTMLImageElement>
       images.forEach((image) => {
-        const currentWidth = image.offsetWidth
-        const currentHeight = image.offsetHeight
-        image.style.width = `${Math.floor(currentWidth * scaleFactor)}px`
-        image.style.height = `${Math.floor(currentHeight * scaleFactor)}px`
+        const scaledWidth = Math.floor(image.offsetWidth * scaleFactor)
+        image.style.width = `${scaledWidth}px`
+        image.style.height = 'auto'
       })
     }
-    totalHeight = getTotalHeightOfChildren(content)
   }
-
   if (currentSlide.classList.contains('about-us')) {
-    const content = currentSlide.querySelector('.content') as HTMLElement
     const infoSection = currentSlide.querySelector('.info-section') as HTMLElement
     const contentWidth = content.offsetWidth
+
     let infoSectionWidth = infoSection.scrollWidth
     while (infoSectionWidth > contentWidth) {
       const scaleFactor = contentWidth / infoSectionWidth
-      fontSize = Math.floor(scaleFactor * fontSize)
+      const currentEm = parseFloat(contentContainer.style.fontSize) || 1
+      contentContainer.style.fontSize = `${currentEm * scaleFactor}em`
 
-      const infoBoxes = infoSection.querySelectorAll('.info-box') as NodeListOf<HTMLElement>
-      infoBoxes.forEach((box) => {
-        box.style.fontSize = `${fontSize}px`
-        const style = getComputedStyle(box)
-        const padding = parseFloat(style.padding) * scaleFactor
-        box.style.padding = `${Math.max(2, Math.floor(padding))}px`
-        box.style.margin = `${Math.max(2, Math.floor(parseFloat(style.margin) * scaleFactor))}px`
-      })
+      // force reflow so scrollWidth reflects the new em value
+      infoSection.getBoundingClientRect()
       infoSectionWidth = infoSection.scrollWidth
     }
   }

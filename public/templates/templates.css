@@ -210,6 +210,7 @@ footer {
     background-color: #000000;
     opacity: 0.5;
     align-self: stretch;
+    flex-shrink: 0;
 }
 
 .about-us .content-container .content-wrapper {
