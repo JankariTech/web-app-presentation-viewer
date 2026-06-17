@@ -11,6 +11,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [2.3.0] - 2026-06-17
+
+### Added
+- feat: support for custom templates (https://github.com/JankariTech/web-app-presentation-viewer/pull/128)
+- upgrade opencloud extension sdk (https://github.com/JankariTech/web-app-presentation-viewer/pull/134)
+- move css file to public templates directory (https://github.com/JankariTech/web-app-presentation-viewer/pull/136)
+
+### Fixed
+- [Fix] ci: fix revealjs-awesoMD repo url (https://github.com/JankariTech/web-app-presentation-viewer/pull/122)
+- [Fix] fix image size in title-content slide (https://github.com/JankariTech/web-app-presentation-viewer/pull/124)
+- [Fix] fix: make logo optional (https://github.com/JankariTech/web-app-presentation-viewer/pull/130)
+- [Fix] Fix full screen mode (https://github.com/JankariTech/web-app-presentation-viewer/pull/131)
+- [Fix] fix: prevent metadata color from styling all h1 elements (https://github.com/JankariTech/web-app-presentation-viewer/pull/137)
+- [Fix] fix: scaling content bug (https://github.com/JankariTech/web-app-presentation-viewer/pull/138)
+- [Fix] fix: image position in title content image slide (https://github.com/JankariTech/web-app-presentation-viewer/pull/139)
+
 ## [2.2.1] - 2025-12-29
 
 ### Fixed
