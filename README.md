@@ -366,3 +366,18 @@ For oCIS:
 ```bash
 docker build --build-arg server=ocis -t jankaritech/mdpresentation-viewer-ocis:<version> .
 ```
+
+## Release
+
+After every release of the app, add the new release version information in the [apps.json](https://github.com/opencloud-eu/awesome-apps/blob/main/webApps/apps.json) file of [OpenCloud/awesome-apps](https://github.com/opencloud-eu/awesome-apps) repo.
+Make sure to add the `version`, `minOpenCloud` and `url` fields for the app in the JSON file.
+
+```json
+"versions": [
+    {
+       "version": "<new-version>",
+       "minOpenCloud": "<min-opencloud-version>",
+       "url": "<url-to-zip-file>"
+    }
+],
+```
