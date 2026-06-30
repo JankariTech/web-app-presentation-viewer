@@ -29,8 +29,8 @@ import {
   useAppFileHandling,
   useClientService,
   useAppsStore
-} from '@ownclouders/web-pkg'
-import { Resource } from '@ownclouders/web-client/src'
+} from '@opencloud-eu/web-pkg'
+import { Resource } from '@opencloud-eu/web-client/src'
 import Reveal from 'reveal.js'
 import RevealAwesoMD from 'revealjs-awesomd/plugin/awesoMD/awesoMD'
 import RevealHighlight from 'reveal.js/plugin/highlight/highlight'
