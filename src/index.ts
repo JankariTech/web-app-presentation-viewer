@@ -1,6 +1,6 @@
 import { AppWrapperRoute, defineWebApplication } from '@ownclouders/web-pkg'
 import App from './App.vue'
-import { id as appId } from '../public/manifest.json'
+import { id as appId } from './manifest.json'
 
 export default defineWebApplication({
   setup() {

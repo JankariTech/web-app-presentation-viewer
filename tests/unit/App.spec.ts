@@ -193,7 +193,7 @@ const createFetchMock = (markdownContent: string) => {
 }
 
 // mock modules
-vi.mock('@opencloud-eu/web-pkg', () => ({
+vi.mock('@ownclouders/web-pkg', () => ({
   useAppDefaults: vi.fn().mockImplementation(() => ({
     loadFolderForFileContext: vi.fn(),
     currentFileContext: mockCurrentFileContext,

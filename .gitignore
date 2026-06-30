@@ -2,6 +2,7 @@ node_modules
 dist
 coverage
 pnpm-lock.yaml
+.__mf__temp/
 
 # Editor directories and files
 .vscode

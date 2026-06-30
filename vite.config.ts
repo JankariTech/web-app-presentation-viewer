@@ -1,9 +1,10 @@
 import { defineConfig } from '@ownclouders/extension-sdk'
-import { id } from './public/manifest.json'
+import { id } from './src/manifest.json'
 
 export default defineConfig({
   base: `/assets/apps/${id}/`,
   build: {
+    target: 'esnext',
     rollupOptions: {
       output: {
         dir: `dist/${id}`,
