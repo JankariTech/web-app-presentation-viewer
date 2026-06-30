@@ -1,10 +1,11 @@
 {
   "devDependencies": {
-    "@ownclouders/extension-sdk": "^11.3.1",
-    "@ownclouders/prettier-config": "0.0.1"
+    "@ownclouders/extension-sdk": "^12.4.2",
+    "@ownclouders/prettier-config": "0.0.1",
+    "vite": "^7.3.2"
   },
   "peerDependencies": {
-    "@ownclouders/web-client": "^11.3.1",
-    "@ownclouders/web-pkg": "^11.3.1"
+    "@ownclouders/web-client": "^12.4.2",
+    "@ownclouders/web-pkg": "^12.4.2"
   }
 }

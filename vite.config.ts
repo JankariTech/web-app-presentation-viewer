@@ -2,6 +2,7 @@ import { defineConfig } from '@ownclouders/extension-sdk'
 import { id } from './public/manifest.json'
 
 export default defineConfig({
+  name: id,
   base: `/assets/apps/${id}/`,
   build: {
     rollupOptions: {
