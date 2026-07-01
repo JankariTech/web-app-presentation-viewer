@@ -11,3 +11,4 @@ pnpm-lock.yaml
 docker-compose.override.yml
 .env
 package.json
+.__mf__temp/
