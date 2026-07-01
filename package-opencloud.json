@@ -2,7 +2,8 @@
   "devDependencies": {
     "@opencloud-eu/extension-sdk": "^7.0.0",
     "@opencloud-eu/prettier-config": "^1.0.0",
-    "sass-embedded": "^1.99.0"
+    "sass-embedded": "^1.99.0",
+    "vite": "^8.1.1"
   },
   "peerDependencies": {
     "@opencloud-eu/web-client": "^7.0.0",

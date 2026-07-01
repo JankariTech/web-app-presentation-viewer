@@ -17,7 +17,7 @@ It allows users to:
 
 ## Supported oCIS and Web Versions
 
-- [oCIS](https://github.com/owncloud/ocis) (>= 6.x.x) or [OpenCloud](https://github.com/opencloud-eu/opencloud/) (>= 2.0.0)
+- [oCIS](https://github.com/owncloud/ocis) (>= 8.0.5) or [OpenCloud](https://github.com/opencloud-eu/opencloud/) (>= 7.2.0)
 
 ## App Installation
 
