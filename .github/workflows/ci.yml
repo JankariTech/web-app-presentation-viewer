@@ -39,9 +39,7 @@ jobs:
         run: pnpm lint
 
       - name: build
-        run: |
-          pnpm add -D sass-embedded
-          pnpm build
+        run: pnpm build
 
       - name: upload-dist
         uses: actions/upload-artifact@v4

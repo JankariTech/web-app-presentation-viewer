@@ -37,6 +37,7 @@
     "eslint-plugin-unused-imports": "^3.2.0",
     "eslint-plugin-vue": "^9.25.0",
     "happy-dom": "^15.10.2",
+    "sass-embedded": "^1.99.0",
     "typescript": "^5.4.5",
     "vue": "^3.5.39",
     "vitest": "^4.1.9"
