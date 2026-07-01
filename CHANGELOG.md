@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [3.0.0] - 2026-07-01
+
+### Fixed
+- update vite (https://github.com/JankariTech/web-app-presentation-viewer/pull/145)
+- fix: add packages field to pnpm-workspace.yaml (https://github.com/JankariTech/web-app-presentation-viewer/pull/146)
+
 ## [2.3.0] - 2026-06-17
 
 ### Added
