@@ -219,6 +219,7 @@ vi.mock('@ownclouders/web-pkg', () => ({
   useConfigStore: vi.fn().mockImplementation(() => ({
     serverUrl: mockServerUrl
   })),
+  useLocalStorage: vi.fn().mockImplementation(() => ({})),
   AppLoadingSpinner: vi.fn()
 }))
 // global mocks

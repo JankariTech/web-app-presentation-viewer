@@ -82,6 +82,10 @@ When('user {string} closes the presentation viewer', async function (user) {
   await presentationViewer.closePresentationViewer()
 })
 
+When('user {string} reloads the page', async function (user) {
+  await page.reload()
+})
+
 Given('user {string} creates a folder {string} using API', async function (user, folder) {
   await createFolder(user, folder)
 })

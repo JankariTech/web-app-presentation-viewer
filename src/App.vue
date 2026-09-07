@@ -28,7 +28,8 @@ import {
   useAppDefaults,
   useAppFileHandling,
   useClientService,
-  useAppsStore
+  useAppsStore,
+  useLocalStorage
 } from '@ownclouders/web-pkg'
 import { Resource } from '@ownclouders/web-client/src'
 import Reveal from 'reveal.js'
@@ -42,6 +43,7 @@ import 'reveal.js/dist/theme/white.css'
 import './css/variables.css'
 
 import { getMediaMimeTypes } from './helpers/mediaMimeTypes'
+import { revealOptions } from './helpers/revealjs-options-ownclouders'
 import { id as appId } from '../public/manifest.json'
 
 const themeStore = useThemeStore()
@@ -69,6 +71,9 @@ const headingSlideRegex = /^#+\s.*::slide:\s*([\w-]+)/m
 const logoRegex = /(?<=logo:\s?)([^.]+\.[a-zA-Z]{3,4})/g
 const templatePathRegex = /(?<=templatePath:\s?)(\S+)/g
 const defaultSlideRegex = /(?:^|::)slide:\s?(.+?)(?=\s?::|$)/g
+const localStorageData = useLocalStorage<{
+  currentState?: any
+}>(`oc_mdpresentation-viewer_${unref(unref(currentFileContext)?.itemId)}`, {})
 
 let reveal: Reveal.Api
 const awesoMd = RevealAwesoMD()
@@ -152,14 +157,7 @@ onMounted(async () => {
     plugins: [awesoMd, RevealHighlight, RevealMermaid]
   })
 
-  await reveal.initialize({
-    controls: true,
-    progress: true,
-    history: true,
-    center: true,
-    controlsLayout: 'edges',
-    embedded: true
-  })
+  await reveal.initialize(revealOptions)
 
   if (!customCssLoaded) {
     isReadyToShow.value = true
@@ -177,11 +175,21 @@ onMounted(async () => {
     updateImageStructure()
     fitContent()
     adjustFontSize()
+    reveal.setState(unref(localStorageData)?.currentState)
   }
 
   reveal.addEventListener('slidechanged', function () {
+    localStorageData.value = { currentState: reveal.getState() }
     fitContent()
     adjustFontSize()
+  })
+
+  reveal.addEventListener('fragmentshown', function () {
+    localStorageData.value = { currentState: reveal.getState() }
+  })
+
+  reveal.addEventListener('fragmenthidden', function () {
+    localStorageData.value = { currentState: reveal.getState() }
   })
 
   isReadyToShow.value = true
