@@ -50,6 +50,10 @@ This app has the following default slide separators:
 - Horizontal separator: `---` (`← →`)
 - Vertical separator: `--` (`↓ ↑`)
 
+## Keyboard Shortcuts
+- **Fullscreen**: Press *F* to view your presentation in fullscreen mode with OpenCloud / oCIS headers completely hidden. Press *ESC* to exit.
+- **Jump to Slide**: Press *G* to activate, type a slide number or id, press Enter to confirm. [Details](https://revealjs.com/jump-to-slide/)
+
 ## Using Templates
 
 To use the templates in the presentation viewer, use the front matter to provide default metadata followed by slide
