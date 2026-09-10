@@ -26,6 +26,27 @@ Feature: markdown presentation viewer
     When user "admin" navigates to the previous slide using keyboard
     Then the content of the current slide should be "PRESENTATION VIEWER"
 
+
+  Scenario: reopen presentation after navigating to a particular slide
+    Given user "admin" has uploaded the markdown file "test-markdown.md" using API
+    And user "admin" has logged in
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
+    And user "admin" navigates to the next slide using navigation button
+    And user "admin" closes the presentation viewer
+    And user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "An extension for OpenCloud & ownCloud Infinite Scale (oCIS) that allows users to create slide presentations directly from markdown files."
+
+
+  Scenario: reload page after navigating to a particular slide
+    Given user "admin" has uploaded the markdown file "test-markdown.md" using API
+    And user "admin" has logged in
+    When user "admin" previews markdown file "test-markdown.md" in presentation viewer using context menu
+    And user "admin" navigates to the next slide using navigation button
+    And user "admin" reloads the page
+    Then markdown file "test-markdown.md" should be opened in the presentation viewer
+    And the content of the current slide should be "An extension for OpenCloud & ownCloud Infinite Scale (oCIS) that allows users to create slide presentations directly from markdown files."
+
   @skipOnOpenCloud
   Scenario: re-open markdown file in presentation viewer after opening in text editor
     Given user "admin" has uploaded the markdown file "test-markdown.md" using API
