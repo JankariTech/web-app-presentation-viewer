@@ -1,6 +1,6 @@
 services:
   ocis:
-    image: owncloud/ocis-rolling:${OCIS_IMAGE_TAG:-latest}
+    image: owncloud/ocis-rolling:${OCIS_IMAGE_TAG:-8}
     entrypoint: /bin/sh
     command: ['-c', 'ocis init || true && ocis server']
     ports:
@@ -20,4 +20,4 @@ services:
       PROXY_CSP_CONFIG_FILE_LOCATION: /etc/ocis/csp.yml
     volumes:
       - ./dist:/web/apps:ro
-      - ./dev/config/csp.yml:/etc/ocis/csp.yml
+      - ./dev/config/csp-ocis.yml:/etc/ocis/csp.yml

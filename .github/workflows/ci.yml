@@ -24,33 +24,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
-
-      - name: generate-package-json
-        run: make dependencies-${{ matrix.server }}
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7
 
       - name: pnpm-install
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 #v6
+        with:
+          version: 11
 
-      - name: install
+      - name: install-dependencies
         run: make install-${{ matrix.server }}
 
       - name: lint
         run: pnpm lint
 
+      - name: unit-test
+        run: pnpm test:unit --coverage
+
       - name: build
         run: pnpm build
 
       - name: upload-dist
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 #v7
         if: github.event_name == 'release'
         with:
           name: dist-${{ matrix.server }}
           path: dist/
           retention-days: 1
-
-      - name: unit-test
-        run: pnpm test:unit --coverage
 
       - name: ocis-server
         if: matrix.server == 'ocis'
@@ -64,10 +63,10 @@ jobs:
             -e PROXY_ENABLE_BASIC_AUTH=true \
             -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/ocis/csp.yml \
             -e WEB_ASSET_APPS_PATH=/web/apps \
-            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/ocis/csp.yml:ro \
+            -v ${{ github.workspace }}/dev/config/csp-ocis.yml:/etc/ocis/csp.yml:ro \
             -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
-            owncloud/ocis-rolling:latest \
+            owncloud/ocis-rolling:8 \
             -c 'ocis init || true && ocis server'
 
       - name: opencloud-server
@@ -82,20 +81,17 @@ jobs:
             -e PROXY_ENABLE_BASIC_AUTH=true \
             -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/opencloud/csp.yml \
             -e WEB_ASSET_APPS_PATH=/web/apps \
-            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/opencloud/csp.yml:ro \
+            -v ${{ github.workspace }}/dev/config/csp-opencloud.yml:/etc/opencloud/csp.yml:ro \
             -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
             opencloudeu/opencloud-rolling:latest \
             -c 'opencloud init || true && opencloud server'
 
-      - name: host-ip
-        id: host_ip
-        run: echo "host_ip=$(hostname -I | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
       - name: wait-services
         run: |
+          HOST_IP=$(hostname -I | cut -d' ' -f1)
           docker run --rm \
-            --add-host dockerhost:${{ steps.host_ip.outputs.host_ip }} \
+            --add-host dockerhost:$HOST_IP \
             owncloudci/wait-for \
             -it dockerhost:9200 -t 300
 
