@@ -26,17 +26,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7
 
-      - name: generate-package-json
-        run: make dependencies-${{ matrix.server }}
-
       - name: pnpm-install
         uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 #v6
 
-      - name: install
+      - name: install-dependencies
         run: make install-${{ matrix.server }}
 
       - name: lint
         run: pnpm lint
+
+      - name: unit-test
+        run: pnpm test:unit --coverage
 
       - name: build
         run: pnpm build
@@ -48,9 +48,6 @@ jobs:
           name: dist-${{ matrix.server }}
           path: dist/
           retention-days: 1
-
-      - name: unit-test
-        run: pnpm test:unit --coverage
 
       - name: ocis-server
         if: matrix.server == 'ocis'
@@ -88,14 +85,11 @@ jobs:
             opencloudeu/opencloud-rolling:latest \
             -c 'opencloud init || true && opencloud server'
 
-      - name: host-ip
-        id: host_ip
-        run: echo "host_ip=$(hostname -I | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-
       - name: wait-services
         run: |
+          HOST_IP=$(hostname -I | cut -d' ' -f1)
           docker run --rm \
-            --add-host dockerhost:${{ steps.host_ip.outputs.host_ip }} \
+            --add-host dockerhost:$HOST_IP \
             owncloudci/wait-for \
             -it dockerhost:9200 -t 300
 
