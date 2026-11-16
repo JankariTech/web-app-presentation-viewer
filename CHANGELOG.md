@@ -10,7 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Fixed
+
+## [3.1.1] - 2026-11-16
+
+### Fixed
 - fix: use the correct app version [#152](https://github.com/JankariTech/web-app-presentation-viewer/pull/152)
+
+## [3.1.0] - 2026-09-10
+
+### Added
+- keyboard shortcuts [#150](https://github.com/JankariTech/web-app-presentation-viewer/pull/150)
+
+### Fixed
+- fix: use localstorage to save the current state [#149](https://github.com/JankariTech/web-app-presentation-viewer/pull/149)
 
 ## [3.0.0] - 2026-07-01
 
