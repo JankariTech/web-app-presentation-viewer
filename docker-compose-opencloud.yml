@@ -19,4 +19,4 @@ services:
       PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yml
     volumes:
       - ./dist:/web/apps:ro
-      - ./dev/config/csp.yml:/etc/opencloud/csp.yml
+      - ./dev/config/csp-opencloud.yml:/etc/opencloud/csp.yml

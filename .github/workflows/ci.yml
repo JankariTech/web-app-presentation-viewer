@@ -64,7 +64,7 @@ jobs:
             -e PROXY_ENABLE_BASIC_AUTH=true \
             -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/ocis/csp.yml \
             -e WEB_ASSET_APPS_PATH=/web/apps \
-            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/ocis/csp.yml:ro \
+            -v ${{ github.workspace }}/dev/config/csp-ocis.yml:/etc/ocis/csp.yml:ro \
             -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
             owncloud/ocis-rolling:latest \
@@ -82,7 +82,7 @@ jobs:
             -e PROXY_ENABLE_BASIC_AUTH=true \
             -e PROXY_CSP_CONFIG_FILE_LOCATION=/etc/opencloud/csp.yml \
             -e WEB_ASSET_APPS_PATH=/web/apps \
-            -v ${{ github.workspace }}/dev/config/csp.yml:/etc/opencloud/csp.yml:ro \
+            -v ${{ github.workspace }}/dev/config/csp-opencloud.yml:/etc/opencloud/csp.yml:ro \
             -v ${{ github.workspace }}/dist:/web/apps:ro \
             --entrypoint sh \
             opencloudeu/opencloud-rolling:latest \
